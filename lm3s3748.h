@@ -300,5 +300,104 @@ typedef struct GPIO_APB_s {
 #define GPIO_APB_base2 0x40024000
 #define GPIO_APB ((volatile GPIO_APB_t *) GPIO_APB_base1)
 
+/*** ADC ***/
+
+typedef struct ADC_s {
+#define ADC_ACTSS_offs 0
+	uint32_t actss;
+#define ADC_CRIS_offs  0x004
+	uint32_t cris;
+#define ADC_IM_offs    0x008
+	uint32_t im;
+#define ADC_ISC_offs   0x00C
+	uint32_t isc;
+#define ADC_OSTAT_offs 0x010
+	uint32_t ostat;
+#define ADC_EMUX_offs  0x014
+	uint32_t emux;
+#define ADC_USTAT_offs 0x018
+	uint32_t ustat;
+
+	/* XXX: JUMP */
+	uint32_t res_1[1];
+
+#define ADC_SSPRI_offs 0x020
+	uint32_t sspri;
+
+	/* XXX: JUMP */
+	uint32_t res_2[1];
+
+#define ADC_PSSI_offs  0x028
+	uint32_t pssi;
+
+	/* XXX: JUMP */
+	uint32_t res_3[1];
+
+#define ADC_SAC_offs   0x030
+	uint32_t sac;
+
+	/* XXX: JUMP */
+	uint32_t res_4[3];
+
+#define ADC_SSMUX0_offs   0x040
+#define ADC_SSCTL0_offs   0x044
+#define ADC_SSFIFO0_offs  0x048
+#define ADC_SSFSTAT0_offs 0x04C
+
+#define ADC_SSMUX1_offs   0x060
+#define ADC_SSCTL1_offs   0x064
+#define ADC_SSFIFO1_offs  0x068
+#define ADC_SSFSTAT1_offs 0x06C
+
+#define ADC_SSMUX2_offs   0x080
+#define ADC_SSCTL2_offs   0x084
+#define ADC_SSFIFO2_offs  0x088
+#define ADC_SSFSTAT2_offs 0x08C
+
+#define ADC_SSMUX3_offs   0x0A0
+#define ADC_SSCTL3_offs   0x0A4
+#define ADC_SSFIFO3_offs  0x0A8
+#define ADC_SSFSTAT3_offs 0x0AC
+
+	union {
+		struct {
+			uint32_t mux;
+			uint32_t ctl;
+			uint32_t fifo;
+			uint32_t fstat;
+
+			uint32_t res1;
+		} ss[4];
+		struct {
+			uint32_t ssmux0;
+			uint32_t ssctl0;
+			uint32_t ssfifo0;
+			uint32_t ssfstat0;
+			uint32_t ss_res0;
+
+			uint32_t ssmux1;
+			uint32_t ssctl1;
+			uint32_t ssfifo1;
+			uint32_t ssfstat1;
+			uint32_t ss_res1;
+
+			uint32_t ssmux2;
+			uint32_t ssctl2;
+			uint32_t ssfifo2;
+			uint32_t ssfstat2;
+			uint32_t ss_res2;
+
+			uint32_t ssmux3;
+			uint32_t ssctl3;
+			uint32_t ssfifo3;
+			uint32_t ssfstat3;
+			uint32_t ss_res3;
+		};
+	};
+} ADC_t;
+
+#define ADC_base 0x40038000
+#define ADC ((volatile ADC_t *)ADC_base)
+
 #endif
 
