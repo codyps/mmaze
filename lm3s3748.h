@@ -10,7 +10,7 @@
 #define __packed __attribute__((packed))
 
 /*** Watchdog timer 0 - WDT ***/
-typedef struct WDT_u {
+typedef struct WDT_regs_s {
 #define WDT_LOAD_offs 0
 	uint32_t load;
 #define WDT_VALUE_offs 0x004
@@ -67,10 +67,10 @@ typedef struct WDT_u {
 #define WDT_PCellD2 0xFF8
 #define WDT_PCellD3 0xFFC
 	uint32_t pcell_id[4];
-} WDT_t;
+} WDT_regs_t;
 
 #define WDT_base 0x40000000
-#define WDT ((volatile WDT_t *)WDT_base)
+#define WDT ((volatile WDT_regs_t *)WDT_base)
 
 /*** uDMA - DMA ***/
 
