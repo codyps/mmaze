@@ -148,11 +148,11 @@ typedef struct DMA_regs_s {
 		uint32_t periph_id[8];
 	};
 
-#define DMA_PrimeCellID0_offs 0xFF0
-#define DMA_PrimeCellID1_offs 0xFF4
-#define DMA_PrimeCellID2_offs 0xFF8
-#define DMA_PrimeCellID3_offs 0xFFC
-	uint32_t primecell_id[4];
+#define DMA_PCellID0_offs 0xFF0
+#define DMA_PCellID1_offs 0xFF4
+#define DMA_PCellID2_offs 0xFF8
+#define DMA_PCellID3_offs 0xFFC
+	uint32_t pcell_id[4];
 } DMA_regs_t;
 
 #define DMA_base 0x400FF000
@@ -446,31 +446,33 @@ typedef union GPIO_regs_u {
 		/* XXX: jump */
 		uint32_t res2[681];
 
+		union {
+			struct {
 #define GPIOPeriphID4_offs 0xFD0
-		uint32_t periph_id4;
+				uint32_t periph_id4;
 #define GPIOPeriphID5_offs 0xFD4
-		uint32_t periph_id5;
+				uint32_t periph_id5;
 #define GPIOPeriphID6_offs 0xFD8
-		uint32_t periph_id6;
+				uint32_t periph_id6;
 #define GPIOPeriphID7_offs 0xFDC
-		uint32_t periph_id7;
+				uint32_t periph_id7;
 #define GPIOPeriphID0_offs 0xFE0
-		uint32_t periph_id0;
+				uint32_t periph_id0;
 #define GPIOPeriphID1_offs 0xFE4
-		uint32_t periph_id1;
+				uint32_t periph_id1;
 #define GPIOPeriphID2_offs 0xFE8
-		uint32_t periph_id2;
+				uint32_t periph_id2;
 #define GPIOPeriphID3_offs 0xFEC
-		uint32_t periph_id3;
+				uint32_t periph_id3;
+			};
+			uint32_t perph_id[8];
+		};
 
 #define GPIOPCellID0_offs 0xFF0
-		uint32_t pcell_id0;
 #define GPIOPCellID1_offs 0xFF4
-		uint32_t pcell_id1;
 #define GPIOPCellID2_offs 0xFF8
-		uint32_t pcell_id2;
 #define GPIOPCellID3_offs 0xFFC
-		uint32_t pcell_id3;
+		uint32_t pcell_id[4];
 	};
 	uint32_t raw[GPIO_regct];
 } GPIO_regs_t;
@@ -818,5 +820,183 @@ typedef struct SSI_regs_s {
 #define SSI_PCellID2_offs 0xFF8
 #define SSI_PCellID3_offs 0xFFC
 } SSI_regs_t;
+
+/*** Cortex-m3 Core Peripherals - CORE ***/
+
+typedef struct CORE_regs_s {
+	uint32_t res_1[4];
+
+	/* System Timer (SysTick) */
+#define STCTRL    0x010
+	uint32_t stctrl;
+#define STRELOAD  0x014
+	uint32_t streload;
+#define STCURRENT 0x018
+	uint32_t stcurrent;
+
+	uint32_t res_2[57];
+
+	/* Nested Vectored Interrupt Controller (NVIC) */
+#define EN0     0x100
+#define EN1     0x104
+	uint32_t en[2];
+
+	uint32_t res_3[30];
+
+#define DIS0    0x180
+	uint32_t dis0;
+
+	uint32_t res_4[ ];
+
+#define PEND0   0x200
+#define PEND1   0x204
+	uint32_t pend[2];
+
+	uint32_t res_5[ ]
+
+#define UNPEND0 0x280
+#define UNPEND1 0x284
+	uint32_t unpend[2];
+
+	uint32_t res_6[ ];
+
+#define ACTIVE0 0x300
+#define ACTIVE1 0x304
+	uint32_t active[2];
+
+	uint32_t res_7[ ];
+
+#define PRI0    0x400
+#define PRI1    0x404
+#define PRI2    0x408
+#define PRI3    0x40C
+#define PRI4    0x410
+#define PRI5    0x414
+#define PRI6    0x418
+#define PRI7    0x41C
+#define PRI8    0x420
+#define PRI9    0x424
+#define PRI10   0x428
+#define PRI11   0x42C
+	uint32_t pri[12];
+
+	uint32_t res_X[ ];
+
+#define SWTRIG  0xF00
+	uint32_t swtrig;
+
+	uint32_t res_X[ ];
+
+	/* System Control Block (SCB) */
+#define CPUID   0xD00
+	uint32_t cpuid;
+#define INTCTRL 0xD04
+	uint32_t intctrl;
+#define VTABLE  0xD08
+	uint32_t vtable;
+#define APINT   0xD0C
+	uint32_t apint;
+#define SYSCTRL 0xD10
+	uint32_t sysctrl;
+#define CFGCTRL 0xD14
+	uint32_t cfgctrl;
+#define SYSPRI1 0xD18
+	uint32_t syspri1;
+#define SYSPRI2 0xD1C
+	uint32_t syspri2;
+#define SYSPRI3 0xD20
+	uint32_t syspri3;
+#define SYSHNDCTRL 0xD24
+	uint32_t sysshndctrl;
+#define FAULTSTAT  0xD28
+	uint32_t faultstat;
+#define HFAULTSTAT 0xD2C
+	uint32_t hfaultstat;
+#define MMADDR     0xD34
+	uint32_t mmaddr;
+#define FAULTADDR  0xD38
+	uint32_t faultaddr;
+
+	uint32_t res_X[ ];
+
+	/* Memory Protection Unit (MPU) */
+#define MPUTYPE    0xD90
+	uint32_t mputype;
+#define MPUCTRL    0xD94
+	uint32_t mpuctrl;
+#define MPUNUMBER  0xD98
+	uint32_t mpunumber;
+#define MPUBASE    0xD9C
+	uint32_t mpubase;
+#define MPUATTR    0xDA0
+	uint32_t mpuattr;
+#define MPUBASE1   0xDA4
+	uint32_t mpubase1;
+#define MPUATTR1   0xDA8
+	uint32_t mpuattr1;
+#define MPUBASE2   0xDAC
+	uint32_t mpubase2;
+#define MPUATTR2   0xDB0
+	uint32_t mpuattr2;
+#define MPUBASE3   0xDB4
+	uint32_t mpubase3;
+#define MPUATTR3   0xDB8
+	uint32_t mpuattr3;
+
+} CORE_regs_t;
+
+#define CORE_base 0xE000E000
+#define CORE ((volatile CORE_regs_t *)CORE_base)
+
+/*** General Purpose Timers - GPTM ***/
+#define GPTM0_base 0x4003000
+#define GPTM1_base 0x4003100
+#define GPTM2_base 0x4003200
+#define GPTM3_base 0x4003300
+#define GPTM_reg_ct 0x1000
+
+typedef union GPTM_regs_u {
+	struct {
+#define GPTM_CFG_offs    0
+	uint32_t cfg;
+#define GPTM_TAMR_offs   0x004
+	uint32_t tamr;
+#define GPTM_TBMR_offs   0x008
+	uint32_t tbmr;
+#define GPTM_MCTL_offs   0x00C
+	uint32_t mctl;
+#define GPTM_MIMR_offs   0x018
+	uint32_t mimr;
+#define GPTM_MRIS_offs   0x01C
+	uint32_t mris;
+#define GPTM_MMIS_offs   0x020
+	uint32_t mmis;
+#define GPTM_MICR_offs   0x024
+	uint32_t micr;
+#define GPTM_MTAILR_offs 0x028
+	uint32_t mtailr;
+#define GPTM_MTBILR_offs 0x02C
+	uint32_t mtbilr;
+#define GPTM_MTAMATCHR_offs 0x030
+	uint32_t mtamatchr;
+#define GPTM_MTBMATCHR_offs 0x034
+	uint32_t mtbmatchr;
+#define GPTM_MTAPR_offs 0x038
+	uint32_t mtapr;
+#define GPTM_MTBPR_offs 0x03C
+	uint32_t mtbpr;
+#define GPTM_MTAR_offs  0x048
+	uint32_t mtar;
+#define GPTM_MTBR_offs  0x04C
+	uint32_t mtbr;
+	};
+	uint32_t raw[GPTM_reg_ct];
+} GPTM_regs_t;
+
+typedef struct GPTM_s {
+	GPTM_regs_t raw[4];
+} GPTM_t;
+
+#define GPTM (((volatile GPTM_t *)GPTM0_base)->raw)
 
 #endif
