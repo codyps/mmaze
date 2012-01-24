@@ -1,10 +1,187 @@
-/* Licence: GPLv3 with LE */
+/* Licence: GPLv3 with Linking Exception */
 
 #ifndef LM3S3748_H_
 #define LM3S3748_H_
 
+#define FLASH_start 0
+#define FLASH_end   0x0001FFFF
+
 #include <stdint.h>
 #define __packed __attribute__((packed))
+
+/*** Watchdog timer 0 - WDT ***/
+typedef struct WDT_u {
+#define WDT_LOAD_offs 0
+	uint32_t load;
+#define WDT_VALUE_offs 0x004
+	uint32_t value;
+#define WDT_CTL_offs   0x008
+	uint32_t ctl;
+#define WDT_ICR_offs   0x00C
+	uint32_t icr;
+#define WDT_RIS_offs   0x010
+	uint32_t ris;
+#define WDT_MIS_offs   0x014
+	uint32_t mis;
+
+	/* XXX: JUMP */
+	uint32_t res1[256];
+
+#define WDT_TEST_offs  0x418
+	uint32_t test;
+
+	/* XXX: JUMP */
+	uint32_t res2[505];
+
+#define WDT_LOCK_offs  0xC00
+	uint32_t lock;
+
+	/* XXX: JUMP */
+	uint32_t res3[243];
+
+#define WDT_PeriphID4 0xFD0
+#define WDT_PeriphID5 0xFD4
+#define WDT_PeriphID6 0xFD8
+#define WDT_PeriphID7 0xFDC
+#define WDT_PeriphID0 0xFE0
+#define WDT_PeriphID1 0xFE4
+#define WDT_PeriphID2 0xFE8
+#define WDT_PeriphID3 0xFEC
+	union {
+		struct {
+			uint32_t periph_id4;
+			uint32_t periph_id5;
+			uint32_t periph_id6;
+			uint32_t periph_id7;
+			uint32_t periph_id0;
+			uint32_t periph_id1;
+			uint32_t periph_id2;
+			uint32_t periph_id3;
+			uint32_t periph_id4;
+		};
+		uint32_t periph_id[8];
+	};
+
+#define WDT_PCellD0 0xFF0
+#define WDT_PCellD1 0xFF4
+#define WDT_PCellD2 0xFF8
+#define WDT_PCellD3 0xFFC
+	uint32_t pcell_id[4];
+} WDT_t;
+
+#define WDT_base 0x40000000
+#define WDT ((volatile WDT_t *)WDT_base)
+
+/*** uDMA - DMA ***/
+
+/* uDMA Channel Control Structure */
+typedef struct DMA_cc_s {
+#define DMA_SRCENDP_offs 0
+	uint32_t srcendp;
+#define DMA_DSTENDP_offs 0x004
+	uint32_t dstendp;
+#define DMA_CHCTL_offs   0x008
+	uint32_t chctl;
+} DMA_cc_t;
+
+/* uDMA Registers */
+typedef struct DMA_regs_s {
+#define DMA_STAT_offs     0
+	uint32_t stat;
+#define DMA_CFG_offs      0x004
+	uint32_t cfg;
+#define DMA_CTLBASE_offs  0x008
+	uint32_t ctlbase;
+#define DMA_ALTBASE_offs  0x00C
+	uint32_t altbase;
+#define DMA_WAITSTAT_offs 0x010
+	uint32_t waitstat;
+#define DMA_SWREQ_offs    0x014
+	uint32_t swreq;
+#define DMA_USEBURSTSET_offs 0x018
+	uint32_t useburstset;
+#define DMA_USEBURSTCLR_offs 0x01C
+	uint32_t useburstclr;
+#define DMA_REQMASKSET_offs  0x020
+	uint32_t reqmaskset;
+#define DMA_REQMASKCLR_offs  0x024
+	uint32_t reqmaskclr;
+#define DMA_ENASET_offs      0x028
+	uint32_t enaset;
+#define DMA_ENACLR_offs      0x02C
+	uint32_t enaclr;
+#define DMA_ALTSET_offs      0x030
+	uint32_t altset;
+#define DMA_ALTCLR_offs      0x034
+	uint32_t altclr;
+#define DMA_PRIOSET_offs     0x038
+	uint32_t prioset;
+#define DMA_PRIOCLR_offs     0x03C
+	uint32_t prioclr;
+
+	/* XXX: JUMP */
+	uint32_t res1[3];
+
+#define DMA_ERRCLR_offs      0x04C
+	uint32_t errclr;
+
+	/* XXX: JUMP */
+	uint32_t res2[996];
+
+	union {
+		struct {
+#define DMA_PeriphID4_offs    0xFD0
+			uint32_t periph_id4;
+
+			/* XXX: JUMP */
+			uint32_t res3[3];
+
+#define DMA_PeriphID0_offs    0xFE4
+			uint32_t periph_id0;
+#define DMA_PeriphID1_offs    0xFE8
+			uint32_t periph_id1;
+#define DMA_PeriphID2_offs    0xFEC
+			uint32_t periph_id2;
+#define DMA_PeriphID2_offs    0xFEC
+			uint32_t periph_id3;
+		};
+		uint32_t periph_id[8];
+	};
+
+#define DMA_PrimeCellID0_offs 0xFF0
+#define DMA_PrimeCellID1_offs 0xFF4
+#define DMA_PrimeCellID2_offs 0xFF8
+#define DMA_PrimeCellID3_offs 0xFFC
+	uint32_t primecell_id[4];
+} DMA_regs_t;
+
+#define DMA_base 0x400FF000
+#define DMA ((volatile DMA_regs_t *)DMA_base)
+
+/*** Flash Memory ***/
+
+/* See SYSCTL for RMCTL */
+
+/* Flash Memory Control Registers (Flash Control Offset */
+typedef struct FLASH_regs_s {
+#define FMA_offs    0
+	uint32_t fma;
+#define FMD_offs    0x004
+	uint32_t fmd;
+#define FMC_offs    0x008
+	uint32_t fmc;
+#define FCRIS_offs  0x00C
+	uint32_t fcris;
+#define FCIM_offs   0x010
+	uint32_t fcim;
+#define FCMISC_offs 0x014
+	uint32_t fcmisc;
+} FLASH_regs_t;
+
+#define FLASH_base  0x400FD000
+#define FLASH ((volatile FLASH_regs_t *)FLASH_base)
+
+/* See SYSCTL for Flash Memory Protection Regs */
 
 /***  System Control - SYSCTL ***/
 /* base = 0x400F.E000 */
@@ -76,7 +253,14 @@ typedef union SYSCTL_regs_u {
 		uint32_t moscctl;
 
 		/* XXX: JUMP */
-		uint32_t res6[32];
+		uint32_t res6a[28];
+
+	/* FLASH - Rom Registers (System Control Offset) */
+#define RMCTL_offs  0x0F0
+		uint32_t rmctl;
+
+		/* XXX: JUMP */
+		uint32_t res6b[3];
 
 #define RCGC0_offs 0x100
 #define RCGC1_offs 0x104
@@ -100,10 +284,58 @@ typedef union SYSCTL_regs_u {
 		uint32_t dcgc[3];
 
 		/* XXX: JUMP */
-		uint32_t res9[6];
+		uint32_t res9[1];
 
+		/* FLASH */
+#define FMPRE0_dep_offs 0x130 /* 0x200 */
+		uint32_t fmpre0_dep;
+#define FMPPE0_dep_offs 0x134 /* 0x400 */
+		uint32_t fmppe0_dep;
+
+		/* XXX: JUMP */
+		uint32_t resA[2];
+
+		/* FLASH */
+#define USECRL_offs    0x140
+		uint32_t usecrl;
+
+		/* SYSCTL */
 #define DSLPCLKCFG_offs 0x144
 		uint32_t dslpclkcfg;
+
+		/* XXX: JUMP */
+		uint32_t resB[34];
+
+		/* FLASH */
+#define USER_DBG_offs  0x1D0
+		uint32_t user_dbg;
+
+		/* XXX: JUMP */
+		uint32_t resC[3];
+
+#define USER_REG0_offs 0x1E0
+#define USER_REG1_offs 0x1E4
+#define USER_REG2_offs 0x1E8
+#define USER_REG3_offs 0x1EC
+		uint32_t user_reg[4];
+
+		/* XXX: JUMP */
+		uint32_t resD[4]
+
+#define FMPRE0_offs    0x200
+#define FMPRE1_offs    0x204
+#define FMPRE2_offs    0x208
+#define FMPRE3_offs    0x20C
+		uint32_t fmpre[4];
+
+		/* JUMP */
+		uint32_t resE[124];
+
+#define FMPPE0_offs    0x400
+#define FMPPE1_offs    0x404
+#define FMPPE2_offs    0x408
+#define FMPPE3_offs    0x40C
+		uint32_t fmppe[4];
 	};
 	uint32_t raw[SYSCTL_regct];
 } SYSCTL_t;
@@ -399,5 +631,107 @@ typedef struct ADC_s {
 #define ADC_base 0x40038000
 #define ADC ((volatile ADC_t *)ADC_base)
 
-#endif
+/*** Hibernation - HIB */
 
+typedef struct HIB_s {
+#define HIB_RTCC_offs 0
+	uint32_t rtcc;
+#define HIB_RTCM0_offs 0x004
+	uint32_t rtcm0;
+#define HIB_RTCM1_offs 0x008
+	uint32_t rtcm1;
+#define HIB_RTCLD_offs 0x00C
+	uint32_t rtcld;
+#define HIB_CTL_offs   0x010
+	uint32_t ctl;
+#define HIB_IM_offs    0x014
+	uint32_t im;
+#define HIB_RIS_offs   0x018
+	uint32_t ris;
+#define HIB_MIS_offs   0x01C
+	uint32_t mis;
+#define HIB_IC_offs    0x020
+	uint32_t ic;
+#define HIB_RTCT_offs  0x024
+	uint32_t rtct;
+
+	/* XXX: JUMP */
+	uint32_t res[2];
+
+#define HIB_DATA_offs 0x030
+#define HIB_DATA_2_offs 0x12C
+	uint32_t data[64];
+} HIB_t;
+
+#define HIB_base 0x400FC000
+#define HIB ((volatile HIB_t) HIB_base)
+
+
+/*** UART ***/
+
+#define UART0_base 0x4000C000
+#define UART1_base 0x4000D000
+
+typedef struct UART_regs_s {
+#define UART_DR_offs 0
+	uint32_t dr;
+#define UART_RSR_offs 0x004
+	uint32_t ecr;
+#define UART_ECR_offs 0x004
+
+	/* JUMP */
+	uint32_t res1[4];
+
+#define UART_FR_offs 0x018
+	uint32_t fr;
+
+	/* JUMP */
+	uint32_t res2[1];
+
+#define UART_ILPR_offs 0x020
+	uint32_t ilpr;
+#define UART_IBRD_offs 0x024
+	uint32_t ibrd;
+#define UART_FBRD_offs 0x028
+	uint32_t lcrh;
+#define UART_LCRH_offs 0x02C
+	uint32_t ctl;
+#define UART_CTL_offs  0x030
+	uint32_t ctl;
+#define UART_IFLS_offs 0x034
+	uint32_t ifls;
+#define UART_IM_offs   0x038
+	uint32_t im;
+#define UART_RIS_offs  0x03C
+	uint32_t ris;
+#define UART_MIS_offs  0x040
+	uint32_t mis;
+#define UART_ICR_offs  0x044
+	uint32_t icr;
+#define UART_DMACTL_offs    0x048
+	uint32_t dmactl;
+
+	/* JUMP */
+	uint32_t res3[993];
+
+#define UART_PeriphID4_offs 0xFD0
+#define UART_PeriphID5_offs 0xFD4
+#define UART_PeriphID6_offs 0xFD8
+#define UART_PeriphID7_offs 0xFDC
+#define UART_PeriphID0_offs 0xFE0
+#define UART_PeriphID1_offs 0xFE4
+#define UART_PeriphID2_offs 0xFE8
+#define UART_PeriphID3_offs 0xFEC
+	uint32_t periph_id[8];
+
+#define UART_PCellID0_offs  0xFF0
+#define UART_PCellID1_offs  0xFF4
+#define UART_PCellID2_offs  0xFF8
+#define UART_PCellID3_offs  0xFFC
+	uint32_t pcell_id[4];
+} UART_regs_t;
+
+#define UART0 ((volatile UART_regs_t *)UART0_base)
+#define UART1 ((volatile UART_regs_t *)UART1_base)
+
+#endif
