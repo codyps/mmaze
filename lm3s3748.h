@@ -781,4 +781,42 @@ typedef struct I2C_regs_s {
 #define I2C0 ((volatile I2C_regs_t *)I2C0_base)
 #define I2C1 ((volatile I2C_regs_t *)I2C1_base)
 
+/*** Spi - SSI ***/
+typedef struct SSI_regs_s {
+#define SSI_CR0_offs 0
+	uint32_t cr0;
+#define SSI_CR1_offs 0x004
+	uint32_t cr1;
+#define SSI_DR_offs  0x008
+	uint32_t dr;
+#define SSI_SR_offs  0x00C
+	uint32_t sr;
+#define SSI_CPSR_offs 0x0010
+	uint32_t cpsr;
+#define SSI_IM_offs  0x014
+	uint32_t im;
+#define SSI_RIS_offs 0x018
+	uint32_t ris;
+#define SSI_MIS_offs 0x01C
+	uint32_t mis;
+#define SSI_ICR_offs 0x020
+	uint32_t icr;
+#define SSI_DMACTL_offs 0x024
+	uint32_t dmactl;
+
+#define SSI_PeriphID4_offs 0xFD0
+#define SSI_PeriphID5_offs 0xFD4
+#define SSI_PeriphID6_offs 0xFD8
+#define SSI_PeriphID7_offs 0xFDC
+#define SSI_PeriphID0_offs 0xFE0
+#define SSI_PeriphID1_offs 0xFE4
+#define SSI_PeriphID2_offs 0xFE8
+#define SSI_PeriphID3_offs 0xFEC
+
+#define SSI_PCellID0_offs 0xFF0
+#define SSI_PCellID1_offs 0xFF4
+#define SSI_PCellID2_offs 0xFF8
+#define SSI_PCellID3_offs 0xFFC
+} SSI_regs_t;
+
 #endif
