@@ -734,4 +734,51 @@ typedef struct UART_regs_s {
 #define UART0 ((volatile UART_regs_t *)UART0_base)
 #define UART1 ((volatile UART_regs_t *)UART1_base)
 
+/*** I2C ***/
+
+#define I2C0_base 0x40020000
+#define I2C1_base 0x40021000
+
+typedef struct I2C_regs_s {
+#define I2C_MSA_offs 0
+	uint32_t msa;
+#define I2C_MCS_offs  0x004
+	uint32_t mcs;
+#define I2C_MDR_offs  0x008
+	uint32_t mdr;
+#define I2C_MTPR_offs 0x00C
+	uint32_t mtpr;
+#define I2C_MIMR_offs 0x010
+	uint32_t mimr;
+#define I2C_MRIS_offs 0x014
+	uint32_t mris;
+#define I2C_MMIS_offs 0x018
+	uint32_t mmis;
+#define I2C_MICR_offs 0x01C
+	uint32_t micr;
+#define I2C_MCR_offs  0x020
+	uint32_t mcr;
+
+	/* JUMP */
+	uint32_t res1[503];
+
+#define I2C_SOAR_offs 0x800
+	uint32_t soar;
+#define I2C_SCSR_offs 0x804
+	uint32_t scsr;
+#define I2C_SDR_offs  0x808
+	uint32_t sdr;
+#define I2C_SIMR_offs 0x80C
+	uint32_t simr;
+#define I2C_SRIS_offs 0x810
+	uint32_t sris;
+#define I2C_SMIS_offs 0x814
+	uint32_t smis;
+#define I2C_SICR_offs 0x818
+	uint32_t sicr;
+} I2C_regs_t;
+
+#define I2C0 ((volatile I2C_regs_t *)I2C0_base)
+#define I2C1 ((volatile I2C_regs_t *)I2C1_base)
+
 #endif
