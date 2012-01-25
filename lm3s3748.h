@@ -806,6 +806,8 @@ typedef struct SSI_regs_s {
 #define SSI_DMACTL_offs 0x024
 	uint32_t dmactl;
 
+	uint32_t res_1[1002];
+
 #define SSI_PeriphID4_offs 0xFD0
 #define SSI_PeriphID5_offs 0xFD4
 #define SSI_PeriphID6_offs 0xFD8
@@ -814,11 +816,13 @@ typedef struct SSI_regs_s {
 #define SSI_PeriphID1_offs 0xFE4
 #define SSI_PeriphID2_offs 0xFE8
 #define SSI_PeriphID3_offs 0xFEC
+	uint32_t periph_id[8];
 
 #define SSI_PCellID0_offs 0xFF0
 #define SSI_PCellID1_offs 0xFF4
 #define SSI_PCellID2_offs 0xFF8
 #define SSI_PCellID3_offs 0xFFC
+	uint32_t pcell_id[4];
 } SSI_regs_t;
 
 /*** Cortex-m3 Core Peripherals - CORE ***/
@@ -846,25 +850,25 @@ typedef struct CORE_regs_s {
 #define DIS0    0x180
 	uint32_t dis0;
 
-	uint32_t res_4[ ];
+	uint32_t res_4[31];
 
 #define PEND0   0x200
 #define PEND1   0x204
 	uint32_t pend[2];
 
-	uint32_t res_5[ ]
+	uint32_t res_5[30];
 
 #define UNPEND0 0x280
 #define UNPEND1 0x284
 	uint32_t unpend[2];
 
-	uint32_t res_6[ ];
+	uint32_t res_6[30];
 
 #define ACTIVE0 0x300
 #define ACTIVE1 0x304
 	uint32_t active[2];
 
-	uint32_t res_7[ ];
+	uint32_t res_7[62];
 
 #define PRI0    0x400
 #define PRI1    0x404
@@ -880,12 +884,7 @@ typedef struct CORE_regs_s {
 #define PRI11   0x42C
 	uint32_t pri[12];
 
-	uint32_t res_X[ ];
-
-#define SWTRIG  0xF00
-	uint32_t swtrig;
-
-	uint32_t res_X[ ];
+	uint32_t res_8[692];
 
 	/* System Control Block (SCB) */
 #define CPUID   0xD00
@@ -917,7 +916,7 @@ typedef struct CORE_regs_s {
 #define FAULTADDR  0xD38
 	uint32_t faultaddr;
 
-	uint32_t res_X[ ];
+	uint32_t res_9[21];
 
 	/* Memory Protection Unit (MPU) */
 #define MPUTYPE    0xD90
@@ -943,6 +942,11 @@ typedef struct CORE_regs_s {
 #define MPUATTR3   0xDB8
 	uint32_t mpuattr3;
 
+	uint32_t res_A[81];
+
+	/* NVIC */
+#define SWTRIG  0xF00
+	uint32_t swtrig;
 } CORE_regs_t;
 
 #define CORE_base 0xE000E000
