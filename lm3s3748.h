@@ -10,6 +10,10 @@
 #define __packed __attribute__((packed))
 
 /*** Watchdog timer 0 - WDT ***/
+
+/* Example:
+ *	WDT->load = 10;
+ */
 typedef struct WDT_regs_s {
 #define WDT_LOAD_offs 0
 	uint32_t load;
