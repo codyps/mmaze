@@ -4,32 +4,36 @@
  * 0x2200.0000 to 0x221F.FFFF : Bitband of SRAM
  */
 
-__attribute__((OS_Main))
+__attribute__((noreturn))
 void main(void)
 {
 	for(;;)
 		;
 }
 
-__attribute__((interrupt, noreturn)) void hard_fault_isr(void)
+static __attribute__((interrupt, noreturn)) void hard_fault_isr(void)
 {
 	for(;;)
 		;
 }
 
-__attribute__((interrupt, noreturn)) void nmi_isr(void)
+static __attribute__((interrupt, noreturn)) void nmi_isr(void)
 {
 	for(;;)
 		;
 }
 
-__attribute__((interrupt, noreturn)) void reset_isr(void)
+static __attribute__((interrupt, noreturn)) void reset_isr(void)
 {
 	/* TODO: copy data into memory */
 	/* TODO: clear bss */
 
 	main();
 }
+
+#include <stdint.h>
+
+extern const uint32_t _estack;
 
 __attribute__((section(".isr_vector"))) void *vec[64] = {
 	_estack,   /* 0 top of stack */
