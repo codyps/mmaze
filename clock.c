@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-
-void pllinit(){
+void pllinit()
+{
 
 /*5.2 Initialization and Configuration
 
@@ -14,24 +14,22 @@ bit in the RCC register. This configures the system to run off a “raw” clock sou
 for the new PLL configuration to be validated before switching the system clock to the PLL.
 */
 
-
 #define SYSCTL_BYPASS 11
-uint32_t rcc = SYSCTL->rcc;
-rcc = rcc | 1<<SYSCTL_BYPASS;
-rcc &= ~(1<<USESYS);
-SYSCTL->rcc = rcc;
-
+	uint32_t rcc = SYSCTL->rcc;
+	rcc = rcc | 1 << SYSCTL_BYPASS;
+	rcc &= ~(1 << USESYS);
+	SYSCTL->rcc = rcc;
 
 	/*
-2. Select the crystal value (XTAL) and oscillator source (OSCSRC), and clear the PWRDN bit in
-RCC/RCC2. Setting the XTAL field automatically pulls valid PLL configuration data for the
-appropriate crystal, and clearing the PWRDN bit powers and enables the PLL and its output.
+	   2. Select the crystal value (XTAL) and oscillator source (OSCSRC), and clear the PWRDN bit in
+	   RCC/RCC2. Setting the XTAL field automatically pulls valid PLL configuration data for the
+	   appropriate crystal, and clearing the PWRDN bit powers and enables the PLL and its output.
 
-3. Select the desired system divider (SYSDIV)  in RCC/RCC2 and set the USESYS bit in RCC. The
-SYSDIV field determines the system frequency for the microcontroller.
-**note SYSDIV 0x3 for 50Mhz**
-4. Wait for the PLL to lock by polling the PLLLRIS bit in the Raw Interrupt Status (RIS) register.
+	   3. Select the desired system divider (SYSDIV)  in RCC/RCC2 and set the USESYS bit in RCC. The
+	   SYSDIV field determines the system frequency for the microcontroller.
+	   **note SYSDIV 0x3 for 50Mhz**
+	   4. Wait for the PLL to lock by polling the PLLLRIS bit in the Raw Interrupt Status (RIS) register.
 
-5. Enable use of the PLL by clearing the BYPASS bit in RCC/RCC2.
-*/
+	   5. Enable use of the PLL by clearing the BYPASS bit in RCC/RCC2.
+	 */
 }
