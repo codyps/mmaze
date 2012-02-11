@@ -16,5 +16,5 @@ GPIO_AHB->E.amsel |= 0;
 // For each sample in the SS, config the sample control bits in the corresponding nibble in the ADCSSCTLn register. When programming the last nibble, ensure that the END bit is set. Failure to set the END bit causes unpredicatable behavior.
 // If interrupts are to be used, write a 1 to the corresponding MASK bit in the ADCIM reg.
 // Enable the sample sequencer logic by writing a 1 to the corresponding ASENn bit in the ADCACTSS reg.
-
+//THIS IS NEW~
 
