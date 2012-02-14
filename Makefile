@@ -1,4 +1,4 @@
-PREFIX?=
+PREFIX=
 ARCH=$(PREFIX)arm-none-eabi-
 CC=$(ARCH)gcc
 OBJCOPY=$(ARCH)objcopy

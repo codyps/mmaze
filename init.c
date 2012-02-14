@@ -35,8 +35,9 @@ static __attribute__((interrupt, noreturn)) void reset_isr(void)
 
 extern const uint32_t _estack;
 
-__attribute__((section(".isr_vector"))) void *vec[64] = {
-	_estack,   /* 0 top of stack */
+__attribute__((section(".isr_vector")))
+void (const *vec[64])(void) = {
+	(void (*)(void))_estack,   /* 0 top of stack */
 
 	/* Processor Exceptions */
 
