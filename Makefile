@@ -3,13 +3,23 @@ ARCH=$(PREFIX)arm-none-eabi-
 CC=$(ARCH)gcc
 OBJCOPY=$(ARCH)objcopy
 
-CFLAGS=
-LDFLAGS=
+CFLAGS=-DLM3S3748
+LDFLAGS=-nostartfiles
+ASFLAGS=-D__ASSEMBLER__
 
-main.elf : init.c.o
+LDSCRIPT=lm3s.ld
+
+main.elf : crt0.S.o
+
+%.S.o : %.S
+	$(CC) $(CFLAGS) $(ASFLAGS) -c -o $@ $<
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.elf :
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $<
+
+.PHONY: clean
+clean:
+	$(RM) *.o

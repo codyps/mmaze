@@ -3,11 +3,14 @@
 #ifndef LM3S3748_H_
 #define LM3S3748_H_
 
+#ifndef LM3S_H_
+# error "Include 'lm3s.h' to get this header, do not include it directly"
+#endif
+
 #define FLASH_start 0
 #define FLASH_end   0x0001FFFF
 
-#include <stdint.h>
-#define __packed __attribute__((packed))
+#ifndef __ASSEMBLER__
 
 /*** Watchdog timer 0 - WDT ***/
 
@@ -1006,5 +1009,68 @@ typedef struct GPTM_s {
 } GPTM_t;
 
 #define GPTM (((volatile GPTM_t *)GPTM0_base)->raw)
+
+#endif /* ifdef __ASSEMBLER__ */
+
+#define _VECTORS_SIZE 64
+
+/** Interrupts **/
+#define RESET_vect       _VECTOR(1)
+#define NMI_vect         _VECTOR(2)
+#define HARD_FAULT_vect  _VECTOR(3)
+#define MM_vect          _VECTOR(4)
+#define BUS_FAULT_vect   _VECTOR(5)
+#define USAGE_FAULT_vect _VECTOR(6)
+
+#define SVCALL_vect _VECTOR(11)
+#define DEBUG_MONITOR_vect _VECTOR(12)
+
+#define PENDSV_vect _VECTOR(14)
+#define SYSTICK_vect _VECTOR(15)
+
+#define GPIOA_vect _VECTOR(16)
+#define GPIOB_vect _VECTOR(17)
+#define GPIOC_vect _VECTOR(18)
+#define GPIOD_vect _VECTOR(19)
+#define GPIOE_vect _VECTOR(20)
+#define UART0_vect _VECTOR(21)
+#define UART1_vect _VECTOR(22)
+#define SSI0_vect  _VECTOR(23)
+#define I2C0_vect  _VECTOR(24)
+#define PWM_FAULT_vect _VECTOR(25)
+#define PWM_GEN0_vect _VECTOR(26)
+#define PWM_GEN1_vect _VECTOR(27)
+#define PWM_GEN2_vect _VECTOR(28)
+#define QEI0_vect _VECTOR(29)
+#define ADC0_SEQ0_vect _VECTOR(30)
+#define ADC0_SEQ1_vect _VECTOR(31)
+#define ADC0_SEQ2_vect _VECTOR(32)
+#define ADC0_SEQ3_vect _VECTOR(33)
+#define WATCHDOG_vect  _VECTOR(34)
+#define TIMER0A_vect _VECTOR(35)
+#define TIMER0B_vect _VECTOR(36)
+#define TIMER1A_vect _VECTOR(37)
+#define TIMER1B_vect _VECTOR(38)
+#define TIMER2A_vect _VECTOR(39)
+#define TIMER2B_vect _VECTOR(40)
+#define ACMP0_vect _VECTOR(41)
+#define ACMP1_vect _VECTOR(42)
+
+#define SYSCTL_vect _VECTOR(44)
+#define FLASH_MEM_CTL_vect _VECTOR(45)
+#define GPIOF_vect _VECTOR(46)
+#define GPIOG_vect _VECTOR(47)
+#define GPIOH_vect _VECTOR(48)
+
+#define SSI1_vect _VECTOR(50)
+#define TIMER3A_vect _VECTOR(51)
+#define TIMER3B_vect _VECTOR(52)
+#define I2C1_vect _VECTOR(53)
+
+#define HIB_vect _VECTOR(59)
+#define USB_vect _VECTOR(60)
+#define PWM_GEN3_vect _VECTOR(61)
+#define UDMA_vect _VECTOR(62)
+#define UDMA_ERROR_vect _VECTOR(63)
 
 #endif
