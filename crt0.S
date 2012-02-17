@@ -1,19 +1,30 @@
 #include "lm3s.h"
 
-	.macro vector name
-		.if (. - __vectors < _VECTORS_SIZE)
-			.weak \name
-			.set  \name, __bad_interrupt
-			.long \name
-		.endif
-	.endm
+.macro FUNC_DECL name
+	.thumb_func
+	.global \name
+\name:
+.endm
+
+.macro FUNC_START name
+	.func     \name
+	FUNC_DECL \name
+.endm
+
+.macro vector name
+	.if (. - __vectors < _VECTORS_SIZE)
+	.weak \name
+	.set  \name, __bad_interrupt
+	.long \name
+	.endif
+.endm
 
 	.section .isr_vector,"ax",%progbits
-	#.global __vectors
 	.func   __vectors
+	.global __vectors
 __vectors:
 	.long _estack
-	vector __init
+	.long  __vector_1 // this is purposely not weak
 	vector __vector_2
 	vector __vector_3
 	vector __vector_4
@@ -78,21 +89,15 @@ __vectors:
 	vector __vector_63
 	.endfunc
 
-# __bad_interrupt
 	.text
-	#.global __bad_interrupt
-	.func   __bad_interrupt
-	.thumb_func
-__bad_interrupt:
-	.weak    __vector_default
-	.set     __vector_default, __init
-	b       =__vector_default
+
+	.weak __bad_interrupt
+	.set  __bad_interrupt, __vector_1
+
+	.section .init0,"ax",%progbits
+	.weak      __vector_1
+	FUNC_DECL  __vector_1
+	FUNC_START __init
+	b __init
 	.endfunc
 
-# __init
-	.section .init0,"ax",%progbits
-	.weak  __init
-	.func __init
-	.thumb_func
-__init:
-	
