@@ -16,7 +16,7 @@ SECTIONS
 		*(.isr_vector)
 		*(.text*)
 		*(.rodata)
-	}
+	} > rom
 
 	. = 0x20000000;
 
@@ -25,7 +25,7 @@ SECTIONS
 		__data_start__ = . ;
 		*(.data)
 		__data_end__ = . ;
-	}
+	} > ram AT > rom
 
 	__data_size__ = __data_end__ - __data_start__;
 
@@ -35,7 +35,7 @@ SECTIONS
 		*(.bss)
 		*(COMMON)
 		__bss_end__ = . ;
-	}
+	} > ram AT > rom
 
 	_estack = 0x2000FFFF;
 }

@@ -64,7 +64,6 @@ typedef struct WDT_regs_s {
 			uint32_t periph_id1;
 			uint32_t periph_id2;
 			uint32_t periph_id3;
-			uint32_t periph_id4;
 		};
 		uint32_t periph_id[8];
 	};
@@ -241,6 +240,8 @@ typedef union SYSCTL_regs_u {
 		uint32_t resc;
 #define RCC_offs 0x060
 #define RCC_reset 0x078E3AD1
+# define RCC_BYPASS_mask (1<<11)
+# define RCC_USESYS_mask (1<<22)
 		uint32_t rcc;
 #define PLLCFG_offs 0x064
 		uint32_t pllcfg;
@@ -327,7 +328,7 @@ typedef union SYSCTL_regs_u {
 		uint32_t user_reg[4];
 
 		/* XXX: JUMP */
-		uint32_t resD[4]
+		uint32_t resD[4];
 
 #define FMPRE0_offs    0x200
 #define FMPRE1_offs    0x204
@@ -497,16 +498,16 @@ typedef union GPIO_regs_u {
 
 typedef union GPIO_AHB_u {
 	struct {
-		GPIO_regs A;
-		GPIO_regs B;
-		GPIO_regs C;
-		GPIO_regs D;
-		GPIO_regs E;
-		GPIO_regs F;
-		GPIO_regs G;
-		GPIO_regs H;
+		GPIO_regs_t A;
+		GPIO_regs_t B;
+		GPIO_regs_t C;
+		GPIO_regs_t D;
+		GPIO_regs_t E;
+		GPIO_regs_t F;
+		GPIO_regs_t G;
+		GPIO_regs_t H;
 	};
-	GPIO_regs raw[GPIO_ct];
+	GPIO_regs_t raw[GPIO_ct];
 } GPIO_AHB_t;
 
 #define GPIO_AHB_base 0x40058000
@@ -524,17 +525,17 @@ typedef union GPIO_AHB_u {
  */
 
 typedef struct GPIO_APB_s {
-	GPIO_regs A;
-	GPIO_regs B;
-	GPIO_regs C;
-	GPIO_regs D;
+	GPIO_regs_t A;
+	GPIO_regs_t B;
+	GPIO_regs_t C;
+	GPIO_regs_t D;
 
 	uint32_t res1[0x7000];
 
-	GPIO_regs E;
-	GPIO_regs F;
-	GPIO_regs G;
-	GPIO_regs H;
+	GPIO_regs_t E;
+	GPIO_regs_t F;
+	GPIO_regs_t G;
+	GPIO_regs_t H;
 } GPIO_APB_t;
 
 #define GPIO_APB_base1 0x40004000
@@ -702,9 +703,9 @@ typedef struct UART_regs_s {
 #define UART_IBRD_offs 0x024
 	uint32_t ibrd;
 #define UART_FBRD_offs 0x028
-	uint32_t lcrh;
+	uint32_t fbrd;
 #define UART_LCRH_offs 0x02C
-	uint32_t ctl;
+	uint32_t lcrh;
 #define UART_CTL_offs  0x030
 	uint32_t ctl;
 #define UART_IFLS_offs 0x034

@@ -1,6 +1,6 @@
 #include "lm3s.h"
 
-void pllinit(void)
+void pll_init(void)
 {
 
 	/*5.2 Initialization and Configuration
@@ -17,11 +17,9 @@ void pllinit(void)
 	  to the PLL.
 	  */
 
-#define SYSCTL_BYPASS_mask (1<<11)
-#define SYSCTL_USESYS_mask (1<<
 	uint32_t rcc = SYSCTL->rcc;
-	rcc = rcc | SYSCTL_BYPASS_mask;
-	rcc &= ~(1 << USESYS);
+	rcc |= RCC_BYPASS_mask;
+	rcc &= ~(RCC_USESYS_mask);
 	SYSCTL->rcc = rcc;
 
 	/*
