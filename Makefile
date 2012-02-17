@@ -9,7 +9,7 @@ ASFLAGS=-D__ASSEMBLER__
 
 LDSCRIPT=lm3s.ld
 
-main.elf : crt0.S.o
+main.elf : crt0.S.o adc.c.o clock.c.o
 
 %.S.o : %.S
 	$(CC) $(CFLAGS) $(ASFLAGS) -c -o $@ $<
@@ -22,4 +22,4 @@ main.elf : crt0.S.o
 
 .PHONY: clean
 clean:
-	$(RM) *.o
+	$(RM) *.o *.elf
