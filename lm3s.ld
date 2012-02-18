@@ -14,6 +14,7 @@ SECTIONS
 	.text :
 	{
 		*(.isr_vector)
+		*(.init*)
 		*(.text*)
 		*(.rodata)
 	} > rom

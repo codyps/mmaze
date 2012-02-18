@@ -240,9 +240,18 @@ typedef union SYSCTL_regs_u {
 		uint32_t resc;
 #define RCC_offs 0x060
 #define RCC_reset 0x078E3AD1
-# define RCC_BYPASS_mask (1<<11)
-# define RCC_USESYS_mask (1<<22)
+# define RCC_ACG_mask     (1<<27)
+# define RCC_SYSDIV           23
+# define RCC_USESYS_mask  (1<<22)
+# define RCC_PWMDIV           17
+# define RCC_PWRDN            13
+# define RCC_BYPASS_mask  (1<<11)
+# define RCC_XTAL             6
+# define RCC_OSCSRC      `    4
+# define RCC_IOSCDIS_mask (1<<1)
+# define RCC_MOSCDIS_mask (1<<0)
 		uint32_t rcc;
+
 #define PLLCFG_offs 0x064
 		uint32_t pllcfg;
 
