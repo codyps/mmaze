@@ -5,7 +5,7 @@ ENTRY(__init)
 MEMORY
 {
 	rom (rx) : ORIGIN = 0x00000000, LENGTH = 0x0001FFFF
-	ram (wx) : ORIGIN = 0x20000000, LENGTH = 0x2000FFFF
+	ram (wx) : ORIGIN = 0x20000000, LENGTH = 0x0000FFFF
 }
 
 SECTIONS
@@ -13,7 +13,7 @@ SECTIONS
 	. = 0;
 	.text :
 	{
-		*(.isr_vector)
+		KEEP(*(.isr_vector))
 		*(.init*)
 		*(.text*)
 		*(.rodata)
@@ -38,5 +38,5 @@ SECTIONS
 		__bss_end__ = . ;
 	} > ram AT > rom
 
-	_estack = 0x2000FFFF;
+	_estack = ORIGIN(ram) + LENGTH(ram);
 }
