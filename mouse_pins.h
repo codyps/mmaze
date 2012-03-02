@@ -1,18 +1,18 @@
 #ifndef MOUSE_PINS_H_
 #define MOUSE_PINS_H_
 
-/* DECAY0  = PB4
+/* DECAY0  = PB4 
  * DIR0    = PB3
  * MODE0_2 = PB2
  * MODE0_1 = PB1
  * MODE0_0 = PB0
  */
 
-/* nHOME0  PH4
+/* nHOME0  PH4  - (open-drain on drv8824)
  * nENBL0  PH3
  * nRESET0 PH2
  * nSLEEP0 PH1
- * nFAULT0 PH0
+ * nFAULT0 PH0  - (open-drain on drv8824)
  */
 
 /* DECAY1  PD4

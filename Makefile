@@ -7,7 +7,7 @@ CCLD=$(CC)
 OBJCOPY=$(ARCH)objcopy
 OBJDUMP=$(ARCH)objdump
 
-CFLAGS=-DLM3S3748
+CFLAGS=-DLM3S3748 -Wall -ggdb -Wextra
 LDFLAGS=-nostartfiles
 ASFLAGS=-D__ASSEMBLER__
 
