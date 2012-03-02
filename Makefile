@@ -2,6 +2,7 @@ PREFIX=
 ARCH=$(PREFIX)arm-none-eabi-
 
 CC=$(ARCH)gcc
+RM=rm -rf
 CCLD=$(CC)
 OBJCOPY=$(ARCH)objcopy
 OBJDUMP=$(ARCH)objdump
@@ -14,6 +15,7 @@ LDSCRIPT=lm3s.ld
 
 .SECONDARY:
 
+all : main.elf
 main.elf : crt0.S.o adc.c.o clock.c.o
 
 %.S.o : %.S

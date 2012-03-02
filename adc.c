@@ -1,7 +1,9 @@
+#include "lm3s.h"
 
+void adcInit(){
 /* module init */
 // Enable the ADC clock by writing a value of 0x0001.0000 to the RCGC0 register (pg 222)
-SYSCTL->rcgc0 = 0x00010000;
+SYSCTL->rcgc[0] = 0x00010000;
 //Must wait at least 3 clock cycles befor accessing ADC registers after init
 
 // Disable the analog isolation circuit for all ADC input pins that are to be used by writing a 1 to the appropriate bits of the GPIOAMSEL register (pg 393) in the associated GPIO block.
@@ -35,7 +37,7 @@ No hardware oversampling - 0x0
 
 /* sample sequencer config */
 // Ensure the SS is disable by writing a 0 to the corresponding ASENn bit in the ADCACTSS reg. Programming of the SSs is allowed without having the SSs enabled. Disabling the SS during prog. prevents erroneous exec if a trigger ev. were to occur durring the config process.
-ADC->adcss = (ADC->adcss & ~(0x0));
+ADC->actss = (ADC->actss & ~(0x0));
 
 // Config trigger event for the SS in the ADCEMUX reg.
 //constant sampling enabled
@@ -59,6 +61,7 @@ ADC->ssctl0 = (ADC->ssctl0 & ~(0x60000)) | 0x60000;
 ADC->im |= 0x1;
 
 // Enable the sample sequencer logic by writing a 1 to the corresponding ASENn bit in the ADCACTSS reg.
-ADC->adcss |= 0x1;
+ADC->actss |= 0x1;
 
 //ADC values: 0x000 at 0V to 0x3FF at 3V
+}
