@@ -1,6 +1,6 @@
 #include "lm3s.h"
 
-void pll_init(void)
+static void pll_init(void)
 {
 
 	/*5.2 Initialization and Configuration
@@ -17,10 +17,7 @@ void pll_init(void)
 	  to the PLL.
 	  */
 
-	uint32_t rcc = SYSCTL->rcc;
-	rcc |= RCC_BYPASS_mask;
-	rcc &= ~(RCC_USESYS_mask);
-	SYSCTL->rcc = rcc;
+	SYSCTL->rcc = (SYSCTL->rcc | RCC_BYPASS_mask) & ~(RCC_USESYS_mask);
 
 	/*
 	   2. Select the crystal value (XTAL) and oscillator source (OSCSRC),
