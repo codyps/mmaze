@@ -3,11 +3,14 @@
 #ifndef LM3S3748_H_
 #define LM3S3748_H_
 
+#ifndef LM3S_H_
+# error "Include 'lm3s.h' to get this header, do not include it directly"
+#endif
+
 #define FLASH_start 0
 #define FLASH_end   0x0001FFFF
 
-#include <stdint.h>
-#define __packed __attribute__((packed))
+#ifndef __ASSEMBLER__
 
 /*** Watchdog timer 0 - WDT ***/
 
@@ -61,7 +64,6 @@ typedef struct WDT_regs_s {
 			uint32_t periph_id1;
 			uint32_t periph_id2;
 			uint32_t periph_id3;
-			uint32_t periph_id4;
 		};
 		uint32_t periph_id[8];
 	};
@@ -238,7 +240,18 @@ typedef union SYSCTL_regs_u {
 		uint32_t resc;
 #define RCC_offs 0x060
 #define RCC_reset 0x078E3AD1
+# define RCC_ACG_mask     (1<<27)
+# define RCC_SYSDIV           23
+# define RCC_USESYS_mask  (1<<22)
+# define RCC_PWMDIV           17
+# define RCC_PWRDN            13
+# define RCC_BYPASS_mask  (1<<11)
+# define RCC_XTAL             6
+# define RCC_OSCSRC      `    4
+# define RCC_IOSCDIS_mask (1<<1)
+# define RCC_MOSCDIS_mask (1<<0)
 		uint32_t rcc;
+
 #define PLLCFG_offs 0x064
 		uint32_t pllcfg;
 
@@ -324,7 +337,7 @@ typedef union SYSCTL_regs_u {
 		uint32_t user_reg[4];
 
 		/* XXX: JUMP */
-		uint32_t resD[4]
+		uint32_t resD[4];
 
 #define FMPRE0_offs    0x200
 #define FMPRE1_offs    0x204
@@ -494,16 +507,16 @@ typedef union GPIO_regs_u {
 
 typedef union GPIO_AHB_u {
 	struct {
-		GPIO_regs A;
-		GPIO_regs B;
-		GPIO_regs C;
-		GPIO_regs D;
-		GPIO_regs E;
-		GPIO_regs F;
-		GPIO_regs G;
-		GPIO_regs H;
+		GPIO_regs_t A;
+		GPIO_regs_t B;
+		GPIO_regs_t C;
+		GPIO_regs_t D;
+		GPIO_regs_t E;
+		GPIO_regs_t F;
+		GPIO_regs_t G;
+		GPIO_regs_t H;
 	};
-	GPIO_regs raw[GPIO_ct];
+	GPIO_regs_t raw[GPIO_ct];
 } GPIO_AHB_t;
 
 #define GPIO_AHB_base 0x40058000
@@ -521,17 +534,17 @@ typedef union GPIO_AHB_u {
  */
 
 typedef struct GPIO_APB_s {
-	GPIO_regs A;
-	GPIO_regs B;
-	GPIO_regs C;
-	GPIO_regs D;
+	GPIO_regs_t A;
+	GPIO_regs_t B;
+	GPIO_regs_t C;
+	GPIO_regs_t D;
 
 	uint32_t res1[0x7000];
 
-	GPIO_regs E;
-	GPIO_regs F;
-	GPIO_regs G;
-	GPIO_regs H;
+	GPIO_regs_t E;
+	GPIO_regs_t F;
+	GPIO_regs_t G;
+	GPIO_regs_t H;
 } GPIO_APB_t;
 
 #define GPIO_APB_base1 0x40004000
@@ -699,9 +712,9 @@ typedef struct UART_regs_s {
 #define UART_IBRD_offs 0x024
 	uint32_t ibrd;
 #define UART_FBRD_offs 0x028
-	uint32_t lcrh;
+	uint32_t fbrd;
 #define UART_LCRH_offs 0x02C
-	uint32_t ctl;
+	uint32_t lcrh;
 #define UART_CTL_offs  0x030
 	uint32_t ctl;
 #define UART_IFLS_offs 0x034
@@ -1006,5 +1019,68 @@ typedef struct GPTM_s {
 } GPTM_t;
 
 #define GPTM (((volatile GPTM_t *)GPTM0_base)->raw)
+
+#endif /* ifdef __ASSEMBLER__ */
+
+#define _VECTORS_SIZE 64
+
+/** Interrupts **/
+#define RESET_vect       _VECTOR(1)
+#define NMI_vect         _VECTOR(2)
+#define HARD_FAULT_vect  _VECTOR(3)
+#define MM_vect          _VECTOR(4)
+#define BUS_FAULT_vect   _VECTOR(5)
+#define USAGE_FAULT_vect _VECTOR(6)
+
+#define SVCALL_vect _VECTOR(11)
+#define DEBUG_MONITOR_vect _VECTOR(12)
+
+#define PENDSV_vect _VECTOR(14)
+#define SYSTICK_vect _VECTOR(15)
+
+#define GPIOA_vect _VECTOR(16)
+#define GPIOB_vect _VECTOR(17)
+#define GPIOC_vect _VECTOR(18)
+#define GPIOD_vect _VECTOR(19)
+#define GPIOE_vect _VECTOR(20)
+#define UART0_vect _VECTOR(21)
+#define UART1_vect _VECTOR(22)
+#define SSI0_vect  _VECTOR(23)
+#define I2C0_vect  _VECTOR(24)
+#define PWM_FAULT_vect _VECTOR(25)
+#define PWM_GEN0_vect _VECTOR(26)
+#define PWM_GEN1_vect _VECTOR(27)
+#define PWM_GEN2_vect _VECTOR(28)
+#define QEI0_vect _VECTOR(29)
+#define ADC0_SEQ0_vect _VECTOR(30)
+#define ADC0_SEQ1_vect _VECTOR(31)
+#define ADC0_SEQ2_vect _VECTOR(32)
+#define ADC0_SEQ3_vect _VECTOR(33)
+#define WATCHDOG_vect  _VECTOR(34)
+#define TIMER0A_vect _VECTOR(35)
+#define TIMER0B_vect _VECTOR(36)
+#define TIMER1A_vect _VECTOR(37)
+#define TIMER1B_vect _VECTOR(38)
+#define TIMER2A_vect _VECTOR(39)
+#define TIMER2B_vect _VECTOR(40)
+#define ACMP0_vect _VECTOR(41)
+#define ACMP1_vect _VECTOR(42)
+
+#define SYSCTL_vect _VECTOR(44)
+#define FLASH_MEM_CTL_vect _VECTOR(45)
+#define GPIOF_vect _VECTOR(46)
+#define GPIOG_vect _VECTOR(47)
+#define GPIOH_vect _VECTOR(48)
+
+#define SSI1_vect _VECTOR(50)
+#define TIMER3A_vect _VECTOR(51)
+#define TIMER3B_vect _VECTOR(52)
+#define I2C1_vect _VECTOR(53)
+
+#define HIB_vect _VECTOR(59)
+#define USB_vect _VECTOR(60)
+#define PWM_GEN3_vect _VECTOR(61)
+#define UDMA_vect _VECTOR(62)
+#define UDMA_ERROR_vect _VECTOR(63)
 
 #endif

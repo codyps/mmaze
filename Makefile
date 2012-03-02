@@ -1,15 +1,39 @@
-PREFIX?=
+PREFIX=
 ARCH=$(PREFIX)arm-none-eabi-
+
 CC=$(ARCH)gcc
+CCLD=$(CC)
 OBJCOPY=$(ARCH)objcopy
+OBJDUMP=$(ARCH)objdump
 
-CFLAGS=
-LDFLAGS=
+CFLAGS=-DLM3S3748
+LDFLAGS=-nostartfiles
+ASFLAGS=-D__ASSEMBLER__
 
-main.elf : init.c.o
+LDSCRIPT=lm3s.ld
+
+.SECONDARY:
+
+main.elf : crt0.S.o adc.c.o clock.c.o
+
+%.S.o : %.S
+	$(CC) $(CFLAGS) $(ASFLAGS) -c -o $@ $<
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.elf :
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+	$(CCLD) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $<
+
+%.bin : %.elf
+	$(OBJCOPY) -F binary $< $@
+
+%.lst : %.bin
+	$(OBJDUMP) -d $< > $@
+
+%.elf.lst : %.elf
+	$(OBJDUMP) -d $< > $@
+
+.PHONY: clean
+clean:
+	$(RM) *.o *.elf *.bin *.lst
