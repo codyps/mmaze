@@ -23,7 +23,7 @@
 	.func   __vectors
 	.global __vectors
 __vectors:
-	.long _estack
+	.long  __stack_high__
 	.long  __vector_1 // this is purposely not weak
 	vector __vector_2
 	vector __vector_3
