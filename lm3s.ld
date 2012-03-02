@@ -9,33 +9,45 @@ MEMORY
 
 SECTIONS
 {
-	. = 0;
-	.text :
+	.isr 0 :
 	{
 		KEEP(*(.isr_vector))
-		*(.init*)
-		*(.text*)
-		*(.rodata)
 	} > rom
 
-	. = 0x20000000;
+	.text : ALIGN(4)
+	{
+		*(.init*)
+		*(.text*)
+		= 0xFFFFFFFF
+	} >rom
 
-	.data :
+	.rodata : ALIGN(4)
+	{
+		*(.rodata)
+		= 0xFFFFFFFF
+	} >rom
+
+	.data : ALIGN(4)
 	{
 		__data_start__ = . ;
 		*(.data)
 		__data_end__ = . ;
-	} > ram AT > rom
-
+		= 0xFFFFFFFF
+	} >ram AT>rom
 	__data_size__ = __data_end__ - __data_start__;
 
-	.bss :
+	.bss : ALIGN(4)
 	{
 		__bss_start__ = . ;
 		*(.bss)
 		*(COMMON)
 		__bss_end__ = . ;
-	} > ram AT > rom
+		= 0xFFFFFFFF
+	} >ram AT>rom
+	__bss_size__ = __bss_end__ - __bss_start__;
 
-	_estack = ORIGIN(ram) + LENGTH(ram);
 }
+
+__estack__    = ORIGIN(ram) + LENGTH(ram) - 4;
+__ram_start__ = ORIGIN(ram);
+__rom_start__ = ORIGIN(rom);

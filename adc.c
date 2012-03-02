@@ -1,5 +1,6 @@
 #include "lm3s.h"
 
+
 void adcInit(){
 /* module init */
 // Enable the ADC clock by writing a value of 0x0001.0000 to the RCGC0 register (pg 222)
