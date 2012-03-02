@@ -1,6 +1,5 @@
 
 ENTRY(__init)
-/* STARTUP(crt0.S.o) */
 
 MEMORY
 {
