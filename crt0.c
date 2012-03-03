@@ -9,9 +9,14 @@ void __bad_interrupt(void)
 }
 
 // Weakly bind all interrupt vectors to the dummy handler.
+#if 0
 #define _ISR(n) \
 	_Pragma(weak _isr_##n = __bad_interrupt)		\
 	void __attribute__((weak,interrupt)) _isr_##n(void)
+#endif
+#define _ISR(n) \
+	__attribute__((weak,interrupt,alias("__bad_interrupt"))) void _isr_##n(void)
+
 _ISR(reset);
 _ISR(nmi);
 _ISR(hard_fault);

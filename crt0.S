@@ -1,3 +1,7 @@
+/* Bleh 
+ *
+ */
+
 #include "lm3s.h"
 
 .macro FUNC_DECL name
@@ -24,7 +28,7 @@
 	.global __vectors
 __vectors:
 	.long  __stack_high__
-	.long  __vector_1 // this is purposely not weak
+	.long  __vector_1
 	vector __vector_2
 	vector __vector_3
 	vector __vector_4
@@ -90,11 +94,7 @@ __vectors:
 	.endfunc
 
 	.text
-
+	.weak  __vector_1
+	.set   __vector_1, __init
 	.weak __bad_interrupt
 	.set  __bad_interrupt, __vector_1
-
-	.section .init0,"ax",%progbits
-	.weak      __vector_1
-	.set       __vector_1, __init
-
