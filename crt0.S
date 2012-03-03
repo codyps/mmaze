@@ -96,8 +96,5 @@ __vectors:
 
 	.section .init0,"ax",%progbits
 	.weak      __vector_1
-	FUNC_DECL  __vector_1
-	FUNC_START __init
-	b __init
-	.endfunc
+	.set       __vector_1, __init
 

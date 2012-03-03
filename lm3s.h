@@ -5,7 +5,8 @@
 #include <stdint.h>
 #endif
 
-#define _VECTOR(N) __vector_ ## N
+#define _VECTOR(N) __vector_##N
+
 #define __packed __attribute__((packed))
 
 #ifdef LM3S3748

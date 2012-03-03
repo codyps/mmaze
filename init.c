@@ -4,23 +4,27 @@
  * 0x2200.0000 to 0x221F.FFFF : Bitband of SRAM
  */
 
-#include "interrupt.h"
-
+#include <stdint.h>
 __attribute__((noreturn))
-void main(void)
-{
-	for(;;)
-		;
-}
+extern void main (void);
 
-ISR(HARD_FAULT_vect)
-{
-	for(;;)
-		;
-}
+extern uint32_t __bss_start__, __bss_end__, __data_start__, __data_end__, __data_load_start__;
 
-ISR(NMI_vect)
+__attribute__((externally_visible,noreturn,interrupt,section(".init0")))
+void __init(void)
 {
-	for(;;)
-		;
+	uint32_t *s, *d;
+
+	if (&__data_start__ != &__data_load_start__) {
+		s = &__data_load_start__;
+		d = &__data_start__;
+		while (d < &__data_end__)
+			*d++ = *s++;
+	}
+
+	d = &__bss_start__;
+	while (d < &__bss_end__)
+		*d++ = 0;
+
+	main();
 }

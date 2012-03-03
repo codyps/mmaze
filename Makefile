@@ -7,8 +7,8 @@ CCLD=$(CC)
 OBJCOPY=$(ARCH)objcopy
 OBJDUMP=$(ARCH)objdump
 
-override CFLAGS=-DLM3S3748 -Wall -Wextra -ggdb
-LDFLAGS=-nostartfiles
+override CFLAGS=-DLM3S3748 -Wall -Wextra -ggdb -Wno-main -Os -mcpu=cortex-m3 -mthumb -flto
+LDFLAGS=-nostartfiles -Wl,-O1,--gc-sections -flto -fwhole-program
 ASFLAGS=-D__ASSEMBLER__
 
 LDSCRIPT=lm3s.ld
@@ -16,7 +16,7 @@ LDSCRIPT=lm3s.ld
 .SECONDARY:
 
 all : main.elf
-main.elf : crt0.S.o adc.c.o clock.c.o
+main.elf : crt0.S.o init.c.o adc.c.o clock.c.o main.c.o
 
 %.S.o : %.S
 	$(CC) $(CFLAGS) $(ASFLAGS) -c -o $@ $<
@@ -25,7 +25,7 @@ main.elf : crt0.S.o adc.c.o clock.c.o
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.elf :
-	$(CCLD) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $<
+	$(CCLD) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $^
 
 %.bin : %.elf
 	$(OBJCOPY) -F binary $< $@
