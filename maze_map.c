@@ -1,3 +1,6 @@
-/*
- * Stores our curent knowledge of the maze we are exploring.
- */
+#include "maze_map.h"
+
+struct maze g_maze;
+
+
+
