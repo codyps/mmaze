@@ -8,7 +8,7 @@ OBJCOPY=$(ARCH)objcopy
 OBJDUMP=$(ARCH)objdump
 
 override CFLAGS=-DLM3S3748 -Wall -Wextra -ggdb -Wno-main -Os -mcpu=cortex-m3 -mthumb -flto
-LDFLAGS=-nostartfiles -Wl,-O1,--gc-sections -flto -fwhole-program
+LDFLAGS=-nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -flto -fwhole-program
 ASFLAGS=-D__ASSEMBLER__
 
 LDSCRIPT=lm3s.ld
