@@ -27,16 +27,18 @@ SECTIONS
 	__data_size__       = SIZEOF(.data);
 	__data_load_end__   = __data_load_start__ + __data_size__;
 
-	.bss : ALIGN(4)
+	.bss (NOLOAD) : ALIGN(4)
 	{
 		__bss_start__ = . ;
 		*(.bss)
 		*(COMMON)
 		__bss_end__   = . ;
-	} >ram AT>rom =0xFFFFFFFF
-	__bss_load_start__ = LOADADDR(.data) ;
-	__bss_size__       = SIZEOF(.bss);
-	__bss_load_end__   = __bss_load_start__ + __bss_size__;
+	} >ram
+
+	.noinit (NOLOAD) : ALIGN(4)
+	{
+		*(.noinit*)
+	} > ram
 }
 
 __stack_high__ = ORIGIN(ram) + LENGTH(ram) - 4;
