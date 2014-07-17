@@ -5,5 +5,4 @@
  * where A and B are close together
  */
 
-
 #endif

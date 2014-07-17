@@ -1,0 +1,21 @@
+
+VECTOR(reset)
+VECTOR(nmi)
+VECTOR(hard_fault)
+VECTOR(mm)
+VECTOR(bus_fault)
+VECTOR(usage_fault)
+
+VECTOR_NULL
+VECTOR_NULL
+VECTOR_NULL
+
+VECTOR(svcall)
+VECTOR(debug_monitor)
+
+VECTOR_NULL
+
+VECTOR(pendsv)
+VECTOR(systick)
+
+/* XXX: chip specific vectors */

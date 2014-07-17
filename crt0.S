@@ -17,9 +17,9 @@
 
 .macro vector name
 	.if (. - __vectors < _VECTORS_SIZE)
-	.weak \name
-	.set  \name, __bad_interrupt
-	.long \name
+	.weak __vector_\name
+	.set  __vector_\name, __bad_interrupt
+	.long __vector_\name
 	.endif
 .endm
 
@@ -29,68 +29,68 @@
 __vectors:
 	.long  __stack_high__
 	.long  __vector_1
-	vector __vector_2
-	vector __vector_3
-	vector __vector_4
-	vector __vector_5
-	vector __vector_6
-	vector __vector_7
-	vector __vector_8
-	vector __vector_9
-	vector __vector_10
-	vector __vector_11
-	vector __vector_12
-	vector __vector_13
-	vector __vector_14
-	vector __vector_15
-	vector __vector_16
-	vector __vector_17
-	vector __vector_18
-	vector __vector_19
-	vector __vector_20
-	vector __vector_21
-	vector __vector_22
-	vector __vector_23
-	vector __vector_24
-	vector __vector_25
-	vector __vector_26
-	vector __vector_27
-	vector __vector_28
-	vector __vector_29
-	vector __vector_30
-	vector __vector_31
-	vector __vector_32
-	vector __vector_33
-	vector __vector_34
-	vector __vector_35
-	vector __vector_36
-	vector __vector_37
-	vector __vector_38
-	vector __vector_39
-	vector __vector_40
-	vector __vector_41
-	vector __vector_42
-	vector __vector_43
-	vector __vector_44
-	vector __vector_45
-	vector __vector_46
-	vector __vector_47
-	vector __vector_48
-	vector __vector_49
-	vector __vector_50
-	vector __vector_51
-	vector __vector_52
-	vector __vector_53
-	vector __vector_54
-	vector __vector_55
-	vector __vector_56
-	vector __vector_57
-	vector __vector_58
-	vector __vector_59
-	vector __vector_60
-	vector __vector_61
-	vector __vector_62
-	vector __vector_63
+	vector 2
+	vector 3
+	vector 4
+	vector 5
+	vector 6
+	vector 7
+	vector 8
+	vector 9
+	vector 10
+	vector 11
+	vector 12
+	vector 13
+	vector 14
+	vector 15
+	vector 16
+	vector 17
+	vector 18
+	vector 19
+	vector 20
+	vector 21
+	vector 22
+	vector 23
+	vector 24
+	vector 25
+	vector 26
+	vector 27
+	vector 28
+	vector 29
+	vector 30
+	vector 31
+	vector 32
+	vector 33
+	vector 34
+	vector 35
+	vector 36
+	vector 37
+	vector 38
+	vector 39
+	vector 40
+	vector 41
+	vector 42
+	vector 43
+	vector 44
+	vector 45
+	vector 46
+	vector 47
+	vector 48
+	vector 49
+	vector 50
+	vector 51
+	vector 52
+	vector 53
+	vector 54
+	vector 55
+	vector 56
+	vector 57
+	vector 58
+	vector 59
+	vector 60
+	vector 61
+	vector 62
+	vector 63
 	.endfunc
 
 	.text
