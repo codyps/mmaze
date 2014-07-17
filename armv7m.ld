@@ -16,13 +16,13 @@ SECTIONS
 		ASSERT(__vector_start != ., "Vector not included")
 	} >rom =0xFFFFFFFF
 
-	.text : {
+	.text : ALIGN(4) {
 		*(.init*)
 		*(.text*)
 	} >rom =0xFFFFFFFF
 
 	.rodata : {
-		*(.rodata)
+		*(.rodata*)
 	} >rom =0xFFFFFFFF
 
 	.preinit_array : ALIGN(4) {
