@@ -9,40 +9,63 @@ MEMORY
 
 SECTIONS
 {
-	.text :
-	{
-		KEEP(*(.isr_vector))
+	.vector : {
+		ASSERT(. == 0, "Something before vector")
+		__vector_start = .;
+		KEEP(*(.vector))
+		ASSERT(__vector_start != ., "Vector not included")
+	} >rom =0xFFFFFFFF
+
+	.text : {
 		*(.init*)
 		*(.text*)
+	} >rom =0xFFFFFFFF
+
+	.rodata : {
 		*(.rodata)
 	} >rom =0xFFFFFFFF
 
-	.data : ALIGN(4)
-	{
-		__data_start__ = . ;
-		*(.data)
-		__data_end__   = . ;
-	} >ram AT>rom =0xFFFFFFFF
-	__data_load_start__ = LOADADDR(.data);
-	__data_size__       = SIZEOF(.data);
-	__data_load_end__   = __data_load_start__ + __data_size__;
+	.preinit_array : ALIGN(4) {
+		__preinit_array_start = .;
+		KEEP (*(.preinit_array))
+		__preinit_array_end = .;
+	} >rom =0xFFFFFFFF
+	.init_array : ALIGN(4) {
+		__init_array_start = .;
+		KEEP (*(SORT(.init_array.*)))
+		KEEP (*(.init_array))
+		__init_array_end = .;
+	} >rom =0xFFFFFFFF
+	.fini_array : ALIGN(4) {
+		__fini_array_start = .;
+		KEEP (*(.fini_array))
+		KEEP (*(SORT(.fini_array.*)))
+		__fini_array_end = .;
+	} >rom =0xFFFFFFFF
 
-	.bss (NOLOAD) : ALIGN(4)
-	{
-		__bss_start__ = . ;
-		*(.bss)
+	.data : ALIGN(4) {
+		__data_start = . ;
+		*(.data .data.* .gnu.linkonce.d.*)
+		SORT(CONSTRUCTORS)
+		__data_end   = . ;
+	} >ram AT>rom =0xFFFFFFFF
+	__data_load_start = LOADADDR(.data);
+	__data_load_end   = __data_load_start + SIZEOF(.data);
+	. = .;
+	.bss (NOLOAD) : ALIGN(4) {
+		__bss_start = . ;
+		*(.bss* .gnu.linkonce.b.*)
 		*(COMMON)
-		__bss_end__   = . ;
+		__bss_end   = . ;
 	} >ram
 
-	.noinit (NOLOAD) : ALIGN(4)
-	{
+	.noinit (NOLOAD) : ALIGN(4) {
 		*(.noinit*)
-	} > ram
+	} >ram
 }
 
-__stack_high__ = ORIGIN(ram) + LENGTH(ram) - 4;
-__stack_low__   = __bss_end__;
+__stack_high = ORIGIN(ram) + LENGTH(ram) - 4;
+__stack_low  = __bss_end;
 
-__ram_start__ = ORIGIN(ram);
-__rom_start__ = ORIGIN(rom);
+__ram_start = ORIGIN(ram);
+__rom_start = ORIGIN(rom);
