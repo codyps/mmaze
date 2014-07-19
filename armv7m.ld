@@ -10,10 +10,10 @@ MEMORY
 SECTIONS
 {
 	.vector : {
-		ASSERT(. == 0, "Something before vector")
+		ASSERT(. == 0, "Something before vector");
 		__vector_start = .;
 		KEEP(*(.vector))
-		ASSERT(__vector_start != ., "Vector not included")
+		ASSERT(__vector_start != ., "Vector not included");
 	} >rom =0xFFFFFFFF
 
 	.text : ALIGN(4) {
@@ -61,11 +61,13 @@ SECTIONS
 
 	.noinit (NOLOAD) : ALIGN(4) {
 		*(.noinit*)
+		__noinit_end = .;
 	} >ram
+
+	end = __noinit_end;
 }
 
 __stack_high = ORIGIN(ram) + LENGTH(ram) - 4;
-__stack_low  = __bss_end;
 
 __ram_start = ORIGIN(ram);
 __rom_start = ORIGIN(rom);

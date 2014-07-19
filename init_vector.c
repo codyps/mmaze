@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 __attribute__((weak,interrupt,noreturn))
 void bad_interrupt(void)
 {
@@ -11,15 +13,17 @@ void bad_interrupt(void)
 #undef VECTOR
 #undef VECTOR_NULL
 
-extern void __stack_high;
+extern char __stack_high[];
 
-// Interrupt vectors table
-__attribute__ ((section(".vector")))
-void (* const __vectors[])(void) = {
-	&__stack_high,
+typedef void (isr_fn)(void);
+__attribute__ ((section(".vector"),externally_visible))
+// void (* const vectors[])(void) = {
+isr_fn *const vectors[] = {
+	(isr_fn *)&__stack_high,
 #define VECTOR(n) _isr_##n,
-#define VECTOR_NULL NULL
+#define VECTOR_NULL (isr_fn *)NULL,
 #include "vectors.def"
 #undef VECTOR
 #undef VECTOR_NULL
 };
+

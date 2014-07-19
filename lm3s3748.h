@@ -352,7 +352,7 @@ typedef union GPIO_AHB_u {
 } GPIO_AHB_t;
 
 #define GPIO_AHB_base 0x40058000
-#define GPIO_AHB ((volatile GPIO_AHB_t *) GPIO_AHB_base)
+#define GPIO_AHB (*(volatile GPIO_AHB_t *) GPIO_AHB_base)
 
 /* GPIO APB
  * A 0x4000.4000
@@ -480,7 +480,7 @@ typedef struct ADC_s {
 } ADC_t;
 
 #define ADC_base 0x40038000
-#define ADC ((volatile ADC_t *)ADC_base)
+#define ADC (*(volatile ADC_t *)ADC_base)
 
 /*** Hibernation - HIB */
 

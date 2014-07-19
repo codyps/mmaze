@@ -17,7 +17,7 @@ static void pll_init(void)
 	  to the PLL.
 	  */
 
-	SYSCTL->rcc = (SYSCTL->rcc | RCC_BYPASS_mask) & ~(RCC_USESYS_mask);
+	SYSCTL.rcc = (SYSCTL.rcc | RCC_BYPASS_mask) & ~(RCC_USESYS_mask);
 
 	/*
 	   2. Select the crystal value (XTAL) and oscillator source (OSCSRC),

@@ -6,7 +6,7 @@
 static inline void gpio_ahb_init(void)
 {
 	/* Use AHB for all gpio ports */
-	SYSCTL->gpiohbctl = 0xff;
+	SYSCTL.gpiohbctl = 0xff;
 }
 
 
