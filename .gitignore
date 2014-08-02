@@ -1,6 +1,7 @@
 *~
 .*.swp
 *.[od]
-main.bin
-main.elf
-main.lst
+*.bin
+*.elf
+*.lst
+.TRACK-*

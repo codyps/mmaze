@@ -1,4 +1,5 @@
 #include "lm3s.h"
+#include "adc.h"
 
 
 void adc_init(void)

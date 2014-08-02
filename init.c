@@ -2,8 +2,8 @@
 #include <stdint.h>
 __attribute__((noreturn))
 extern void main (void);
-
 extern void __libc_init_array(void);
+extern void _init(void);
 
 /* make __libc_init_array() happy */
 __attribute__((weak))
@@ -33,6 +33,8 @@ static void __libc_init_array(void)
 	}
 }
 #endif
+
+void __init(void);
 
 __attribute__((noreturn,interrupt))
 void __init(void)

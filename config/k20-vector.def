@@ -1,0 +1,50 @@
+/* vim: set filetype=c:
+ *
+ * From the Freescale K20 Sub-Family Reference Manual
+ * https://www.pjrc.com/teensy/K20P64M50SF0RM.pdf
+ */
+#include <armv7m-vertor.def>
+
+VECTOR(dma_chan0_transfer_complete) /* 16 */
+VECTOR(dma_chan1_transfer_complete)
+VECTOR(dma_chan2_transfer_complete)
+VECTOR(dma_chan3_transfer_complete)
+VECTOR(dma)
+VECTOR(flash_command_complete)
+VECTOR(flash_read_collision)
+VECTOR(low_voltage_detect)
+VECTOR(low_leakage_wakeup)
+VECTOR(watchdog)
+VECTOR(i2c0)
+VECTOR(spi0)
+VECTOR(i2s0_transmit)
+VECTOR(i2s1_recieve)
+VECTOR(uart0_lon_status)
+VECTOR(uart0_error)
+VECTOR(uart1_status)
+VECTOR(uart1_error)
+VECTOR(uart2_status)
+VECTOR(uart2_error)
+VECTOR(adc0)
+VECTOR(cmp0)
+VECTOR(ftm0)
+VECTOR(ftm1)
+VECTOR(cmt)
+VECTOR(rtc_alarm)
+VECTOR(rtc_seconds)
+VECTOR(pit_chan0)
+VECTOR(pit_chan1)
+VECTOR(pit_chan2)
+VECTOR(pit_chan3)
+VECTOR(pdb)
+VECTOR(usb_charger_detect)
+VECTOR(tsi)
+VECTOR(mcg)
+VECTOR(low_power_timer)
+VECTOR(port_a_pin_detect)
+VECTOR(port_b_pin_detect)
+VECTOR(port_c_pin_detect)
+VECTOR(port_d_pin_detect)
+VECTOR(port_e_pin_detect)
+VECTOR(software_int) /* address = 0xF4, vector = 61, irq = 45 */
+

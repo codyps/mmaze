@@ -131,7 +131,7 @@ struct cm3_core_regs {
 /***  System Control - SYSCTL ***/
 #define SYSCTL_BASE 0x400FE000
 
-typedef struct cm3_sysctl_regs {
+struct cm3_sysctl_regs {
 #define DID0_offs 0
 #define DID1_offs 0x004
 	uint32_t did[2];

@@ -1,13 +1,14 @@
 
-ENTRY(__init)
+ENTRY(_isr_reset)
 
 SECTIONS
 {
-	.vector : {
-		ASSERT(. == 0, "Something before vector");
+	.isr_vector : {
+		ASSERT(. == 0, "Something before isr_vector");
 		__vector_start = .;
-		KEEP(*(.vector))
-		ASSERT(__vector_start != ., "Vector not included");
+		KEEP(*(.isr_vector))
+		ASSERT(__vector_start != ., "isr_vector not included");
+		/* TODO: check that we end up 4 byte aligned */
 	} >rom =0xFFFFFFFF
 
 	.text : ALIGN(4) {
