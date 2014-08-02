@@ -1,7 +1,8 @@
 #include <stddef.h>
+#include <stdint.h>
 
-__attribute__((weak,interrupt,noreturn))
-void bad_interrupt(void)
+__attribute__((interrupt,noreturn))
+static void bad_interrupt(void)
 {
 	__builtin_trap();
 }
@@ -13,7 +14,7 @@ void bad_interrupt(void)
 #undef VECTOR
 #undef VECTOR_NULL
 
-extern char __stack_high[];
+extern uint32_t __stack_high[];
 
 typedef void (isr_fn)(void);
 __attribute__ ((section(".vector"),externally_visible))
