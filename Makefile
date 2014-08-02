@@ -1,42 +1,31 @@
-PREFIX=
-ARCH=$(PREFIX)arm-none-eabi-
+CROSS_COMPILE = arm-none-eabi-
 
-CC=$(ARCH)gcc
-RM=rm -rf
-CCLD=$(CC)
-OBJCOPY=$(ARCH)objcopy
-OBJDUMP=$(ARCH)objdump
+OBJCOPY=$(CROSS_COMPILE)objcopy
+OBJDUMP=$(CROSS_COMPILE)objdump
 
-ARCH_CFLAGS = -DLM3S3748=1 -mcpu=cortex-m3 -mthumb
+# Re-enable when we have asan support or use -fsanitize-undefined-trap-on-error
+NO_SANITIZE = 1
 
-override CFLAGS  = -Wall -Wextra -ggdb3 -Os
-override LDFLAGS = -nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections
-ASFLAGS=-D__ASSEMBLER__
+ALL_CFLAGS += -DLM3S3748=1 -mcpu=cortex-m3 -mthumb
+ALL_CFLAGS += -Wall -Wextra -ggdb3 -Os
+ALL_LDFLAGS += -nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections
+ALL_ASFLAGS += -D__ASSEMBLER__
 
-ALL_CFLAGS = $(ARCH_CFLAGS) $(CFLAGS)
-ALL_LDFLAGS = $(LDFLAGS)
+LDSCRIPT=lm3s.ld
 
-ifneq ($(LTO),)
-ALL_CFLAGS += -flto
-ALL_LDFLAGS += $(CFLAGS) -fwhole-program -fuse-linker-plugin
-endif
+TARGETS = main.elf
+obj-main.elf = init_vector.o init.o adc.o clock.o main.o
+main.elf : $(LDSCRIPT) 
+ldflags-main.elf = -T $(LDSCRIPT)
 
+define do-lst
+all:: $(1).lst
+TRASH += $(1).lst
+endef
 
-LDSCRIPT=armv7m.ld
+$(foreach obj,$(obj-main.elf),$(eval $(call do-lst,$(obj))))
 
-.SECONDARY:
-
-all : main.elf
-main.elf : init_vector.c.o init.c.o adc.c.o clock.c.o main.c.o
-
-%.S.o : %.S
-	$(CC) $(ALL_CFLAGS) $(ASFLAGS) -c -o $@ $<
-
-%.c.o : %.c
-	$(CC) $(ALL_CFLAGS) -c -o $@ $<
-
-%.elf : $(LDSCRIPT)
-	$(CCLD) $(ALL_LDFLAGS) -T $(LDSCRIPT) -o $@ $(filter-out $(LDSCRIPT),$^)
+all :: main.bin main.elf.lst
 
 %.bin : %.elf
 	$(OBJCOPY) -F binary $< $@
@@ -47,6 +36,4 @@ main.elf : init_vector.c.o init.c.o adc.c.o clock.c.o main.c.o
 %.elf.lst : %.elf
 	$(OBJDUMP) -d $< > $@
 
-.PHONY: clean
-clean:
-	$(RM) *.o *.elf *.bin *.lst
+include base.mk
