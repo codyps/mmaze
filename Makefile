@@ -8,7 +8,7 @@ OBJDUMP=$(CROSS_COMPILE)objdump
 # Re-enable when we have asan support or use -fsanitize-undefined-trap-on-error
 NO_SANITIZE = 1
 
-ALL_CFLAGS  += -DLM3S3748=1 -mcpu=cortex-m3 -mthumb -I.
+ALL_CFLAGS  += -mcpu=cortex-m3 -mthumb -I.
 ALL_LDFLAGS += -nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -Lld
 ALL_ASFLAGS += -D__ASSEMBLER__=1
 
@@ -17,7 +17,7 @@ LDSCRIPT = ld/lm3s.ld
 TARGETS = main.elf
 obj-main.elf = init_vector.o init.o adc.o clock.o main.o
 main.elf : $(LDSCRIPT) 
-cflags-main.elf = -include config/lm3s.h
+cflags-main.elf = -DLM3S3748=1 -include config/lm3s.h
 ldflags-main.elf = -T $(LDSCRIPT)
 
 define do-lst
