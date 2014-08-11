@@ -2,7 +2,7 @@
 
 : ${CC:=arm-none-eabi-gcc}
 
-CFLAGS="-I. -DLM3S3748=1 -include config/lm3s.h ${CFLAGS}"
+CFLAGS="-I. ${CFLAGS}"
 LDFLAGS="-L ld -nostartfiles ${LDFLAGS}"
 
 exec >build.ninja
@@ -27,7 +27,7 @@ to_obj () {
 }
 
 _ev () {
-	eval printf "%s" "\${$1}"
+	eval echo "\${$1}"
 }
 
 bin () {
@@ -37,6 +37,7 @@ bin () {
 
 	for s in "$@"; do
 		echo build $(to_obj $s): cc $s
+		echo "  cflags = \$cflags $(_ev cflags_${out_var})"
 	done
 
 	cat <<EOF
@@ -46,7 +47,8 @@ EOF
 	BINS="$BINS $out"
 }
 BINS=""
-
+  
+cflags_main_elf="-DLM3S3748=1 -include config/lm3s.h"
 ldflags_main_elf="-T lm3s.ld"
 bin main.elf init_vector.c init.c lm3s/adc.c clock.c main.c
 
