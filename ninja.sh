@@ -20,19 +20,24 @@ rule ccld
   command = \$cc \$ldflags -o \$out \$in
 EOF
 
-LM3S_SRC=( init_vector.c init.c lm3s/adc.c clock.c main.c )
-
-for s in "${LM3S_SRC[@]}"; do
-	echo build ${s%%.c}.o: cc $s
-done
-
 to_obj () {
 	for i in "$@"; do
 		printf "%s " "${i%%.c}.o"
 	done
 }
 
-echo build main.elf : ccld $(to_obj "${LM3S_SRC[@]}")
+bin () {
+	out="$1"
+	shift
+
+	for s in "$@"; do
+		echo build $s.o: cc $s
+	done
+
+	echo build $out : ccld $(to_obj "$@")
+}
+
+bin main.elf init_vector.c init.c lm3s/adc.c clock.c main.c
 
 cat <<EOF
 rule ninja_gen
