@@ -1,6 +1,7 @@
 #ifndef MAZE_MAP_H_
 #define MAZE_MAP_H_
 
+#include <stdint.h>
 typedef uint8_t maze_sq_ix;
 
 enum maze_edge {
