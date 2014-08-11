@@ -3,7 +3,7 @@
 : ${CC:=arm-none-eabi-gcc}
 
 CFLAGS="-I. -DLM3S3748=1 -include config/lm3s.h ${CFLAGS}"
-LDFLAGS="-L ld -T lm3s.ld -nostartfiles ${LDFLAGS}"
+LDFLAGS="-L ld -nostartfiles ${LDFLAGS}"
 
 exec >build.ninja
 
@@ -22,21 +22,32 @@ EOF
 
 to_obj () {
 	for i in "$@"; do
-		printf "%s " "${i%%.c}.o"
+		printf "%s " ".build-$out/$i.o"
 	done
+}
+
+_ev () {
+	eval printf "%s" "\${$1}"
 }
 
 bin () {
 	out="$1"
 	shift
+	out_var="${out/./_}"
 
 	for s in "$@"; do
-		echo build $s.o: cc $s
+		echo build $(to_obj $s): cc $s
 	done
 
-	echo build $out : ccld $(to_obj "$@")
+	cat <<EOF
+build $out : ccld $(to_obj "$@")
+  ldflags = \$ldflags $(_ev ldflags_${out_var})
+EOF
+	BINS="$BINS $out"
 }
+BINS=""
 
+ldflags_main_elf="-T lm3s.ld"
 bin main.elf init_vector.c init.c lm3s/adc.c clock.c main.c
 
 cat <<EOF
@@ -46,4 +57,4 @@ rule ninja_gen
 build build.ninja : ninja_gen $0
 EOF
 
-echo default main.elf
+echo default ${BINS}
