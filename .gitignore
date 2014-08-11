@@ -6,3 +6,5 @@
 *.lst
 .TRACK-*
 .tup/
+build.ninja
+.ninja*
