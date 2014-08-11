@@ -4,6 +4,6 @@ CFLAGS += -I.
 CC = arm-none-eabi-gcc
 LDFLAGS += -L ld -T lm3s.ld -nostartfiles
 
-LM3S_SRC = init_vector.c init.c lm3s/adc.c clock.c main.c
+LM3S_SRC = init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
 : foreach $(LM3S_SRC) |> !cc -DLM3S3748=1 -include config/lm3s.h |> %B.o
 : *.o |> !ccld |> main.elf
