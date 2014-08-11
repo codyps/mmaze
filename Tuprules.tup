@@ -1,0 +1,6 @@
+CFLAGS += -Wall -Wextra -I.
+CC = arm-none-eabi-gcc
+LDFLAGS += -L ld -T lm3s.ld -nostartfiles
+
+!cc = |> $(CC) $(CFLAGS) -c -o %o %f |>
+!ccld = |> $(CC) $(LDFLAGS) -o %o %f |>

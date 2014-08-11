@@ -1,0 +1,5 @@
+include_rules
+
+LM3S_SRC = init_vector.c init.c lm3s/adc.c clock.c main.c
+: foreach $(LM3S_SRC) |> !cc -DLM3S3748=1 -include config/lm3s.h |> %B.o
+: *.o |> !ccld |> main.elf
