@@ -15,17 +15,17 @@ ALL_ASFLAGS += -D__ASSEMBLER__=1
 LDSCRIPT = ld/lm3s.ld
 
 TARGETS = main.elf
-obj-main.elf = init_vector.o init.o adc.o clock.o main.o
+obj-main.elf = init_vector.o init.o lm3s/adc.o clock.o main.o
 main.elf : $(LDSCRIPT) 
-cflags-main.elf = -DLM3S3748=1 -include config/lm3s.h
-ldflags-main.elf = -T $(LDSCRIPT)
+ALL_CFLAGS += -DLM3S3748=1 -include config/lm3s.h
+ALL_CFLAGS += -T $(LDSCRIPT)
 
 define do-lst
 all:: $(1).lst
 TRASH += $(1).lst
 endef
 
-$(foreach obj,$(obj-main.elf),$(eval $(call do-lst,$(obj))))
+ON_EACH_OBJ += do-lst
 
 all :: main.bin main.elf.lst
 
