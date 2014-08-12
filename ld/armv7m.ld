@@ -1,5 +1,5 @@
 
-ENTRY(_isr_reset)
+ENTRY(isr_reset)
 
 SECTIONS
 {
