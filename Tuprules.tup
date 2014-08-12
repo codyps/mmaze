@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra
+CFLAGS += -Wall -Wextra -std=gnu11
 LDFLAGS += -Wl,--as-needed,-O1,--gc-sections
 
 !cc = |> $(CC) $(CFLAGS) -c -o %o %f |>

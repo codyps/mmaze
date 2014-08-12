@@ -2,7 +2,7 @@
 
 : ${CC:=arm-none-eabi-gcc}
 
-CFLAGS="-I. ${CFLAGS}"
+CFLAGS="-I. -std=gnu11 -Wno-main ${CFLAGS}"
 LDFLAGS="-L ld -nostartfiles ${LDFLAGS}"
 
 exec >build.ninja

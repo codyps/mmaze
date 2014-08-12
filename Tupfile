@@ -1,6 +1,6 @@
 include_rules
 
-CFLAGS += -I.
+CFLAGS += -I. -Wno-main
 CC = arm-none-eabi-gcc
 LDFLAGS += -L ld -T lm3s.ld -nostartfiles
 

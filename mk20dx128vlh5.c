@@ -20,3 +20,4 @@
 #define SRAM_BYTES   KIBI(16)
 #define FLASH_BYTES  KIBI(128)
 #define TOTAL_FLASH_BYTES KIBI(160) /* ??? something with Flex? */
+
