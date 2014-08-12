@@ -36,7 +36,7 @@ bin () {
 	out_var="${out/./_}"
 
 	for s in "$@"; do
-		echo build $(to_obj $s): cc $s
+		echo build $(to_obj "$s"): cc $s
 		echo "  cflags = \$cflags $(_ev cflags_${out_var})"
 	done
 

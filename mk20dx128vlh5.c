@@ -21,3 +21,18 @@
 #define FLASH_BYTES  KIBI(128)
 #define TOTAL_FLASH_BYTES KIBI(160) /* ??? something with Flex? */
 
+#define FLEX_NVM_BYTES KIBI(32)
+#define FLEX_RAM_BYTES KIBI(2)
+
+#define FLASH_BASE    0
+#define FLEX_NVM_BASE 0x10000000
+#define FLEX_RAM_BASE 0x14000000
+#define SRAM_U_BASE   0x20000000
+#define SRAM_BASE     (SRAM_U_BASE - SRAM_BYTES / 2)
+
+#define SRAM_U_BITBAND_ALIAS_BASE 0x22000000
+#define GPIO_BITBAND_ALIAS_BASE   0x400FF000
+#define AIPS_AND_GPIO_BITBAND_ALIAS_BASE 0x42000000
+
+/* "32 Byte Register file", "VBAT Register File" */
+#define BACKUP_REG_BYTES 32
