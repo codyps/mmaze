@@ -2,8 +2,6 @@
 #include <stdint.h>
 #include <assert.h>
 
-#include "init_vector.h"
-
 __attribute__((interrupt,noreturn))
 static void bad_interrupt(void)
 {
