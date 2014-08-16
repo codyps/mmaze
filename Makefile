@@ -6,8 +6,9 @@ RM=rm -rf
 CCLD=$(CC)
 OBJCOPY=$(ARCH)objcopy
 OBJDUMP=$(ARCH)objdump
+AR=$(ARCH)gcc-ar
 
-override CFLAGS=-DLM3S3748 -Wall -Wextra -ggdb -Wno-main -Os -mcpu=cortex-m3 -mthumb -flto
+override CFLAGS=-DLM3S3748 -Wall -Wextra -ggdb -Wno-main -Os -mcpu=cortex-m3 -mthumb -flto -fsanitize=undefined
 LDFLAGS=-nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -flto -fwhole-program
 ASFLAGS=-D__ASSEMBLER__
 
@@ -16,7 +17,11 @@ LDSCRIPT=lm3s.ld
 .SECONDARY:
 
 all : main.elf
-main.elf : crt0.S.o init.c.o adc.c.o clock.c.o main.c.o
+main.elf : crt0.S.o init.c.o adc.c.o clock.c.o main.c.o libubsan.a
+libubsan.a : ubsan_simple.c.o
+
+%.a :
+	$(AR) r $@ $<
 
 %.S.o : %.S
 	$(CC) $(CFLAGS) $(ASFLAGS) -c -o $@ $<
@@ -25,7 +30,7 @@ main.elf : crt0.S.o init.c.o adc.c.o clock.c.o main.c.o
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.elf :
-	$(CCLD) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $^
+	$(CCLD) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $(filter-out libubsan.a,$^) -L.
 
 %.bin : %.elf
 	$(OBJCOPY) -F binary $< $@
@@ -38,4 +43,4 @@ main.elf : crt0.S.o init.c.o adc.c.o clock.c.o main.c.o
 
 .PHONY: clean
 clean:
-	$(RM) *.o *.elf *.bin *.lst
+	$(RM) *.o *.elf *.bin *.lst *.a
