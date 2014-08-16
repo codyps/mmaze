@@ -48,7 +48,7 @@ EOF
 }
 BINS=""
   
-cflags_main_elf="-DLM3S3748=1 -include config/lm3s.h"
+cflags_main_elf="-DLM3S3748=1 -include config/lm3s.h -mcpu=cortex-m3"
 ldflags_main_elf="-T lm3s.ld"
 bin main.elf init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
 
