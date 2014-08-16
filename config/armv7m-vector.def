@@ -1,0 +1,27 @@
+/*
+ * VECTOR(addr, name)
+ * VECTOR_NULL(addr)
+ * IRQ(address, name)
+ * IRQ_START_ADDR(addr)
+ * VECTOR_END(addr, vect_ct, irq_ct)
+ */
+
+VECTOR(0x4,    reset)
+VECTOR(0x8,  nmi)
+VECTOR(0xC,  hard_fault)
+VECTOR(0x10,  mm)
+VECTOR(0x14, bus_fault)
+VECTOR(0x18, usage_fault)
+
+VECTOR_NULL(0x1C)
+VECTOR_NULL(0x20)
+VECTOR_NULL(0x24)
+VECTOR_NULL(0x28)
+
+VECTOR(0x2C, svcall)
+VECTOR(0x30, debug_monitor)
+
+VECTOR_NULL(0x34)
+
+VECTOR(0x38, pendsv)
+VECTOR(0x3C, systick)

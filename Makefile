@@ -1,46 +1,44 @@
-PREFIX=
-ARCH=$(PREFIX)arm-none-eabi-
+all::
 
-CC=$(ARCH)gcc
-RM=rm -rf
-CCLD=$(CC)
-OBJCOPY=$(ARCH)objcopy
-OBJDUMP=$(ARCH)objdump
-AR=$(ARCH)gcc-ar
+CROSS_COMPILE = arm-none-eabi-
 
-override CFLAGS=-DLM3S3748 -Wall -Wextra -ggdb -Wno-main -Os -mcpu=cortex-m3 -mthumb -flto -fsanitize=undefined
-LDFLAGS=-nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -flto -fwhole-program
-ASFLAGS=-D__ASSEMBLER__
+OBJCOPY=$(CROSS_COMPILE)objcopy
+OBJDUMP=$(CROSS_COMPILE)objdump
 
-LDSCRIPT=lm3s.ld
+# Re-enable when we have asan support or use -fsanitize-undefined-trap-on-error
+NO_SANITIZE = 1
 
-.SECONDARY:
+ALL_CFLAGS  += -mcpu=cortex-m3 -mthumb -I. -std=gnu11 -Wno-main
+ALL_LDFLAGS += -nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -Lld
+ALL_ASFLAGS += -D__ASSEMBLER__=1
 
-all : main.elf
-main.elf : crt0.S.o init.c.o adc.c.o clock.c.o main.c.o libubsan.a
-libubsan.a : ubsan_simple.c.o
+obj-libubsan.a = ubsan_simple.c.o
 
-%.a :
-	$(AR) r $@ $<
+LDSCRIPT = ld/lm3s.ld
 
-%.S.o : %.S
-	$(CC) $(CFLAGS) $(ASFLAGS) -c -o $@ $<
+TARGETS = main.elf
+obj-main.elf = init_vector.o init.o lm3s/adc.o lm3s/clock.o main.o
+main.elf : $(LDSCRIPT)
+ALL_CFLAGS += -DLM3S3748=1 -include config/lm3s.h
+ALL_CFLAGS += -T $(LDSCRIPT)
 
-%.c.o : %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+define do-lst
+all:: $(1).lst
+TRASH += $(1).lst
+endef
 
-%.elf :
-	$(CCLD) $(CFLAGS) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $(filter-out libubsan.a,$^) -L.
+ON_EACH_OBJ += do-lst
+
+all :: main.bin main.elf.lst
 
 %.bin : %.elf
 	$(OBJCOPY) -F binary $< $@
 
-%.lst : %.bin
+%.o.lst : %.o
 	$(OBJDUMP) -d $< > $@
 
 %.elf.lst : %.elf
 	$(OBJDUMP) -d $< > $@
 
-.PHONY: clean
-clean:
-	$(RM) *.o *.elf *.bin *.lst *.a
+include base.mk
+ALL_CFLAGS  += -Wextra -Os

@@ -1,0 +1,62 @@
+/* vim: set filetype=c:
+ *
+ * From the Freescale K20 Sub-Family Reference Manual
+ * https://www.pjrc.com/teensy/K20P64M50SF0RM.pdf
+ */
+/*
+ * VECTOR(addr, name)
+ * VECTOR_NULL(addr)
+ * IRQ(address, nvic non-ipr reg, nvic ipr-reg, name)
+ * IRQ_START_ADDR(addr)
+ * VECTOR_END(addr, vect_ct, irq_ct)
+ */
+#include <armv7m-vertor.def>
+
+IRQ_START_ADDR(0x40)
+IRQ(0x40, dma_chan0_transfer_complete) /* 16 */
+IRQ(0x44, dma_chan1_transfer_complete)
+IRQ(0x48, dma_chan2_transfer_complete)
+IRQ(0x4C, dma_chan3_transfer_complete)
+IRQ(0x50, dma_error)
+IRQ(0x54, dma)
+IRQ(0x58, flash_command_complete)
+IRQ(0x5C, flash_read_collision)
+IRQ(0x60, low_voltage_detect)
+IRQ(0x64, low_leakage_wakeup)
+IRQ(0x68, watchdog)
+IRQ(0x6C, i2c0)
+IRQ(0x70, spi0)
+IRQ(0x74, i2s0_transmit)
+IRQ(0x78, i2s1_recieve)
+IRQ(0x7C, uart0_lon_status)
+IRQ(0x7C, uart0_status)
+IRQ(0x80, uart0_error)
+IRQ(0x84, uart1_status)
+IRQ(0x88, uart1_error)
+IRQ(0x90, uart2_status)
+IRQ(0x94, uart2_error)
+IRQ(0x98, adc0)
+IRQ(0x9C, cmp0)
+IRQ(0xA0, cmp1)
+IRQ(0xA4, ftm0)
+IRQ(0xA8, ftm1)
+IRQ(0xAC, cmt)
+IRQ(0xB0, rtc_alarm)
+IRQ(0xB4, rtc_seconds)
+IRQ(0xB8, pit_chan0)
+IRQ(0xBC, pit_chan1)
+IRQ(0xC0, pit_chan2)
+IRQ(0xC4, pit_chan3)
+IRQ(0xC8, pdb)
+IRQ(0xD0, usb_charger_detect)
+IRQ(0xD4, tsi)
+IRQ(0xD8, mcg)
+IRQ(0xDC, low_power_timer)
+IRQ(0xE0, port_a_pin_detect)
+IRQ(0xE4, port_b_pin_detect)
+IRQ(0xE8, port_c_pin_detect)
+IRQ(0xEC, port_d_pin_detect)
+IRQ(0xF0, port_e_pin_detect)
+IRQ(0xF4, software_int)
+VECTOR_END(0xF4, 61, 45)
+

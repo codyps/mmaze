@@ -59,3 +59,4 @@
  *         if (u != s_goal) rhs(u) = min_{s' \elemof Succ(u)}(c(u,s') + g(s'));
  *       UpdateVertex(u);
  *     ComputeShortestPath();
+ */
