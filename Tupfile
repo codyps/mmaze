@@ -8,11 +8,10 @@ LDSCRIPT = ld/lm3s.lds
 LDFLAGS += -L ld -T $(LDSCRIPT) -nostartfiles
 
 src-@(CHIP_LM3S) += lm3s/clock.c lm3s/adc.c
-
-SRC = init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
+src-y += init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
 
 include_rules
 
-: foreach $(SRC) |> !cc  |> %B.o  {obj}
+: foreach $(src-y) |> !cc  |> %f.o  {obj}
 : foreach ld/*.lds.S |> !cpp_lds |> ld/%B {lds}
 : {obj} | {lds} |> !ccld |> main.elf

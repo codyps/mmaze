@@ -8,3 +8,4 @@
 .tup/
 build.ninja
 .ninja*
+ld/*.lds
