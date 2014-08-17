@@ -11,6 +11,10 @@ SECTIONS
 		/* TODO: check that we end up 4 byte aligned */
 	} >rom =0xFFFFFFFF
 
+#if CONFIG_CHIP_CONFIG_SECTION
+# error "HI"
+#endif
+
 	.text : ALIGN(4) {
 		*(.init*)
 		*(.text*)
@@ -18,6 +22,7 @@ SECTIONS
 
 	.rodata : {
 		*(.rodata*)
+		*(.gnu.linkonce.r.*)
 	} >rom =0xFFFFFFFF
 
 	.preinit_array : ALIGN(4) {

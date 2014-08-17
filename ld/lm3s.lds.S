@@ -9,4 +9,4 @@ MEMORY
 	ram (wx) : ORIGIN = 0x20000000, LENGTH = 0x0000FFFF
 }
 
-INCLUDE "armv7m.ld"
+INCLUDE "armv7m.lds"

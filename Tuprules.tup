@@ -1,5 +1,8 @@
-CFLAGS += -Wall -Wextra -std=gnu11
+CFLAGS  += -Wall -Wextra -std=gnu11
 LDFLAGS += -Wl,--as-needed,-O1,--gc-sections
 
-!cc = |> $(CC) $(CFLAGS) -c -o %o %f |>
+CPP = $(CC) -E
+
+!cc = |> $(CC) $(CFLAGS) $(CPPFLAGS) -c -o %o %f |>
 !ccld = |> $(CC) $(LDFLAGS) -o %o %f |>
+!cpp_lds = |> $(CPP) -C -P $(CPPFLAGS) -o %o %f |>
