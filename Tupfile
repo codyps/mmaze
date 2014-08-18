@@ -4,7 +4,7 @@ CPPFLAGS += -I. -DLM3S3748=1 -mcpu=cortex-m3 -include config/lm3s.h
 
 CC = arm-none-eabi-gcc
 
-LDSCRIPT = ld/lm3s.lds
+LDSCRIPT = ld/armv7m.lds
 LDFLAGS += -L ld -T $(LDSCRIPT) -nostartfiles
 
 src-@(CHIP_LM3S) += lm3s/clock.c lm3s/adc.c
