@@ -24,6 +24,11 @@ void main(void)
 	GPIO.c.pddr =  1 << 5;
 
 	/* INIT systick for a 1ms tick */
+	/* 50000000 / 1000 = 50000 ticks per second */
+	/* 'ticks per second' = X
+	 * 1 / X = seconds per tick
+	 * 1 / 1000 = seconds / milliseconds
+	 */
 	SYST_RVR = CONFIG_SYSCLOCK / 1000;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
 

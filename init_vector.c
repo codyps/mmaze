@@ -3,9 +3,10 @@
 #include <assert.h>
 
 __attribute__((interrupt,noreturn))
-static void bad_interrupt(void)
+void bad_interrupt(void)
 {
-	__builtin_trap();
+	for (;;)
+		;
 }
 /*
  * VECTOR(addres, name)
