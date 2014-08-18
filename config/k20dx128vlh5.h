@@ -11,6 +11,6 @@
 #define SRAM_U_BASE   0x20000000
 
 #define CONFIG_RAM_SIZE   KIBI(16)
-#define CONFIG_RAM_OFFS     (SRAM_U_BASE - SRAM_BYTES / 2)
+#define CONFIG_RAM_OFFS     (SRAM_U_BASE - CONFIG_RAM_SIZE / 2)
 
 #endif
