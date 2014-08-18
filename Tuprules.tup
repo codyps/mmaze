@@ -1,4 +1,4 @@
-CFLAGS  += -Wall -Wextra -std=gnu11
+CFLAGS  += -Wall -Wextra -std=gnu11 -ggdb3
 LDFLAGS += -Wl,--as-needed,-O1,--gc-sections
 
 CPP = $(CC) -E
@@ -6,3 +6,4 @@ CPP = $(CC) -E
 !cc = |> $(CC) $(CFLAGS) $(CPPFLAGS) -c -o %o %f |>
 !ccld = |> $(CC) $(LDFLAGS) -o %o %f |>
 !cpp_lds = |> $(CPP) -C -P $(CPPFLAGS) -o %o %f |>
+!hex = |> $(OBJCOPY) -O ihex %f %o |>

@@ -9,12 +9,13 @@ struct cm3_core_regs {
 	uint32_t res_1[4];
 
 	/* System Timer (SysTick) */
-#define STCTRL    0x010
+#define SYST_CSR_OFFS    0x010
 	uint32_t stctrl;
-#define STRELOAD  0x014
+#define SYST_STRELOAD  0x014
 	uint32_t streload;
 #define STCURRENT 0x018
 	uint32_t stcurrent;
+#define 
 
 	uint32_t res_2[57];
 

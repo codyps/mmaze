@@ -37,7 +37,7 @@ static void __libc_init_array(void)
 void __init(void);
 
 __attribute__((noreturn,interrupt,alias("isr_reset")))
-void __init(void)
+void isr_reset(void)
 {
 	extern uint32_t __bss_start[], __bss_end[], __data_start[],
 	       __data_end[], __data_load_start[];

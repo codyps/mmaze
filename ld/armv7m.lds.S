@@ -44,6 +44,12 @@ SECTIONS
 		*(.gnu.linkonce.r.*)
 	} >flash =CONFIG_FLASH_FILL
 
+	.note.gnu.build-id : {
+		__build_id_start = .;
+		*(.note.gnu.build-id)
+		__build_id_end = .;
+	} >flash =CONFIG_FLASH_FILL
+
 	.preinit_array : ALIGN(4) {
 		__preinit_array_start = .;
 		KEEP (*(.preinit_array))
@@ -70,7 +76,7 @@ SECTIONS
 	} >ram AT>flash =CONFIG_FLASH_FILL
 	__data_load_start = LOADADDR(.data);
 	__data_load_end   = __data_load_start + SIZEOF(.data);
-	. = .;
+
 	.bss (NOLOAD) : ALIGN(4) {
 		__bss_start = . ;
 		*(.bss* .gnu.linkonce.b.*)
