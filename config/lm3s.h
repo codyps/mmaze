@@ -5,10 +5,10 @@
 #define INCLUDE_VECTOR()  <config/armv7m-vector.def>
 
 #define CONFIG_FLASH_OFFS 0
-#define CONFIG_FLASH_SIZE 0x1ffff
+#define CONFIG_FLASH_SIZE 0x20000
 
 #define CONFIG_RAM_OFFS 0x20000000
-#define CONFIG_RAM_SIZE 0xffff
+#define CONFIG_RAM_SIZE 0x10000
 
 /* For the lm3s:
  * 0x0000.0000 to 0x0001.FFFF : Flash

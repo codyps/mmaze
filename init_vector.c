@@ -53,7 +53,7 @@ struct isr_vectors_s {
 /*
  * Verify vector offsets using the above struct
  */
-#define ASSERT_OFFS(addr, field) static_assert(offsetof(struct isr_vectors_s, field) == addr, "address offset incorrect");
+#define ASSERT_OFFS(addr, field) static_assert(offsetof(struct isr_vectors_s, field) == (addr), "address offset incorrect");
 #define VECTOR(addr, name) ASSERT_OFFS(addr, isr_##name)
 #define VECTOR_NULL(addr) ASSERT_OFFS(addr, null_at_##addr)
 #define IRQ(addr, name) VECTOR(addr, name)
