@@ -1,14 +1,13 @@
 
 CFLAGS += -Wno-main
-CPPFLAGS += -I. -DLM3S3748=1 -mcpu=cortex-m3 -include config/lm3s.h
+CPPFLAGS += -I. -mcpu=@(CPU) -include config/@(CHIP).h
 
 CC = arm-none-eabi-gcc
 
-LDSCRIPT = ld/armv7m.lds
-LDFLAGS += -L ld -T $(LDSCRIPT) -nostartfiles
+LDFLAGS += -T ld/armv7m.lds -nostartfiles
 
-src-@(CHIP_LM3S) += lm3s/clock.c lm3s/adc.c
-src-y += init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
+src-y += init_vector.c init.c
+src-y += @(APP)
 
 include_rules
 

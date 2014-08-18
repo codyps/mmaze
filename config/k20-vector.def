@@ -10,7 +10,7 @@
  * IRQ_START_ADDR(addr)
  * VECTOR_END(addr, vect_ct, irq_ct)
  */
-#include <armv7m-vertor.def>
+#include <config/armv7m-vector.def>
 
 IRQ_START_ADDR(0x40)
 IRQ(0x40, dma_chan0_transfer_complete) /* 16 */
