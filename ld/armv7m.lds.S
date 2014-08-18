@@ -16,7 +16,6 @@ SECTIONS
  * As a result of placing this here, there is some spare space before it
  */
 #ifdef CONFIG_FLASH_CONFIG_FIELD_BASE
-
 	.low_flash : {
 		*(.low_flash)
 		KEEP(*(.low_flash_keep))
