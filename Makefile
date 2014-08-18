@@ -15,7 +15,7 @@ ALL_ASFLAGS += -D__ASSEMBLER__=1
 
 obj-libubsan.a = ubsan_simple.c.o
 
-LDSCRIPT = ld/lm3s.lds
+LDSCRIPT = ld/armv7m.lds
 
 lds_S = $(wildcard ld/*.lds.S)
 lds = $(lds_S:.S=)
