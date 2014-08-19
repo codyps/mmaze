@@ -38,6 +38,23 @@ void isr_systick(void)
 	GPIO.c.ptor = 1 << 5;
 }
 
+/*
+ * From the armv7-m arm:
+ * SHPR1 0xE000ED18 4-7
+ * SHPR2 0xE000ED1C 8-11
+ * SHPR3 0xE000ED20 12-15
+ *
+ * Normal priority
+ */
+#if 0
+static void syshandler_priority_set(uint8_t prio, uint8_t expn)
+{
+
+}
+#endif
+
+#define SHPR3 (*(volatile uint32_t *)0xE000ED20)
+
 /* NVIC_IPR_BASE 0xE000E400 */
 /* */
 //#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
@@ -53,6 +70,9 @@ void main(void)
 	/* Configure GPIO */
 	GPIO.c.pddr =  1 << 5;
 
+	/* enable systick exceptions */
+	SHPR3 = 0xFF000000;
+
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
 	/* 'ticks per second' = X
@@ -60,6 +80,7 @@ void main(void)
 	 * 1 / 1000 = seconds / milliseconds
 	 */
 	SYST_RVR = CONFIG_SYSCLOCK / 1000;
+	SYST_CVR = 0;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
 
 	for (;;)
