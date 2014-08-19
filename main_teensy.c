@@ -1,4 +1,5 @@
 #include "k20-gpio.h"
+#include "k20-port.h"
 
 #define SYST_CSR   (*(volatile uint32_t *)0xE000E010)
 #define SYST_CSR_ENABLE    (1 << 0)
@@ -57,6 +58,8 @@ static void syshandler_priority_set(uint8_t prio, uint8_t expn)
 //#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
 //NVIC_SYS_PRI3 |=  0x00FF0000
 
+
+
 __attribute__((noreturn))
 void main(void)
 {
@@ -64,7 +67,10 @@ void main(void)
 	 * enabled */
 
 	/* PIN13 = LED = PTC5 */
-	/* Ensure PORT PCR is configured as GPIO (probably default) */
+
+	/* Ensure PORT PCR is configured as GPIO */
+	K20_PORT.c.pcr[5] = K20_PORT_MUX_GPIO | K20_PORT_DSE;
+
 	/* Configure GPIO */
 	GPIO.c.pddr = 1 << 5;
 	GPIO.c.psor = 1 << 5;

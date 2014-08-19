@@ -1,3 +1,4 @@
+LD_FEATURE ("SANE_EXPR")
 
 MEMORY
 {
@@ -25,10 +26,10 @@ SECTIONS
 	.low_flash : {
 		*(.low_flash)
 		KEEP(*(.low_flash_keep))
-		. = CONFIG_FLASH_CONFIG_FIELD_BASE;
 	} >flash =CONFIG_FLASH_FILL
 
-	.flash_config_field : AT(CONFIG_FLASH_CONFIG_FIELD_BASE) {
+	.flash_config_field CONFIG_FLASH_CONFIG_FIELD_BASE : {
+	/*	ASSERT(. == CONFIG_FLASH_CONFIG_FIELD_BASE, "flash config field misplaced"); */
 		KEEP(*(.flash_config_field*))
 		. = CONFIG_FLASH_CONFIG_FIELD_SIZE;
 	} >flash =CONFIG_FLASH_FILL
