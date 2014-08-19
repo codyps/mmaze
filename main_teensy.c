@@ -35,16 +35,13 @@ __attribute__((__always_inline__)) static inline void fault_disable(void)
 __attribute__((__interrupt__))
 void isr_systick(void)
 {
-	GPIO.c.ptor = 1 << 5;
 }
 
 /*
- * From the armv7-m arm:
+ * From the armv7-m arch ref manual:
  * SHPR1 0xE000ED18 4-7
  * SHPR2 0xE000ED1C 8-11
  * SHPR3 0xE000ED20 12-15
- *
- * Normal priority
  */
 #if 0
 static void syshandler_priority_set(uint8_t prio, uint8_t expn)
@@ -60,6 +57,7 @@ static void syshandler_priority_set(uint8_t prio, uint8_t expn)
 //#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
 //NVIC_SYS_PRI3 |=  0x00FF0000
 
+__attribute__((noreturn))
 void main(void)
 {
 	/* On boot, PRIMASK and FAULTMASK are 0, faults and interrupts are
@@ -68,10 +66,12 @@ void main(void)
 	/* PIN13 = LED = PTC5 */
 	/* Ensure PORT PCR is configured as GPIO (probably default) */
 	/* Configure GPIO */
-	GPIO.c.pddr =  1 << 5;
+	GPIO.c.pddr = 1 << 5;
+	GPIO.c.psor = 1 << 5;
+	//GPIO.c.ptor = 1 << 5;
 
-	/* enable systick exceptions */
-	SHPR3 = 0xFF000000;
+	for (;;)
+		;
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
