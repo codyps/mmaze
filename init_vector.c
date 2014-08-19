@@ -20,12 +20,14 @@ void bad_interrupt(void)
  * Generate a weak alias to bad_interrupt() for each VECTOR
  */
 #define VECTOR(addr, name) __attribute__((weak,interrupt,alias("bad_interrupt"))) void isr_##name(void);
+#define VECTOR_IRQ(addr, name) VECTOR(addr, name)
 #define VECTOR_NULL(addr)
 #define IRQ(addr, name) VECTOR(addr, name)
 #define IRQ_START_ADDR(addr)
 #define VECTOR_END(addr, vect_ct, irq_ct)
 #include INCLUDE_VECTOR()
 #undef VECTOR
+#undef VECTOR_IRQ
 #undef VECTOR_NULL
 #undef IRQ
 #undef IRQ_START_ADDR
@@ -39,12 +41,14 @@ typedef void (isr_fn)(void);
 struct isr_vectors_s {
 	void *stack_high;
 #define IRQ(addr, name) VECTOR(addr, name)
+#define VECTOR_IRQ(addr, name) VECTOR(addr, name)
 #define VECTOR(addr, name) isr_fn *isr_##name;
 #define VECTOR_NULL(addr) uint32_t null_at_##addr;
 #define IRQ_START_ADDR(addr)
 #define VECTOR_END(addr, vect_ct, irq_ct)
 #include INCLUDE_VECTOR()
 #undef VECTOR
+#undef VECTOR_IRQ
 #undef VECTOR_NULL
 #undef IRQ
 #undef IRQ_START_ADDR
@@ -56,12 +60,14 @@ struct isr_vectors_s {
  */
 #define ASSERT_OFFS(addr, field) static_assert(offsetof(struct isr_vectors_s, field) == (addr), "address offset incorrect");
 #define VECTOR(addr, name) ASSERT_OFFS(addr, isr_##name)
+#define VECTOR_IRQ(addr, name) VECTOR(addr, name)
 #define VECTOR_NULL(addr) ASSERT_OFFS(addr, null_at_##addr)
 #define IRQ(addr, name) VECTOR(addr, name)
 #define IRQ_START_ADDR(addr)
 #define VECTOR_END(addr, vect_ct, irq_ct)
 #include INCLUDE_VECTOR()
 #undef VECTOR
+#undef VECTOR_IRQ
 #undef VECTOR_NULL
 #undef IRQ
 #undef IRQ_START_ADDR
@@ -82,12 +88,14 @@ __attribute__ ((section(".isr_vector"),externally_visible))
 const struct isr_vectors_s vectors = {
 	&__stack_high,
 #define VECTOR(addr, name) &isr_##name,
+#define VECTOR_IRQ(addr, name) VECTOR(addr, name)
 #define VECTOR_NULL(addr) 0,
 #define IRQ(addr, name) VECTOR(addr, name)
 #define IRQ_START_ADDR(addr)
 #define VECTOR_END(addr, vect_ct, irq_ct)
 #include INCLUDE_VECTOR()
 #undef VECTOR
+#undef VECTOR_IRQ
 #undef VECTOR_NULL
 #undef IRQ
 #undef IRQ_START_ADDR

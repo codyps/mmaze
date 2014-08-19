@@ -10,14 +10,44 @@
 #define SYST_CVR   (*(volatile uint32_t *)0xE000E018)
 #define SYST_CALIB (*(volatile uint32_t *)0xE000E01C)
 
+#define ICTR (*(volatile uint32_t *)0xE000E004)
+
+__attribute__((__always_inline__)) static inline void irq_enable(void)
+{
+	asm volatile("cpsie i");
+}
+
+__attribute__((__always_inline__)) static inline void irq_disable(void)
+{
+	asm volatile("cpsid i");
+}
+
+__attribute__((__always_inline__)) static inline void fault_enable(void)
+{
+	asm volatile("cpsie f");
+}
+
+__attribute__((__always_inline__)) static inline void fault_disable(void)
+{
+	asm volatile("cpsid f");
+}
+
 __attribute__((__interrupt__))
 void isr_systick(void)
 {
 	GPIO.c.ptor = 1 << 5;
 }
 
+/* NVIC_IPR_BASE 0xE000E400 */
+/* */
+//#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
+//NVIC_SYS_PRI3 |=  0x00FF0000
+
 void main(void)
 {
+	/* On boot, PRIMASK and FAULTMASK are 0, faults and interrupts are
+	 * enabled */
+
 	/* PIN13 = LED = PTC5 */
 	/* Ensure PORT PCR is configured as GPIO (probably default) */
 	/* Configure GPIO */
