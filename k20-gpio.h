@@ -24,4 +24,6 @@ struct k20_gpio_mod {
 #define GPIO_BASE 0x400FF000
 #define GPIO (*(volatile struct k20_gpio_mod *)GPIO_BASE)
 
+static_assert((uintptr_t)&GPIO.c == 0x400FF080, "");
+
 #endif
