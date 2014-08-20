@@ -19,4 +19,8 @@
 #define CONFIG_FLASH_CONFIG_FIELD_BASE 0x400
 #define CONFIG_FLASH_CONFIG_FIELD_SIZE 16
 
+/*
+ * External OSC = MEGA(16)
+ * Internal OSC = MEGA(4)
+ */
 #endif

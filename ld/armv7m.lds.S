@@ -2,8 +2,8 @@ LD_FEATURE ("SANE_EXPR")
 
 MEMORY
 {
-	flash (rx) : ORIGIN = CONFIG_FLASH_OFFS, LENGTH = CONFIG_FLASH_SIZE
-	ram (wx)   : ORIGIN = CONFIG_RAM_OFFS,   LENGTH = CONFIG_RAM_SIZE
+	flash (rx)  : ORIGIN = CONFIG_FLASH_OFFS, LENGTH = CONFIG_FLASH_SIZE
+	ram   (!rx) : ORIGIN = CONFIG_RAM_OFFS,   LENGTH = CONFIG_RAM_SIZE
 }
 
 ENTRY(isr_reset)
@@ -30,6 +30,7 @@ SECTIONS
 
 	.flash_config_field CONFIG_FLASH_CONFIG_FIELD_BASE : {
 	/*	ASSERT(. == CONFIG_FLASH_CONFIG_FIELD_BASE, "flash config field misplaced"); */
+		. = 0;
 		KEEP(*(.flash_config_field*))
 		. = CONFIG_FLASH_CONFIG_FIELD_SIZE;
 	} >flash =CONFIG_FLASH_FILL
@@ -38,6 +39,7 @@ SECTIONS
 	.text : ALIGN(4) {
 		*(.init*)
 		*(.text*)
+		*(.gnu.linkonce.t.*)
 	} >flash =CONFIG_FLASH_FILL
 
 	.rodata : {

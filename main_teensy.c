@@ -1,64 +1,49 @@
 #include "k20-gpio.h"
 #include "k20-port.h"
+#include "k20-sim.h"
+#include "armv7m.h"
 
-#define SYST_CSR   (*(volatile uint32_t *)0xE000E010)
-#define SYST_CSR_ENABLE    (1 << 0)
-#define SYST_CSR_TICKINT   (1 << 1)
-#define SYST_CSR_CLKSOURCE (1 << 2)
-#define SYST_CSR_COUNTFLAG (1 << 16)
-
-#define SYST_RVR   (*(volatile uint32_t *)0xE000E014)
-#define SYST_CVR   (*(volatile uint32_t *)0xE000E018)
-#define SYST_CALIB (*(volatile uint32_t *)0xE000E01C)
-
-#define ICTR (*(volatile uint32_t *)0xE000E004)
-
-__attribute__((__always_inline__)) static inline void irq_enable(void)
-{
-	asm volatile("cpsie i");
-}
-
-__attribute__((__always_inline__)) static inline void irq_disable(void)
-{
-	asm volatile("cpsid i");
-}
-
-__attribute__((__always_inline__)) static inline void fault_enable(void)
-{
-	asm volatile("cpsie f");
-}
-
-__attribute__((__always_inline__)) static inline void fault_disable(void)
-{
-	asm volatile("cpsid f");
-}
-
+static volatile uint32_t count;
 __attribute__((__interrupt__))
 void isr_systick(void)
 {
+	count ++;
+	if ((count % 1000) == 0)
+		K20_GPIO.c.ptor = 1 << 5;
 }
 
-/*
- * From the armv7-m arch ref manual:
- * SHPR1 0xE000ED18 4-7
- * SHPR2 0xE000ED1C 8-11
- * SHPR3 0xE000ED20 12-15
- */
-#if 0
-static void syshandler_priority_set(uint8_t prio, uint8_t expn)
-{
-
-}
-#endif
-
-#define SHPR3 (*(volatile uint32_t *)0xE000ED20)
+#define SCB_VTOR (*(volatile uint32_t *)0xE000ED08)
 
 /* NVIC_IPR_BASE 0xE000E400 */
 /* */
 //#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
 //NVIC_SYS_PRI3 |=  0x00FF0000
 
+/* Dealing with the FCF:
+ *  - define another memory region
+ *  - always define this mess
+ */
+struct k20_flash_config_field {
+} fcf __attribute__((section(".flash_config_field"),externally_visible)) = {
+};
 
+/*
+ * Flash config field "LPBOOT"
+ *
+ * 0 Low-power boot: OUTDIVx values in SIM_CLKDIV1 register are auto-configured
+ *   at reset exit for higher divide values that produce lower power consumption at
+ *   reset exit.
+ * • Core and system clock divider (OUTDIV1) and bus clock divider (OUTDIV2)
+ *   are 0x7 (divide by 8)
+ * • Flash clock divider (OUTDIV4)is 0xF (divide by 16)
+ *
+ * 1 Normal boot: OUTDIVx values in SIM_CLKDIV1 register are auto-configured at
+ *   reset exit for higher frequency values that produce faster operating frequencies at
+ *   reset exit.
+ * • Core and system clock divider (OUTDIV1) and bus clock divider (OUTDIV2)
+ *   are 0x0 (divide by 1)
+ * • Flash clock divider (OUTDIV4)is 0x1 (divide by 2)
+ */
 
 __attribute__((noreturn))
 void main(void)
@@ -68,16 +53,16 @@ void main(void)
 
 	/* PIN13 = LED = PTC5 */
 
+	/* enable clocks */
+	SIM_SCGC5 = SIM_SCGC5_PORTC;
+
 	/* Ensure PORT PCR is configured as GPIO */
 	K20_PORT.c.pcr[5] = K20_PORT_MUX_GPIO | K20_PORT_DSE;
 
 	/* Configure GPIO */
-	GPIO.c.pddr = 1 << 5;
-	GPIO.c.psor = 1 << 5;
-	//GPIO.c.ptor = 1 << 5;
-
-	for (;;)
-		;
+	K20_GPIO.c.pddr = 1 << 5;
+	K20_GPIO.c.psor = 1 << 5;
+	K20_GPIO.c.pcor = 1 << 5;
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
@@ -85,7 +70,7 @@ void main(void)
 	 * 1 / X = seconds per tick
 	 * 1 / 1000 = seconds / milliseconds
 	 */
-	SYST_RVR = CONFIG_SYSCLOCK / 1000;
+	SYST_RVR = MEGA(24) / 1000;
 	SYST_CVR = 0;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
 
