@@ -1,6 +1,7 @@
 #include "k20-gpio.h"
 #include "k20-port.h"
 #include "k20-sim.h"
+#include "k20-wdog.h"
 #include "armv7m.h"
 
 static volatile uint32_t count;
@@ -45,13 +46,36 @@ struct k20_flash_config_field {
  * • Flash clock divider (OUTDIV4)is 0x1 (divide by 2)
  */
 
+static void delay(unsigned ct)
+{
+	volatile unsigned n = 0;
+	while (n < ct)
+		n++;
+}
+
+__attribute__((__always_inline__))
+static inline void nop()
+{
+	asm volatile ("nop");
+}
+
+void init_early(void);
+void init_early(void)
+{
+	K20_WDOG.unlock = K20_WDOG_UNLOCK_SEQ1;
+	K20_WDOG.unlock = K20_WDOG_UNLOCK_SEQ2;
+	nop();
+	nop();
+	K20_WDOG.stctrlh = K20_WDOG_STCTRLH_ALLOWUPDATE;
+}
+
 __attribute__((noreturn))
 void main(void)
 {
 	/* On boot, PRIMASK and FAULTMASK are 0, faults and interrupts are
 	 * enabled */
-
 	/* PIN13 = LED = PTC5 */
+
 
 	/* enable clocks */
 	SIM_SCGC5 = SIM_SCGC5_PORTC;
@@ -61,8 +85,11 @@ void main(void)
 
 	/* Configure GPIO */
 	K20_GPIO.c.pddr = 1 << 5;
+	delay(1000);
 	K20_GPIO.c.psor = 1 << 5;
-	K20_GPIO.c.pcor = 1 << 5;
+	delay(1000);
+	K20_GPIO.c.ptor = 1 << 5;
+	delay(1000);
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
