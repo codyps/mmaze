@@ -28,6 +28,14 @@ struct k20_flash_config_field {
 } fcf __attribute__((section(".flash_config_field"),externally_visible)) = {
 };
 
+struct k20_usb_bdt {
+
+
+} const btdt __attribute__((section(".data"), aligned(512))) = {
+
+
+};
+
 /*
  * Flash config field "LPBOOT"
  *
@@ -97,7 +105,7 @@ void main(void)
 	 * 1 / X = seconds per tick
 	 * 1 / 1000 = seconds / milliseconds
 	 */
-	SYST_RVR = MEGA(24) / 1000;
+	SYST_RVR = MEGA(24) / 1000 - 1;
 	SYST_CVR = 0;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
 

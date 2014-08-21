@@ -4,6 +4,8 @@ __attribute__((noreturn))
 extern void main (void);
 extern void __libc_init_array(void);
 extern void _init(void);
+extern void init_early(void);
+extern void isr_reset(void);
 
 /* make __libc_init_array() happy */
 __attribute__((weak))

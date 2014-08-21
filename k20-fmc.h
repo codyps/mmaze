@@ -1,9 +1,7 @@
 #ifndef K20_FMC_H_
 #define K20_FMC_H_
 
-#include <stdint.h>
-
-#define MMIO_32(a) (*(volatile uint32_t *)(a))
+#include "mmio-def.h"
 
 #define FMC_PFAPR	MMIO_32(0x4001F000)
 #define FMC_PFB0CR	MMIO_32(0x4001F004)

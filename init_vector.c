@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <assert.h>
 
+void bad_interrupt(void);
 __attribute__((interrupt,noreturn))
 void bad_interrupt(void)
 {
