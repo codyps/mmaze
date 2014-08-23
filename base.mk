@@ -1,4 +1,4 @@
-## base.mk: 5e44d4f+, see https://github.com/jmesmon/trifles.git
+## base.mk: 5fcab69+, see https://github.com/jmesmon/trifles.git
 # Usage:
 #
 # == Targets ==
@@ -318,6 +318,8 @@ clean:
 obj-to-dep = $(foreach obj,$(1),$(dir $(obj)).$(notdir $(obj)).d)
 obj-all    = $(foreach target,$(TARGETS_ALL),$(obj-$(target)))
 
+$(foreach obj,$(obj-all),$(foreach act,$(ON_EACH_OBJ),$(eval $(call $(act),$(obj)))))
+
 # $1 - variant
 # Output - full path to dep files for every object for the given variant
 variant-deps = $(addprefix $(O_)/$1,$(call obj-to-dep,$(obj-all)))
@@ -436,7 +438,7 @@ $2/%.o: %.S $2/.TRACK-ASFLAGS
 
 
 $(call debug,ON_EACH_VARIANT $(ON_EACH_VARIANT) +++)
-$(foreach each_var_func,$(ON_EACH_VARIANT),$(call debug,LLL$(each_var_func)))
+$(foreach each_var_func,$(ON_EACH_VARIANT),$(call $(each_var_func),$1,$2))
 $(call debug,ON_EACH_VARIANT ---)
 
 #-include $(call variant-deps,$1)

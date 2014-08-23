@@ -102,8 +102,6 @@ void main(void)
 
 	for (;;) {
 		K20_GPIO.c.ptor = 1 << 5;
-		delay_ms(100);
-		K20_GPIO.c.ptor = 1 << 5;
 		delay_ms(1000);
 	}
 }

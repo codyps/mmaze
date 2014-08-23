@@ -84,7 +84,7 @@ static inline void delay_cycles_x4p1(uint32_t ct)
 static inline void delay_us_at_freq(uint32_t us, uint32_t freq_hz)
 {
 	/* XXX: what are our maximum amounts here? */
-	delay_cycles_x4p1(freq_hz / US_PER_SEC * us);
+	delay_cycles_x4p1(freq_hz / US_PER_SEC * us / 4);
 }
 
 #ifdef CONFIG_SYSCLOCK

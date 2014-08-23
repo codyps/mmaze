@@ -30,8 +30,6 @@ define do-lst
 all:: $(1).lst
 TRASH += $(1).lst
 endef
-
-
 ON_EACH_OBJ += do-lst
 
 define var-target
@@ -54,7 +52,6 @@ $(2)/%.o.lst : $(2)/%.o
 $(2)/%.elf.lst : $(2)/%.elf
 	$$(OBJDUMP) -d $$< > $$@
 endef
-
 ON_EACH_VARIANT += extra-rules
 
 include base.mk
