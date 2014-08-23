@@ -1,6 +1,8 @@
 #! /bin/sh
 
-: ${CC:=arm-none-eabi-gcc}
+: ${CROSS_COMPILER:=arm-none-eabi-}
+: ${CC:=${CROSS_COMPILER}gcc}
+: ${OBJCOPY:=${CROSS_COMPILER}objcopy}
 
 CFLAGS="-I. -std=gnu11 -Wno-main ${CFLAGS}"
 LDFLAGS="-nostartfiles ${LDFLAGS}"
@@ -9,6 +11,7 @@ exec >build.ninja
 
 cat <<EOF
 cc = $CC
+objcopy = $OBJCOPY
 cflags = -Wall $CFLAGS
 ldflags = $LDFLAGS
 
@@ -21,6 +24,8 @@ rule ccld
 
 rule cpp_lds
   command = \$cc -E -P -C \$cflags -o \$out \$in
+rule hex
+  command = \$objcopy -O ihex \$in \$out
 EOF
 
 to_out () {
@@ -62,6 +67,8 @@ bin () {
 	cat <<EOF
 build $out : ccld $(to_obj "$@") | $(to_lds ld/*.lds.S)
   ldflags = -L.build-$out/ld \$ldflags $(_ev ldflags_${out_var})
+build $out.hex : hex $out
+default $out.hex
 EOF
 	BINS="$BINS $out"
 }
