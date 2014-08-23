@@ -37,16 +37,18 @@ ON_EACH_OBJ += do-lst
 all :: main.bin main.elf.lst
 
 define extra-rules
+$(call debug,extra-rules)
+
 $(2)/%.lds : %.lds.S
 	$(CPP) $(ALL_CPPFLAGS) -P -C -o $@ $<
 
-$(2)/%.bin : %.elf
+$(2)/%.bin : $(2)/%.elf
 	$(OBJCOPY) -F binary $< $@
 
-$(2)/%.o.lst : %.o
+$(2)/%.o.lst : $(2)/%.o
 	$(OBJDUMP) -d $< > $@
 
-$(2)/%.elf.lst : %.elf
+$(2)/%.elf.lst : $(2)/%.elf
 	$(OBJDUMP) -d $< > $@
 endef
 

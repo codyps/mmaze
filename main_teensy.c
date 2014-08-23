@@ -82,11 +82,11 @@ void main(void)
 
 	/* Configure GPIO */
 	K20_GPIO.c.pddr = 1 << 5;
-	delay_us(1000);
+	delay_ms(1000);
 	K20_GPIO.c.psor = 1 << 5;
-	delay_us(1000);
+	delay_ms(1000);
 	K20_GPIO.c.ptor = 1 << 5;
-	delay_us(1000);
+	delay_ms(1000);
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
@@ -94,10 +94,16 @@ void main(void)
 	 * 1 / X = seconds per tick
 	 * 1 / 1000 = seconds / milliseconds
 	 */
+#if 0
 	SYST_RVR = CONFIG_SYSCLOCK / 1000 - 1;
 	SYST_CVR = 0;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
+#endif
 
-	for (;;)
-		;
+	for (;;) {
+		K20_GPIO.c.ptor = 1 << 5;
+		delay_ms(100);
+		K20_GPIO.c.ptor = 1 << 5;
+		delay_ms(1000);
+	}
 }
