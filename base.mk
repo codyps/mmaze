@@ -1,4 +1,4 @@
-## base.mk: d1e0962, see https://github.com/jmesmon/trifles.git
+## base.mk: 5e44d4f+, see https://github.com/jmesmon/trifles.git
 # Usage:
 #
 # == Targets ==
@@ -92,6 +92,9 @@
 # BIN_EXT		Add an extention to each binary produced (.elf, .exe)
 #
 # ON_EACH_OBJ		a list of functions to $(call) for every object target
+# 			$1 = object
+# ON_EACH_VARIANT	a list of functions to be evaluated for every variant.
+#			$1 = variant, $2 = full output dir
 #
 # == How to use with FLEX + BISON support ==
 #
@@ -431,6 +434,9 @@ $2/%.o: %.cc $2/.TRACK-CXXFLAGS
 $2/%.o: %.S $2/.TRACK-ASFLAGS
 	$$(QUIET_AS)$$(AS) -c $$(ALL_ASFLAGS) $$< -o $$@ $$(asflags-$$*) $$(asflags-$1) $$(asflags-$1/$$*)
 
+$(call debug, ON_EACH_VARIANT $(ON_EACH_VARIANT) +++)
+$(foreach e,$(ON_EACH_VARIANT),$(call e))
+$(call debug, ON_EACH_VARIANT ---)
 
 #-include $(call variant-deps,$1)
 endef

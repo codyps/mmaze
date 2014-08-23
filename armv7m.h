@@ -92,6 +92,10 @@ static inline void delay_us(uint32_t us)
 {
 	delay_us_at_freq(us, CONFIG_SYSCLOCK);
 }
+static inline void delay_ms(uint32_t ms)
+{
+	delay_us_at_freq(ms * 1000, CONFIG_SYSCLOCK);
+}
 #endif
 
 #endif
