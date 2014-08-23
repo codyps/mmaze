@@ -94,7 +94,7 @@ void main(void)
 	 * 1 / X = seconds per tick
 	 * 1 / 1000 = seconds / milliseconds
 	 */
-	SYST_RVR = MEGA(24) / 1000 - 1;
+	SYST_RVR = CONFIG_SYSCLOCK / 1000 - 1;
 	SYST_CVR = 0;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
 

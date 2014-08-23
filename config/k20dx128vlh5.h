@@ -3,7 +3,7 @@
 
 #include <units.h>
 
-#define CONFIG_SYSCLOCK MEGA(50)
+#define CONFIG_SYSCLOCK MEGA(24)
 
 #define CONFIG_FLASH_FILL 0xFFFFFFFF
 #define INCLUDE_VECTOR()  <config/k20-vector.def>

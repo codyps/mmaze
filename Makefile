@@ -36,17 +36,21 @@ ON_EACH_OBJ += do-lst
 
 all :: main.bin main.elf.lst
 
-%.lds : %.lds.S
+define extra-rules
+$(2)/%.lds : %.lds.S
 	$(CPP) $(ALL_CPPFLAGS) -P -C -o $@ $<
 
-%.bin : %.elf
+$(2)/%.bin : %.elf
 	$(OBJCOPY) -F binary $< $@
 
-%.o.lst : %.o
+$(2)/%.o.lst : %.o
 	$(OBJDUMP) -d $< > $@
 
-%.elf.lst : %.elf
+$(2)/%.elf.lst : %.elf
 	$(OBJDUMP) -d $< > $@
+endef
+
+ON_EACH_VARIANT += extra-rules
 
 include base.mk
 ALL_CFLAGS  += -Wextra -Os
