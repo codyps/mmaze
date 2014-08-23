@@ -7,4 +7,7 @@
 #define KILO(x) ((x) * 1000)
 #define MEGA(x) ((x) * 1000 * 1000)
 
+#define MS_PER_SEC 1000
+#define US_PER_SEC (1000 * 1000)
+
 #endif

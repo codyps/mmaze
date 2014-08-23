@@ -29,11 +29,7 @@ struct k20_flash_config_field {
 };
 
 struct k20_usb_bdt {
-
-
-} const btdt __attribute__((section(".data"), aligned(512))) = {
-
-
+} btdt __attribute__((aligned(512))) = {
 };
 
 /*
@@ -53,13 +49,6 @@ struct k20_usb_bdt {
  *   are 0x0 (divide by 1)
  * • Flash clock divider (OUTDIV4)is 0x1 (divide by 2)
  */
-
-static void delay(unsigned ct)
-{
-	volatile unsigned n = 0;
-	while (n < ct)
-		n++;
-}
 
 __attribute__((__always_inline__))
 static inline void nop()
@@ -93,11 +82,11 @@ void main(void)
 
 	/* Configure GPIO */
 	K20_GPIO.c.pddr = 1 << 5;
-	delay(1000);
+	delay_us(1000);
 	K20_GPIO.c.psor = 1 << 5;
-	delay(1000);
+	delay_us(1000);
 	K20_GPIO.c.ptor = 1 << 5;
-	delay(1000);
+	delay_us(1000);
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
