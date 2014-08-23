@@ -434,9 +434,10 @@ $2/%.o: %.cc $2/.TRACK-CXXFLAGS
 $2/%.o: %.S $2/.TRACK-ASFLAGS
 	$$(QUIET_AS)$$(AS) -c $$(ALL_ASFLAGS) $$< -o $$@ $$(asflags-$$*) $$(asflags-$1) $$(asflags-$1/$$*)
 
-$(call debug, ON_EACH_VARIANT $(ON_EACH_VARIANT) +++)
-$(foreach e,$(ON_EACH_VARIANT),$(call e))
-$(call debug, ON_EACH_VARIANT ---)
+
+$(call debug,ON_EACH_VARIANT $(ON_EACH_VARIANT) +++)
+$(foreach each_var_func,$(ON_EACH_VARIANT),$(call debug,LLL$(each_var_func)))
+$(call debug,ON_EACH_VARIANT ---)
 
 #-include $(call variant-deps,$1)
 endef

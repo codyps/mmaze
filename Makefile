@@ -34,22 +34,25 @@ endef
 
 ON_EACH_OBJ += do-lst
 
-all :: main.bin main.elf.lst
+define var-target
+all :: $(2)/main.bin $(2)/main.elf.lst
+endef
+ON_EACH_VARIANT += var-target
 
 define extra-rules
 $(call debug,extra-rules)
 
 $(2)/%.lds : %.lds.S
-	$(CPP) $(ALL_CPPFLAGS) -P -C -o $@ $<
+	$$(CPP) $$(ALL_CPPFLAGS) -P -C -o $$@ $$<
 
 $(2)/%.bin : $(2)/%.elf
-	$(OBJCOPY) -F binary $< $@
+	$$(OBJCOPY) -F binary $$< $$@
 
 $(2)/%.o.lst : $(2)/%.o
-	$(OBJDUMP) -d $< > $@
+	$$(OBJDUMP) -d $$< > $$@
 
 $(2)/%.elf.lst : $(2)/%.elf
-	$(OBJDUMP) -d $< > $@
+	$$(OBJDUMP) -d $$< > $$@
 endef
 
 ON_EACH_VARIANT += extra-rules
