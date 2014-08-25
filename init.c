@@ -4,10 +4,16 @@ __attribute__((noreturn))
 extern void main (void);
 extern void __libc_init_array(void);
 extern void _init(void);
+extern void init_early(void);
+extern void isr_reset(void);
 
 /* make __libc_init_array() happy */
 __attribute__((weak))
 void _init(void)
+{}
+
+__attribute__((weak))
+void init_early(void)
 {}
 
 #if 0
@@ -36,12 +42,14 @@ static void __libc_init_array(void)
 
 void __init(void);
 
-__attribute__((noreturn,interrupt))
-void __init(void)
+__attribute__((noreturn,interrupt,naked))
+void isr_reset(void)
 {
 	extern uint32_t __bss_start[], __bss_end[], __data_start[],
 	       __data_end[], __data_load_start[];
 	uint32_t *s, *d;
+
+	init_early();
 
 	s = __data_load_start;
 	d = __data_start;

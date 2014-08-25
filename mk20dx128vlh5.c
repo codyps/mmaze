@@ -10,7 +10,6 @@
  * 5 = 50MHz max clock freq
  */
 
-
 /* from http://cache.freescale.com/files/32bit/doc/ref_manual/K20P64M50SF0RM.pdf */
 
 #define KIBI(x) ((x) * 1024)
@@ -36,3 +35,40 @@
 
 /* "32 Byte Register file", "VBAT Register File" */
 #define BACKUP_REG_BYTES 32
+
+
+/* clock init */
+/* SIM module's CLKDIVn registers */
+/* FTLFL_FOPT[LPBOOT] sets reset value of core clock, system clock, bus clock, and flash clock */
+
+/*
+ *
+ * "Erase to 1"
+ *
+ * FTFL_FOPT[LPBOOT]	core/system	bus		flash		desc
+ * 0			0x7 (div by 8)	0x7 (div by 8)	0xf (div by 16)	low power boot
+ * 1			0x0 (div by 1)  0x0 (div by 1)  0x1 (div by 2)  fast clock boot
+ */
+
+/* Flash Configuration field */
+
+#define CONFIG_FLASH_CONFIG_FIELD_BASE 0x400
+#define CONFIG_FLASH_CONFIG_FIELD_SIZE 16
+
+#define FCF_BACKDOOR_OFFS 0x400
+#define FCF_BACKDOOR_SZ   8
+
+#define FCF_FPROT0_OFFS 0x408
+#define FCF_FPROT0_SZ 4
+
+#define FCF_FDPROT_OFFS 0x40F
+#define FCF_FDPROT_SZ 1
+
+#define FCF_FEPROT_OFFS 0x40E
+#define FCF_FEPROT_SZ 1
+
+#define FCF_FOPT_OFFS 0x40D
+#define FCF_FOPT_SZ 1
+
+#define FCF_FSEC_OFFS 0x40C
+#define FCF_FSEC_SZ 1

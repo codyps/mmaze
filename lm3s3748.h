@@ -11,7 +11,7 @@
 #define FLASH_end   0x0001FFFF
 
 #ifndef __ASSEMBLER__
-#include "cm3.h"
+#include "armv7m-periph.h"
 
 /*** Watchdog timer 0 - WDT ***/
 

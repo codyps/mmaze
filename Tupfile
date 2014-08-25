@@ -1,9 +1,19 @@
+
+CFLAGS += -Wno-main -Os -fmerge-all-constants
+CPPFLAGS += -I. -mcpu=$(CONFIG_CPU) -include config/$(CONFIG_CHIP).h
+
+CROSS_COMPILE = arm-none-eabi-
+CC = $(CROSS_COMPILE)gcc
+OBJCOPY = $(CROSS_COMPILE)objcopy
+
+LDFLAGS += -T ld/armv7m.lds -nostartfiles -ggdb3 -Wl,--print-gc-sections
+
+src-y += init_vector.c init.c
+src-y += $(CONFIG_APP)
+
 include_rules
 
-CFLAGS += -I. -Wno-main
-CC = arm-none-eabi-gcc
-LDFLAGS += -L ld -T lm3s.ld -nostartfiles
-
-LM3S_SRC = init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
-: foreach $(LM3S_SRC) |> !cc -DLM3S3748=1 -include config/lm3s.h |> %B.o
-: *.o |> !ccld |> main.elf
+: foreach $(src-y)   |> !cc      |> %f.o  {obj}
+: foreach ld/*.lds.S |> !cpp_lds |> ld/%B {lds}
+: {obj} | {lds}      |> !ccld    |> main.elf
+: main.elf           |> !hex     |> main.hex

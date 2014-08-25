@@ -1,7 +1,5 @@
-#ifndef CM3_H_
-#define CM3_H_
-
-/* XXX: should names have cm3 prefixes? */
+#ifndef ARMV7M_PERIPH_H_
+#define ARMV7M_PERIPH_H_
 
 /*** Cortex-m3 Core Peripherals - CORE ***/
 #define CORE_BASE 0xE000E000
@@ -9,9 +7,9 @@ struct cm3_core_regs {
 	uint32_t res_1[4];
 
 	/* System Timer (SysTick) */
-#define STCTRL    0x010
+#define SYST_CSR_OFFS    0x010
 	uint32_t stctrl;
-#define STRELOAD  0x014
+#define SYST_STRELOAD  0x014
 	uint32_t streload;
 #define STCURRENT 0x018
 	uint32_t stcurrent;
@@ -294,4 +292,5 @@ struct cm3_sysctl_regs {
 /* WDT */
 
 /* CORE_DEBUG */
+
 #endif

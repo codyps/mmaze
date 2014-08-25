@@ -10,7 +10,7 @@
  * IRQ_START_ADDR(addr)
  * VECTOR_END(addr, vect_ct, irq_ct)
  */
-#include <armv7m-vertor.def>
+#include <config/armv7m-vector.def>
 
 IRQ_START_ADDR(0x40)
 IRQ(0x40, dma_chan0_transfer_complete) /* 16 */
@@ -29,10 +29,10 @@ IRQ(0x70, spi0)
 IRQ(0x74, i2s0_transmit)
 IRQ(0x78, i2s1_recieve)
 IRQ(0x7C, uart0_lon_status)
-IRQ(0x7C, uart0_status)
-IRQ(0x80, uart0_error)
-IRQ(0x84, uart1_status)
-IRQ(0x88, uart1_error)
+IRQ(0x80, uart0_status)
+IRQ(0x84, uart0_error)
+IRQ(0x88, uart1_status)
+IRQ(0x8C, uart1_error)
 IRQ(0x90, uart2_status)
 IRQ(0x94, uart2_error)
 IRQ(0x98, adc0)
@@ -48,6 +48,7 @@ IRQ(0xBC, pit_chan1)
 IRQ(0xC0, pit_chan2)
 IRQ(0xC4, pit_chan3)
 IRQ(0xC8, pdb)
+IRQ(0xCC, usb_otg)
 IRQ(0xD0, usb_charger_detect)
 IRQ(0xD4, tsi)
 IRQ(0xD8, mcg)

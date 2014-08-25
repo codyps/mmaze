@@ -6,22 +6,37 @@
  * VECTOR_END(addr, vect_ct, irq_ct)
  */
 
-VECTOR(0x4,    reset)
-VECTOR(0x8,  nmi)
+
+/* // reset = -15
+  NonMaskableInt_IRQn = -14,
+  // hard_fault = -13
+  MemoryManagement_IRQn = -12,
+  BusFault_IRQn = -11,
+  UsageFault_IRQn = -10,
+  // -9 to -6 = NULL
+  SVCall_IRQn = -5,
+  DebugMonitor_IRQn = -4,
+  // -3 = NULL
+  PendSV_IRQn = -2,
+  SysTick_IRQn = -1, 
+ */
+
+VECTOR(0x4,  reset)
+VECTOR_IRQ(0x8,  nmi)
 VECTOR(0xC,  hard_fault)
-VECTOR(0x10,  mm)
-VECTOR(0x14, bus_fault)
-VECTOR(0x18, usage_fault)
+VECTOR_IRQ(0x10, mm)
+VECTOR_IRQ(0x14, bus_fault)
+VECTOR_IRQ(0x18, usage_fault)
 
 VECTOR_NULL(0x1C)
 VECTOR_NULL(0x20)
 VECTOR_NULL(0x24)
 VECTOR_NULL(0x28)
 
-VECTOR(0x2C, svcall)
-VECTOR(0x30, debug_monitor)
+VECTOR_IRQ(0x2C, svcall)
+VECTOR_IRQ(0x30, debug_monitor)
 
 VECTOR_NULL(0x34)
 
-VECTOR(0x38, pendsv)
-VECTOR(0x3C, systick)
+VECTOR_IRQ(0x38, pendsv)
+VECTOR_IRQ(0x3C, systick)

@@ -9,3 +9,5 @@
 build.ninja
 .ninja*
 build/
+ld/*.lds
+*.hex
