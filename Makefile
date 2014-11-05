@@ -8,7 +8,7 @@ OBJDUMP=$(CROSS_COMPILE)objdump
 # Re-enable when we have asan support or use -fsanitize-undefined-trap-on-error
 NO_SANITIZE = 1
 
-ALL_CPPFLAGS += -mcpu=cortex-m3 -I.
+ALL_CPPFLAGS += -mcpu=cortex-m3 -mthumb -I.
 ALL_CFLAGS  += $(ALL_CPPFLAGS) -std=gnu11 -Wno-main
 ALL_LDFLAGS += -nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -Lld
 ALL_ASFLAGS += -D__ASSEMBLER__=1
