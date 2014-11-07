@@ -41,16 +41,16 @@ define extra-rules
 $(call debug,extra-rules)
 
 $(2)/%.lds : %.lds.S
-	$$(CPP) $$(ALL_CPPFLAGS) -P -C -o $$@ $$<
+	$$(call q,LDS,$$@)$$(CPP) $$(ALL_CPPFLAGS) -P -C -o $$@ $$<
 
 $(2)/%.bin : $(2)/%.elf
-	$$(OBJCOPY) -F binary $$< $$@
+	$$(call q,OBJCOPY,$$@)$$(OBJCOPY) -F binary $$< $$@
 
 $(2)/%.o.lst : $(2)/%.o
-	$$(OBJDUMP) -d $$< > $$@
+	$$(call q,OBJDUMP,$$@)$$(OBJDUMP) -d $$< > $$@
 
 $(2)/%.elf.lst : $(2)/%.elf
-	$$(OBJDUMP) -d $$< > $$@
+	$$(call q,OBJDUMP,$$@)$$(OBJDUMP) -d $$< > $$@
 endef
 ON_EACH_VARIANT += extra-rules
 
