@@ -1,6 +1,6 @@
 
 CFLAGS += -Wno-main -Os -fmerge-all-constants
-CPPFLAGS += -I. -mcpu=$(CONFIG_CPU) -include config/$(CONFIG_CHIP).h
+CPPFLAGS += -I. -mcpu=$(CONFIG_CPU) -mthumb -include config/$(CONFIG_CHIP).h
 
 CROSS_COMPILE = arm-none-eabi-
 CC = $(CROSS_COMPILE)gcc

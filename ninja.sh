@@ -75,11 +75,11 @@ EOF
 BINS=""
 
 
-cflags_lm3s_elf="-DLM3S3748=1 -include config/lm3s.h -mcpu=cortex-m3"
+cflags_lm3s_elf="-DLM3S3748=1 -include config/lm3s.h -mcpu=cortex-m3 -mthumb"
 ldflags_lm3s_elf="-T armv7m.lds"
 bin lm3s.elf init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
 
-cflags_main_elf="-include config/k20dx128vlh5.h -mcpu=cortex-m4"
+cflags_main_elf="-include config/k20dx128vlh5.h -mcpu=cortex-m4 -mthumb"
 ldflags_main_elf="-T armv7m.lds"
 bin main.elf init_vector.c init.c main_teensy.c
 

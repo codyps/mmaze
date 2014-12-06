@@ -8,7 +8,7 @@ OBJDUMP=$(CROSS_COMPILE)objdump
 # Re-enable when we have asan support or use -fsanitize-undefined-trap-on-error
 NO_SANITIZE = 1
 
-ALL_CPPFLAGS += -mcpu=cortex-m3 -I.
+ALL_CPPFLAGS += -mcpu=cortex-m3 -mthumb -I.
 ALL_CFLAGS  += $(ALL_CPPFLAGS) -std=gnu11 -Wno-main
 ALL_LDFLAGS += -nostartfiles -Wl,-O1,--print-gc-sections,--gc-sections -Lld
 ALL_ASFLAGS += -D__ASSEMBLER__=1
@@ -41,16 +41,16 @@ define extra-rules
 $(call debug,extra-rules)
 
 $(2)/%.lds : %.lds.S
-	$$(CPP) $$(ALL_CPPFLAGS) -P -C -o $$@ $$<
+	$$(call q,LDS,$$@)$$(CPP) $$(ALL_CPPFLAGS) -P -C -o $$@ $$<
 
 $(2)/%.bin : $(2)/%.elf
-	$$(OBJCOPY) -F binary $$< $$@
+	$$(call q,OBJCOPY,$$@)$$(OBJCOPY) -F binary $$< $$@
 
 $(2)/%.o.lst : $(2)/%.o
-	$$(OBJDUMP) -d $$< > $$@
+	$$(call q,OBJDUMP,$$@)$$(OBJDUMP) -d $$< > $$@
 
 $(2)/%.elf.lst : $(2)/%.elf
-	$$(OBJDUMP) -d $$< > $$@
+	$$(call q,OBJDUMP,$$@)$$(OBJDUMP) -d $$< > $$@
 endef
 ON_EACH_VARIANT += extra-rules
 
