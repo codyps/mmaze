@@ -56,7 +56,6 @@ __attribute__((__always_inline__)) static inline void wfi(void)
 	__asm__ __volatile__("wfi");
 }
 
-
 /*
  * http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0432c/CHDCICDF.html
  *
