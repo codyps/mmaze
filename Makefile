@@ -20,8 +20,8 @@ LDSCRIPT = ld/armv7m.lds
 lds_S = $(wildcard ld/*.lds.S)
 lds = $(lds_S:.S=)
 
-TARGETS = main.elf
-obj-main.elf = init_vector.o init.o lm3s/adc.o lm3s/clock.o main.o
+TARGET_BIN = main.elf
+obj-main.elf = init_vector.c.o init.c.o lm3s/adc.c.o lm3s/clock.c.o main.c.o
 main.elf : $(lds)
 ALL_CPPFLAGS += -DLM3S3748=1 -include config/lm3s.h
 ALL_LDFLAGS += -T $(LDSCRIPT)
@@ -46,7 +46,7 @@ $(2)/%.lds : %.lds.S
 $(2)/%.bin : $(2)/%.elf
 	$$(call q,OBJCOPY,$$@)$$(OBJCOPY) -F binary $$< $$@
 
-$(2)/%.o.lst : $(2)/%.o
+$(2)/%.c.o.lst : $(2)/%.c.o
 	$$(call q,OBJDUMP,$$@)$$(OBJDUMP) -d $$< > $$@
 
 $(2)/%.elf.lst : $(2)/%.elf
