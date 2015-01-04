@@ -4,7 +4,7 @@
 #include "k20-wdog.h"
 #include "armv7m.h"
 
-static volatile uint32_t count;
+static uint32_t count;
 __attribute__((__interrupt__))
 void isr_systick(void)
 {
@@ -13,7 +13,7 @@ void isr_systick(void)
 		K20_GPIO.c.ptor = 1 << 5;
 }
 
-#define SCB_VTOR (*(volatile uint32_t *)0xE000ED08)
+#define SCB_VTOR MMIO_32(0xE000ED08)
 
 /* NVIC_IPR_BASE 0xE000E400 */
 /* */
