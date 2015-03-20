@@ -83,6 +83,11 @@ cflags_main_elf="-include config/k20dx128vlh5.h -mcpu=cortex-m4 -mthumb"
 ldflags_main_elf="-T armv7m.lds"
 bin main.elf init_vector.c init.c main_teensy.c
 
+cflags_flutter_elf="-include config/atsam3s1a.h -mcpu=cortex-m3 -mthumb"
+ldflags_flutter_elf="-T armv7m.lds"
+bin flutter.elf init_vector.c init.c main_flutter.c
+
+
 cat <<EOF
 rule ninja_gen
   command = $0

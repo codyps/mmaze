@@ -1,6 +1,7 @@
 #ifndef ARMV7M_H_
 #define ARMV7M_H_
 
+#include "units.h"
 #include "mmio-def.h"
 
 /* XXX: should names have armv7m prefixes? */
