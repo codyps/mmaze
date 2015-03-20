@@ -4,7 +4,7 @@
 #include "k20/wdog.h"
 #include "armv7m.h"
 
-static volatile uint32_t count;
+static uint32_t count;
 __attribute__((__interrupt__))
 void isr_systick(void)
 {
@@ -13,7 +13,7 @@ void isr_systick(void)
 		K20_GPIO.c.ptor = 1 << 5;
 }
 
-#define SCB_VTOR (*(volatile uint32_t *)0xE000ED08)
+#define SCB_VTOR MMIO_32(0xE000ED08)
 
 /* NVIC_IPR_BASE 0xE000E400 */
 /* */
@@ -56,9 +56,18 @@ static inline void nop()
 	asm volatile ("nop");
 }
 
+/*
+ * This is called before BSS is zeroed and before constructors are called.
+ */
 void init_early(void);
 void init_early(void)
 {
+	/*
+	 * The teensy bootloader enables the watchdog at somepoint before it
+	 * passes control to us. We need to either disable it or feed it.
+	 *
+	 * For now we disable it.
+	 */
 	K20_WDOG.unlock = K20_WDOG_UNLOCK_SEQ1;
 	K20_WDOG.unlock = K20_WDOG_UNLOCK_SEQ2;
 	nop();
@@ -73,7 +82,6 @@ void main(void)
 	 * enabled */
 	/* PIN13 = LED = PTC5 */
 
-
 	/* enable clocks */
 	SIM_SCGC5 = SIM_SCGC5_PORTC;
 
@@ -82,11 +90,6 @@ void main(void)
 
 	/* Configure GPIO */
 	K20_GPIO.c.pddr = 1 << 5;
-	delay_ms(1000);
-	K20_GPIO.c.psor = 1 << 5;
-	delay_ms(1000);
-	K20_GPIO.c.ptor = 1 << 5;
-	delay_ms(1000);
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */
@@ -94,14 +97,11 @@ void main(void)
 	 * 1 / X = seconds per tick
 	 * 1 / 1000 = seconds / milliseconds
 	 */
-#if 0
 	SYST_RVR = CONFIG_SYSCLOCK / 1000 - 1;
 	SYST_CVR = 0;
 	SYST_CSR = SYST_CSR_ENABLE | SYST_CSR_TICKINT | SYST_CSR_CLKSOURCE;
-#endif
 
-	for (;;) {
-		K20_GPIO.c.ptor = 1 << 5;
-		delay_ms(1000);
-	}
+	/* TODO: low power mode? */
+	for (;;)
+		wfi();
 }
