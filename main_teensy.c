@@ -1,7 +1,7 @@
-#include "k20-gpio.h"
-#include "k20-port.h"
-#include "k20-sim.h"
-#include "k20-wdog.h"
+#include "k20/gpio.h"
+#include "k20/port.h"
+#include "k20/sim.h"
+#include "k20/wdog.h"
 #include "armv7m.h"
 
 static volatile uint32_t count;
