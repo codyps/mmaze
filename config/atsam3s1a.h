@@ -1,14 +1,20 @@
 #pragma once
 /* flutter wireless "Early Backer Special Edition" */
 
+#include <units.h>
+
+/* XXX: verify */
+#define CONFIG_SYSCLOCK MEGA(24)
+
+/* XXX: verify */
 #define CONFIG_FLASH_FILL 0xFFFFFFFF
 #define INCLUDE_VECTOR()  <config/armv7m-vector.def>
 
 #define CONFIG_FLASH_OFFS 0x00400000
-#define CONFIG_FLASH_SIZE 0x00010000
+#define CONFIG_FLASH_SIZE KIBI(64)
 
 #define CONFIG_RAM_OFFS 0x20000000
-#define CONFIG_RAM_SIZE 0x00004000
+#define CONFIG_RAM_SIZE KIBI(16)
 
 #if 0
 /* Basic address space */
