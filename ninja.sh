@@ -26,6 +26,8 @@ rule cpp_lds
   command = \$cc -E -P -C \$cflags -o \$out \$in
 rule hex
   command = \$objcopy -O ihex \$in \$out
+rule bin
+  command = \$objcopy -O binary \$in \$out
 EOF
 
 to_out () {
@@ -68,16 +70,16 @@ bin () {
 build $out : ccld $(to_obj "$@") | $(to_lds ld/*.lds.S)
   ldflags = -L.build-$out/ld \$ldflags $(_ev ldflags_${out_var})
 build $out.hex : hex $out
-default $out.hex
+build $out.bin : bin $out
 EOF
-	BINS="$BINS $out"
+	BINS="$BINS $out $out.hex $out.bin"
 }
 BINS=""
 
 
 cflags_lm3s_elf="-DLM3S3748=1 -include config/lm3s.h -mcpu=cortex-m3 -mthumb"
 ldflags_lm3s_elf="-T armv7m.lds"
-bin lm3s.elf init_vector.c init.c lm3s/adc.c lm3s/clock.c main.c
+bin lm3s.elf init_vector.c init.c lm3s/adc.c main.c
 
 cflags_main_elf="-include config/k20dx128vlh5.h -mcpu=cortex-m4 -mthumb"
 ldflags_main_elf="-T armv7m.lds"
