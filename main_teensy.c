@@ -50,12 +50,6 @@ struct k20_usb_bdt {
  * • Flash clock divider (OUTDIV4)is 0x1 (divide by 2)
  */
 
-__attribute__((__always_inline__))
-static inline void nop()
-{
-	asm volatile ("nop");
-}
-
 /*
  * This is called before BSS is zeroed and before constructors are called.
  */

@@ -98,4 +98,10 @@ static inline void delay_ms(uint32_t ms)
 }
 #endif
 
+__attribute__((__always_inline__))
+static inline void nop()
+{
+	asm volatile ("nop");
+}
+
 #endif

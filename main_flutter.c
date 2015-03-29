@@ -1,12 +1,6 @@
 #include "armv7m.h"
 #include "sam3/pio.h"
 
-__attribute__((__always_inline__))
-static inline void nop()
-{
-	asm volatile ("nop");
-}
-
 /* G = PA16
  * R = PA20
  * B = PA0
