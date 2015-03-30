@@ -4,7 +4,10 @@
 : ${CC:=${CROSS_COMPILER}gcc}
 : ${OBJCOPY:=${CROSS_COMPILER}objcopy}
 
-CFLAGS="-I. -std=gnu11 -Wno-main ${CFLAGS}"
+: ${CFLAGS:=-Os -flto -ggdb3 -fvar-tracking-assignments}
+: ${LDFLAGS:=${CFLAGS}}
+CPPFLAGS="-I. ${CPPFLAGS}"
+CFLAGS="-std=gnu11 -Wno-main ${CFLAGS}"
 LDFLAGS="-nostartfiles ${LDFLAGS}"
 
 exec >build.ninja
@@ -13,17 +16,18 @@ cat <<EOF
 cc = $CC
 objcopy = $OBJCOPY
 cflags = -Wall $CFLAGS
+cppflags = $CPPFLAGS
 ldflags = $LDFLAGS
 
 rule cc
-  command = \$cc \$cflags -MMD -MF \$out.d  -c \$in -o \$out
+  command = \$cc \$cppflags \$cflags -MMD -MF \$out.d  -c \$in -o \$out
   depfile = \$out.d
 
 rule ccld
   command = \$cc \$ldflags -o \$out \$in
 
 rule cpp_lds
-  command = \$cc -E -P -C \$cflags -o \$out \$in
+  command = \$cc \$cppflags -g0 -E -P -o \$out \$in
 rule hex
   command = \$objcopy -O ihex \$in \$out
 rule bin
@@ -60,10 +64,12 @@ bin () {
 	for s in "$@"; do
 		echo build $(to_obj "$s"): cc $s
 		echo "  cflags = \$cflags $(_ev cflags_${out_var})"
+		echo "  cppflags = \$cppflags $(_ev cppflags_${out_var})"
 	done
 	for i in ld/*.lds.S; do
 	  echo "build $(to_lds "$i") : cpp_lds $i"
 	  echo "  cflags = \$cflags $(_ev cflags_${out_var})"
+	  echo "  cppflags = \$cppflags $(_ev cppflags_${out_var})"
 	done
 
 	cat <<EOF
@@ -77,15 +83,18 @@ EOF
 BINS=""
 
 
-cflags_lm3s_elf="-DLM3S3748=1 -include config/lm3s.h -mcpu=cortex-m3 -mthumb"
+cppflags_lm3s_elf="-DLM3S3748=1 -include config/lm3s.h"
+cflags_lm3s_elf="-mcpu=cortex-m3 -mthumb"
 ldflags_lm3s_elf="-T armv7m.lds"
 bin lm3s.elf init_vector.c init.c lm3s/adc.c main.c
 
-cflags_main_elf="-include config/k20dx128vlh5.h -mcpu=cortex-m4 -mthumb"
+cppflags_main_elf="-include config/k20dx128vlh5.h"
+cflags_main_elf="-mcpu=cortex-m4 -mthumb"
 ldflags_main_elf="-T armv7m.lds"
 bin main.elf init_vector.c init.c main_teensy.c
 
-cflags_flutter_elf="-include config/atsam3s1a.h -mcpu=cortex-m3 -mthumb"
+cppflags_flutter_elf="-include config/atsam3s1a.h"
+cflags_flutter_elf="-mcpu=cortex-m3 -mthumb"
 ldflags_flutter_elf="-T armv7m.lds"
 bin flutter.elf init_vector.c init.c main_flutter.c
 
