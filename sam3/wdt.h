@@ -8,7 +8,8 @@ struct sam3_wdt {
 		 status;
 };
 
-#define SAM3_WDT_BASE (0x400E1400 + 0x10 + 0x30 + 0x50)
+#define SAM3_WDT_BASE (0x400E1400 + 0x50)
+_Static_assert(SAM3_WDT_BASE == 0x400E1450, "SAM3 WDT BASE address mismatch");
 #define SAM3_WDT (*(volatile struct sam3_wdt *)SAM3_WDT_BASE)
 
 #define SAM3_WDT_CR MMIO_32(SAM3_WDT_BASE)
