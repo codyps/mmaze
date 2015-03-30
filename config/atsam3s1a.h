@@ -3,15 +3,17 @@
 
 #include <units.h>
 
-/* XXX: verify */
+/*
+ * XXX: verify
+ * XXX: this is really APP + board specific, not process specific
+ */
 #define CONFIG_SYSCLOCK MEGA(24)
 
 /* XXX: verify */
 #define CONFIG_FLASH_FILL 0xFFFFFFFF
 #define INCLUDE_VECTOR()  <config/armv7m-vector.def>
 
-//#define CONFIG_FLASH_OFFS 0x00400000
-#define CONFIG_FLASH_OFFS 0x00400000 + 0x400
+#define CONFIG_FLASH_OFFS 0x00400000
 #define CONFIG_FLASH_SIZE KIBI(64)
 
 #define CONFIG_RAM_OFFS 0x20000000
