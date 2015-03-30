@@ -3,7 +3,7 @@
 #include <assert.h>
 
 void bad_interrupt(void);
-__attribute__((interrupt,noreturn))
+__attribute__((__interrupt__,__noreturn__))
 void bad_interrupt(void)
 {
 	for (;;)
@@ -16,7 +16,7 @@ void bad_interrupt(void)
  * IRQ_START_ADDR(addr)
  * VECTOR_END(addr, vect_ct, irq_ct)
  */
- 
+
 /*
  * Generate a weak alias to bad_interrupt() for each VECTOR
  */
@@ -59,7 +59,7 @@ struct isr_vectors_s {
 /*
  * Verify vector offsets using the above struct
  */
-#define ASSERT_OFFS(addr, field) static_assert(offsetof(struct isr_vectors_s, field) == (addr), "address offset incorrect");
+#define ASSERT_OFFS(addr, field) static_assert(offsetof(struct isr_vectors_s, field) == (addr), "address offset incorrect: " #field " != " #addr);
 #define VECTOR(addr, name) ASSERT_OFFS(addr, isr_##name)
 #define VECTOR_IRQ(addr, name) VECTOR(addr, name)
 #define VECTOR_NULL(addr) ASSERT_OFFS(addr, null_at_##addr)
