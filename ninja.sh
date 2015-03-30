@@ -4,8 +4,8 @@
 : ${CC:=${CROSS_COMPILER}gcc}
 : ${OBJCOPY:=${CROSS_COMPILER}objcopy}
 
-: ${CFLAGS:=-Os -flto -ggdb3 -fvar-tracking-assignments}
-: ${LDFLAGS:=${CFLAGS}}
+: ${CFLAGS:=-Os -flto -ggdb3 -fvar-tracking-assignments -fmerge-all-constants -ffast-math}
+: ${LDFLAGS:=${CFLAGS} -fuse-linker-plugin -fwhole-program}
 CPPFLAGS="-I. ${CPPFLAGS}"
 CFLAGS="-std=gnu11 -Wno-main ${CFLAGS}"
 LDFLAGS="-nostartfiles ${LDFLAGS}"
