@@ -16,6 +16,12 @@ __attribute__((weak))
 void init_early(void)
 {}
 
+/* sometimes there isn't one in the libc due to using lto */
+__attribute__((__weak__))
+void __libc_init_array(void)
+{
+}
+
 #if 0
 static void __libc_init_array(void)
 {
