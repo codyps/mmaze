@@ -37,7 +37,6 @@ SECTIONS
 #endif
 
 	.text : ALIGN(4) {
-		*(.init*)
 		*(.text*)
 		*(.gnu.linkonce.t.*)
 	} >flash =CONFIG_FLASH_FILL

@@ -2,7 +2,7 @@
 #include <stdint.h>
 __attribute__((noreturn))
 extern void main (void);
-extern void __libc_init_array(void) __attribute__((weak));
+//extern void __libc_init_array(void) __attribute__((weak));
 extern void init_early(void) __attribute__((weak));
 extern void isr_reset(void);
 
@@ -12,7 +12,6 @@ extern void isr_reset(void);
  * impl Also dropping this here means that our lto settings allow this to be
  * optimized out even if the libc wasn't built with lto
  */
-#if 0
 extern void _init(void) __attribute__((weak));
 static void __libc_init_array(void)
 {
@@ -35,7 +34,6 @@ static void __libc_init_array(void)
 		f++;
 	}
 }
-#endif
 
 __attribute__((noreturn,interrupt,naked))
 void isr_reset(void)
