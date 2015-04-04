@@ -85,7 +85,7 @@ struct isr_vectors_s {
 /*
  * Populate an instance of that structure with the appropriate symbols
  */
-__attribute__ ((section(".isr_vector"),externally_visible))
+__attribute__ ((section(".isr_vector"),externally_visible,used))
 const struct isr_vectors_s vectors = {
 	&__stack_high,
 #define VECTOR(addr, name) &isr_##name,

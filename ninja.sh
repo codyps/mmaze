@@ -5,7 +5,7 @@
 : ${OBJCOPY:=${CROSS_COMPILER}objcopy}
 
 : ${CFLAGS:=-Os -flto -ggdb3 -fvar-tracking-assignments -fmerge-all-constants -ffast-math}
-: ${LDFLAGS:=${CFLAGS} -fuse-linker-plugin -fwhole-program}
+: ${LDFLAGS:=${CFLAGS} -fuse-linker-plugin -fwhole-program -Wl,--relax}
 CPPFLAGS="-I. ${CPPFLAGS}"
 CFLAGS="-std=gnu11 -Wno-main ${CFLAGS}"
 LDFLAGS="-nostartfiles ${LDFLAGS}"
@@ -17,7 +17,7 @@ cc = $CC
 objcopy = $OBJCOPY
 cflags = -Wall $CFLAGS
 cppflags = $CPPFLAGS
-ldflags = $LDFLAGS
+ldflags = $LDFLAGS \$cflags
 
 rule cc
   command = \$cc \$cppflags \$cflags -MMD -MF \$out.d  -c \$in -o \$out
@@ -74,7 +74,7 @@ bin () {
 
 	cat <<EOF
 build $out : ccld $(to_obj "$@") | $(to_lds ld/*.lds.S)
-  ldflags = -L.build-$out/ld \$ldflags $(_ev ldflags_${out_var})
+  ldflags = -L.build-$out/ld \$ldflags $(_ev ldflags_${out_var}) $(_ev cflags_${out_var})
 build $out.hex : hex $out
 build $out.bin : bin $out
 EOF
