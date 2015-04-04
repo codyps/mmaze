@@ -2,26 +2,17 @@
 #include <stdint.h>
 __attribute__((noreturn))
 extern void main (void);
-extern void __libc_init_array(void);
-extern void _init(void);
-extern void init_early(void);
+extern void _init(void) __attribute__((weak));
+extern void __libc_init_array(void) __attribute__((weak));
+extern void init_early(void) __attribute__((weak));
 extern void isr_reset(void);
 
-/* make __libc_init_array() happy */
-__attribute__((weak))
-void _init(void)
-{}
-
-__attribute__((weak))
-void init_early(void)
-{}
-
-/* sometimes there isn't one in the libc due to using lto */
-__attribute__((__weak__))
-void __libc_init_array(void)
-{
-}
-
+/*
+ * libc _sometimes_ supplies this, but doesn't if lto is enabled.  We can't
+ * provide a dummy weak impl because our weak impl overrides the libc's weak
+ * impl Also dropping this here means that our lto settings allow this to be
+ * optimized out even if the libc wasn't built with lto
+ */
 #if 0
 static void __libc_init_array(void)
 {
