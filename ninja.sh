@@ -27,7 +27,8 @@ rule ccld
   command = \$cc \$ldflags -o \$out \$in
 
 rule cpp_lds
-  command = \$cc \$cppflags -g0 -E -P -o \$out \$in
+  command = \$cc \$cppflags -g0 -E -MMD -MF \$out.d -MT \$out -P -o \$out \$in
+  depfile = \$out.d
 rule hex
   command = \$objcopy -O ihex \$in \$out
 rule bin
