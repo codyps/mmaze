@@ -17,7 +17,7 @@
 #define CONFIG_FLASH_SIZE KIBI(64)
 
 #define CONFIG_RAM_OFFS   0x20000000
-#define CONFIG_RAM_SIZE KIBI(8)
+#define CONFIG_RAM_SIZE KIBI(16)
 
 #if 0
 /* Basic address space */

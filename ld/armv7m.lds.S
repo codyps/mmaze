@@ -95,7 +95,7 @@ SECTIONS
 	end = __noinit_end;
 }
 
-__stack_high = ORIGIN(ram) + LENGTH(ram) - 4;
+__stack_high = ORIGIN(ram) + LENGTH(ram);
 
 __ram_start = ORIGIN(ram);
 __flash_start = ORIGIN(flash);

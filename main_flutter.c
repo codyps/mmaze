@@ -23,6 +23,7 @@ void main(void)
 
 	/* Give PIO control over the RGB pins */
 	SAM3_PIOA.enable = (1 << 20) | (1 << 16) | (1 << 0);
+	SAM3_PIOA.output_enable = (1 << 20) | (1 << 16) | (1 << 0);
 
 	/* Drive them */
 	for (;;) {
