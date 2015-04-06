@@ -11,13 +11,13 @@
 
 /* XXX: verify */
 #define CONFIG_FLASH_FILL 0xFFFFFFFF
-#define INCLUDE_VECTOR()  <config/armv7m-vector.def>
+#define INCLUDE_VECTOR()  <config/sam3s-vector.def>
 
 #define CONFIG_FLASH_OFFS 0x00400000
 #define CONFIG_FLASH_SIZE KIBI(64)
 
 #define CONFIG_RAM_OFFS   0x20000000
-#define CONFIG_RAM_SIZE KIBI(16)
+#define CONFIG_RAM_SIZE KIBI(8)
 
 #if 0
 /* Basic address space */
