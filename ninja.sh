@@ -20,7 +20,7 @@ cppflags = $CPPFLAGS
 ldflags = $LDFLAGS \$cflags
 
 rule cc
-  command = \$cc \$cppflags \$cflags -MMD -MF \$out.d  -c \$in -o \$out
+  command = \$cc \$cppflags \$cflags -MMD -MF \$out.d -MT \$out  -c \$in -o \$out
   depfile = \$out.d
 
 rule ccld
