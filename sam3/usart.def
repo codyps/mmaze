@@ -16,7 +16,11 @@ R32(0x0044, NER, r, number_of_errors)
 RES_1(0x0048)
 R32(0x004C, IF, rw, irda_filter)
 R32(0x0050, MAN, rw, manchester_enc_dec)
+RES(0x54, 0xE0) /* XXX: not mentioned in doc */
 R32(0x00E4, WPMR, rw, write_protect_mode)
 R32(0x00E8, WPSR, r, write_protect_status)
-RES(0x5C, 0xFC)
+/* XXX: nonsensical reserved range:
+ * RES(0x5C, 0xFC)
+ */
+RES(0xEC, 0xFC)
 RES(0x100, 0x128) /* "Reserved for PDC Registers" */

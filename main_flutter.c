@@ -24,6 +24,11 @@ void init_early(void)
  * UTXD0 = PA10 = S6 = radio gpio 2
  */
 
+void isr_usart0(void)
+{
+
+}
+
 /*
  * RXD0 = PA5 = D2 = free
  * TXD0 = PA6 = D3 = free
@@ -48,7 +53,7 @@ static void usart0_init(void)
 		;
 	/* Configure USART interrupts */
 	SAM3_USART0.interrupt_enable
-		= 1 << SAM3_US_IER_TXEMPTY
+		= 1 << SAM3_US_IR_TXEMPTY
 		;
 
 	SAM3_USART0.reciver_timeout = 0;

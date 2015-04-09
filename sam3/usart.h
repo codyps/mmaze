@@ -60,9 +60,10 @@
 #define SAM3_US_MR_USCLKS(x) (((x) & 3) << 4)
 #define SAM3_US_MR_USART_MODE(x) (((x) & 0xf) << 0)
 
-#define SAM3_US_IMR_TXRDY 1
-#define SAM3_US_IMR_TXEMPTY 9
-#define SAM3_US_IMR_TXBUFE 11
+/* IER, IDR, IMR */
+#define SAM3_US_IR_TXRDY 1
+#define SAM3_US_IR_TXEMPTY 9
+#define SAM3_US_IR_TXBUFE 11
 
 #define SAM3_US_CSR_TXRDY 1
 #define SAM3_US_CSR_TXEMPTY 9
