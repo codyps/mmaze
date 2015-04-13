@@ -8,11 +8,10 @@
 #define IF_INC() "usart.def"
 #define IF_NAME usart
 #define IF_PREFIX sam3
-
 #include "gen-if.h"
 
-#define SAM3_USART0_BASE 0
-#define SAM3_USART1_BASE 0
+#define SAM3_USART0_BASE 0x40024000
+#define SAM3_USART1_BASE 0x40028000
 
 #define SAM3_USART(a) (*(volatile struct sam3_usart *)(a))
 #define SAM3_USARTN(n) SAM3_USART(SAM3_USART##n##_BASE)

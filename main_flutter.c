@@ -2,6 +2,9 @@
 #include "sam3/pio.h"
 #include "sam3/wdt.h"
 #include "sam3/usart.h"
+#include "sam3/pmc.h"
+
+#define TRUST_RESET 1
 
 void init_early(void);
 void init_early(void)
@@ -30,12 +33,16 @@ void isr_usart0(void)
 }
 
 /*
- * RXD0 = PA5 = D2 = free
- * TXD0 = PA6 = D3 = free
+ * RXD0 = PA5 = D2 = free = Periph A
+ * TXD0 = PA6 = D3 = free = Periph A
  */
 static void usart0_init(void)
 {
 	/* Configure PIO */
+# if !TRUST_RESET
+	SAM3_PIOA.peripheral_select_1 = 0;
+	SAM3_PIOA.peripheral_select_2 = 0;
+# endif
 
 	/* Enable Module Clock */
 
@@ -66,9 +73,16 @@ static void usart0_init(void)
 	/* Re-protect USART registers */
 }
 
+static void
+clock_init(void)
+{
+}
+
 __attribute__((noreturn))
 void main(void)
 {
+	clock_init();
+
 	/* TODO: set up clocks */
 	usart0_init();
 
