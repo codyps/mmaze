@@ -71,19 +71,53 @@ static void usart0_init(void)
 	/* Enable tx */
 
 	/* Re-protect USART registers */
+	SAM3_USART0.write_protect_mode = SAM3_US_WPMR_WPKEY;
 }
 
+/*
+ * flutter has a 12MHz external OSC attached to XIN & XOUT (PB9 & PB10)
+ * We'll use the internal 32kHz OSC.
+ */
 static void
 clock_init(void)
 {
+	/* We startup with the internal 32kHz OSC enabled,
+	 * and all others (external 12MHz & internal "Fast") disabled
+	 */
+
+	/* Unlock PMC */
+
+	/* 1. enable main oscillator */
+
+	/* enable external crystal (MOSCXTEN)
+	 * use external as main clock (MOSCSEL)
+	 */
+	SAM3_PMC.main_oscillator
+		= SAM3_PMC_CLGR_MOR_MOSCXTEN
+		| SAM3_PMC_CLGR_MOR_MOSCSEL
+		;
+
+	/* wait for MOSCXTS in PMC_SR */
+	while (!(SAM3_PMC.status & SAM3_PMC_SR_MOSCXTS))
+		;
+
+	/* start up time = 8 * MOSCXTST / SLCK = 56 slow clock cycles */
+
+	/* 2. check main osc freq: CKGR_MCFR, once MAINFRDY is set */
+
+	/* 3. Set PLL & Divider */
+
+	/* 4. select master clock & processor clock */
+
+	/* 5. select programmable clocks */
+
+	/* 6. enable peripheral clocks */
 }
 
 __attribute__((noreturn))
 void main(void)
 {
 	clock_init();
-
-	/* TODO: set up clocks */
 	usart0_init();
 
 	/* Give PIO control over the RGB pins */
