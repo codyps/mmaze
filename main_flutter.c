@@ -49,7 +49,10 @@ static void usart0_init(void)
 	/* Configure NVIC */
 
 	/* Enable USART reg access */
-	SAM3_USART0.write_protect_mode = SAM3_US_WPMR_WPKEY | 1 << SAM3_US_WPMR_WPEN;
+	/* XXX: might be enabled at reset anyhow, verify */
+#if !TRUST_RESET
+	SAM3_USART0.write_protect_mode = SAM3_US_WPMR_WPKEY;
+#endif
 
 	/* Configure USART mode */
 	SAM3_USART0.mode
@@ -70,8 +73,8 @@ static void usart0_init(void)
 
 	/* Enable tx */
 
-	/* Re-protect USART registers */
-	SAM3_USART0.write_protect_mode = SAM3_US_WPMR_WPKEY;
+	/* [Re-]protect USART registers */
+	SAM3_USART0.write_protect_mode = SAM3_US_WPMR_WPKEY | 1 << SAM3_US_WPMR_WPEN;
 }
 
 /*
@@ -90,14 +93,16 @@ clock_init(void)
 	/* 1. enable main oscillator */
 
 	/* enable external crystal (MOSCXTEN)
-	 * use external as main clock (MOSCSEL)
 	 */
 	SAM3_PMC.main_oscillator
-		= SAM3_PMC_CLGR_MOR_MOSCXTEN
-		| SAM3_PMC_CLGR_MOR_MOSCSEL
+		= SAM3_PMC_CKGR_MOR_KEY
+		/* enable main crystal (external) */
+		| SAM3_PMC_CKGR_MOR_MOSCXTEN
+		/* wait 8 * 8 slow clocks for main crystal startup, taken from arduino */
+		| SAM3_PMC_CKGR_MOR_MOSCXTST(0x8)
 		;
 
-	/* wait for MOSCXTS in PMC_SR */
+	/* wait for main crystal to startup */
 	while (!(SAM3_PMC.status & SAM3_PMC_SR_MOSCXTS))
 		;
 
@@ -106,6 +111,22 @@ clock_init(void)
 	/* 2. check main osc freq: CKGR_MCFR, once MAINFRDY is set */
 
 	/* 3. Set PLL & Divider */
+#if !TRUST_RESET
+	/* XXX: pmc might be write protected */
+#endif
+	/* settings taken from arduino init */
+	SAM3_PMC.plla
+		= SAM3_PMC_CKGR_PLLAR_ONE
+		/* pll * 32 */
+		| SAM3_PMC_CKGR_PLLAR_MUL(0x1f)
+		/* lock after 0x3f * 8 slow clock cycles */
+		| SAM3_PMC_CKGR_PLLAR_COUNT(0x3f)
+		/* "divider output is 3" ??? */
+		| SAM3_PMC_CKGR_PLLAR_DIV(0x3)
+		;
+
+	while (!(SAM3_PMC.status & SAM3_PMC_SR_LOCKA))
+		;
 
 	/* 4. select master clock & processor clock */
 
