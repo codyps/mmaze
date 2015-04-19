@@ -79,16 +79,13 @@ static void usart0_init(void)
 
 /*
  * flutter has a 12MHz external OSC attached to XIN & XOUT (PB9 & PB10)
- * We'll use the internal 32kHz OSC.
+ *
+ * sam3s1a has 2 internal oscs: 32kHz (slow) & 4/8/12MHz (fast).
  */
 static void
 clock_init(void)
 {
-	/* We startup with the internal 32kHz OSC enabled,
-	 * and all others (external 12MHz & internal "Fast") disabled
-	 */
-
-	/* Unlock PMC */
+	/* NOTE: Unlock PMC if it was previously locked */
 
 	/* 1. enable main oscillator */
 
@@ -173,6 +170,8 @@ clock_init(void)
 	/* 5. select programmable clocks */
 
 	/* 6. enable peripheral clocks */
+
+	/* NOTE: lock acess to PMC registers */
 }
 
 __attribute__((noreturn))
