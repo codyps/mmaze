@@ -131,7 +131,7 @@ clock_init(void)
 	/* settings taken from arduino init */
 	/*
 	 * XXX: figure out how this is actually calculated
-	 * 12 MHz (MAIN) * 32 / "3???" = ????
+	 * 12 MHz (MAIN) * 32 / 3 = 128 MHz (divided below by 2 to 64 MHz)
 	 */
 	SAM3_PMC.plla
 		= SAM3_PMC_CKGR_PLLAR_ONE
@@ -154,14 +154,16 @@ clock_init(void)
 	 * (CSS then PRES) if switching to MAIN or SLOW clocks
 	 */
 	SAM3_PMC.master_clock
-		= SAM3_PMC_MCKR_PRES(1) /* set PRES = 2 */
+		= (SAM3_PMC.master_clock & ~SAM3_PMC_MCKR_PRES_MASK)
+		| SAM3_PMC_MCKR_PRES(1) /* set PRES = 2 */
 		;
 
 	while (!(SAM3_PMC.status & SAM3_PMC_SR_MCKRDY))
 		;
 
 	SAM3_PMC.master_clock
-		= SAM3_PMC_MCKR_CSS_PLLA /* set CSS = PLLA */
+		= (SAM3_PMC.master_clock & ~SAM3_PMC_MCKR_CSS_MASK)
+		| SAM3_PMC_MCKR_CSS_PLLA /* set CSS = PLLA */
 		;
 
 	while (!(SAM3_PMC.status & SAM3_PMC_SR_MCKRDY))
