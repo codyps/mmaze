@@ -92,14 +92,31 @@ clock_init(void)
 
 	/* 1. enable main oscillator */
 
-	/* enable external crystal (MOSCXTEN)
+	/* At reset, the 4/8/12 MHz Fast RC Oscillator (internal) is enabled
+	 * with 4MHz selected and is used as MAIN CLOCK.
+	 */
+
+	/*
+	 * Enable external crystal (MOSCXTEN) & set it as MAINCLK (main clock)
+	 *
+	 * We enable & switch at the same time as changing the source of
+	 * MAINCLK is forbidden while the PLL is enabled. In other words:
+	 * because we want the main crystal (external) to be the source for the
+	 * PLL, we must select it as the MAINCLK before enabling the PLL.
+	 *
+	 * FIXME: determine if enabling & switching MAINCLK at once is alowed
 	 */
 	SAM3_PMC.main_oscillator
 		= SAM3_PMC_CKGR_MOR_KEY
 		/* enable main crystal (external) */
 		| SAM3_PMC_CKGR_MOR_MOSCXTEN
-		/* wait 8 * 8 slow clocks for main crystal startup, taken from arduino */
+		/* wait 8 * 8 slow clocks for main crystal startup
+		 * XXX taken from arduino */
 		| SAM3_PMC_CKGR_MOR_MOSCXTST(0x8)
+		/* select the main crystal (external) */
+		| SAM3_PMC_CKGR_MOR_MOSCSEL
+		/* enable main crystal failure detector */
+		| SAM3_PMC_CKGR_MOR_CFDEN
 		;
 
 	/* wait for main crystal to startup */
@@ -115,6 +132,10 @@ clock_init(void)
 	/* XXX: pmc might be write protected */
 #endif
 	/* settings taken from arduino init */
+	/*
+	 * XXX: figure out how this is actually calculated
+	 * 12 MHz (MAIN) * 32 / "3???" = ????
+	 */
 	SAM3_PMC.plla
 		= SAM3_PMC_CKGR_PLLAR_ONE
 		/* pll * 32 */
@@ -129,6 +150,25 @@ clock_init(void)
 		;
 
 	/* 4. select master clock & processor clock */
+
+	/*
+	 * The manual advises that updating this register must be done in 2
+	 * stages. The following is the order for switching to PLL. Reverse
+	 * (CSS then PRES) if switching to MAIN or SLOW clocks
+	 */
+	SAM3_PMC.master_clock
+		= SAM3_PMC_MCKR_PRES(1) /* set PRES = 2 */
+		;
+
+	while (!(SAM3_PMC.status & SAM3_PMC_SR_MCKRDY))
+		;
+
+	SAM3_PMC.master_clock
+		= SAM3_PMC_MCKR_CSS_PLLA /* set CSS = PLLA */
+		;
+
+	while (!(SAM3_PMC.status & SAM3_PMC_SR_MCKRDY))
+		;
 
 	/* 5. select programmable clocks */
 
