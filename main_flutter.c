@@ -3,6 +3,7 @@
 #include "sam3/wdt.h"
 #include "sam3/usart.h"
 #include "sam3/pmc.h"
+#include "sam3/periph.h"
 
 #define TRUST_RESET 1
 
@@ -169,11 +170,14 @@ clock_init(void)
 	while (!(SAM3_PMC.status & SAM3_PMC_SR_MCKRDY))
 		;
 
-	/* 5. select programmable clocks */
+	/* 5. select programmable clocks (SCER, SCDR, SCSR & PMC_PCKx) */
 
-	/* 6. enable peripheral clocks */
+	/* 6. enable peripheral clocks (PCER.) */
 
-	/* NOTE: lock acess to PMC registers */
+	SAM3_PMC.peripheral_clock_enable_0 = SAM3_PERIPH_ID_USART0;
+
+	/* lock acess to (some) PMC registers */
+	SAM3_PMC.write_protect_mode = 0x504D43 << 8 | 1;
 }
 
 __attribute__((noreturn))
