@@ -34,3 +34,6 @@
 
 #define SAM3_PMC_MCKR_PRES(x) (((x) & 0x7) << 4)
 #define SAM3_PMC_MCKR_PRES_MASK SAM3_PMC_MCKR_PRES(0x7)
+
+#define SAM3_PMC_WPMR_KEY    (0x504D43 << 8)
+#define SAM3_PMC_WPMR_ENABLE (1 << 0)

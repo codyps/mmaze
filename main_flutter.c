@@ -174,7 +174,12 @@ clock_init(void)
 
 	/* 6. enable peripheral clocks (PCER.) */
 
-	SAM3_PMC.peripheral_clock_enable_0 = SAM3_PERIPH_ID_USART0;
+	/* Note: only values > 8 have any effect. See Table 10-1 "Peripheral
+	 * Identifiers" PMC Clock Control column. */
+	SAM3_PMC.peripheral_clock_enable_0
+		= SAM3_PERIPH_ID_USART0
+		| SAM3_PERIPH_ID_PIOA
+		;
 
 	/* lock acess to (some) PMC registers */
 	SAM3_PMC.write_protect_mode = 0x504D43 << 8 | 1;
