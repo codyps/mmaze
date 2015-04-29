@@ -28,9 +28,12 @@ void init_early(void)
  * UTXD0 = PA10 = S6 = radio gpio 2
  */
 
-void isr_usart0(void)
+static void usart0_putc(char b)
 {
-
+	/* spin while we have data ready full */
+	while (!(SAM3_USART0.channel_status & SAM3_US_CSR_TXRDY))
+		;
+	SAM3_USART0.transmitter_holding = b;
 }
 
 /*
@@ -63,9 +66,12 @@ static void usart0_init(void)
 		| 1 << SAM3_US_MR_FILTER
 		;
 	/* Configure USART interrupts */
+#if 0
+	/* don't need any for now, will enable DMA */
 	SAM3_USART0.interrupt_enable
 		= 1 << SAM3_US_IR_TXEMPTY
 		;
+#endif
 
 	SAM3_USART0.reciver_timeout = 0;
 	SAM3_USART0.transmitter_timeguard = 0;
@@ -136,11 +142,12 @@ clock_init(void)
 	 */
 	SAM3_PMC.plla
 		= SAM3_PMC_CKGR_PLLAR_ONE
-		/* pll * 32 */
+		/* multiplyer = 32 */
 		| SAM3_PMC_CKGR_PLLAR_MUL(0x1f)
+		/* XXX: taken from arduino */
 		/* lock after 0x3f * 8 slow clock cycles */
 		| SAM3_PMC_CKGR_PLLAR_COUNT(0x3f)
-		/* "divider output is 3" ??? */
+		/* divider = 3 */
 		| SAM3_PMC_CKGR_PLLAR_DIV(0x3)
 		;
 
