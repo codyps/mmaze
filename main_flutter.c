@@ -77,7 +77,7 @@ static void usart0_init(void)
 	SAM3_USART0.transmitter_timeguard = 0;
 
 	/* Configure Baud Rate */
-	SAM3_USART0.baud_rate_generator = 0;
+	SAM3_USART0.baud_rate_generator = sam3s_usart_to_cd(64000000, 0, 0, 115200);
 
 	/* Enable tx */
 

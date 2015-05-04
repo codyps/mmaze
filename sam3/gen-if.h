@@ -5,6 +5,7 @@
  * #define IF_PREFIX bar
  * #define IF_NAME foo
  */
+#include <stddef.h>
 
 #define R32(addr, sn, m, ln) uint32_t ln;
 #define RES_1(addr) uint32_t res_##addr;

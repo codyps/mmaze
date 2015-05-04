@@ -1,5 +1,7 @@
 #pragma once
-
+#include <stdint.h>
+#include <stdbool.h>
+#include "../int-math.h"
 /*
  * Baudrate = selected_clock / (8 * (2 - Over) * (CD + FP / 8) )
  *
@@ -12,6 +14,15 @@
 
 #define SAM3_USART0_BASE 0x40024000
 #define SAM3_USART1_BASE 0x40028000
+
+static inline uint32_t
+sam3s_usart_to_cd(uint32_t clock_hz, bool over, uint8_t fp, uint32_t baud)
+{
+	return DIV_ROUND_CLOSEST(
+		2 * baud * fp + clock_hz - baud * fp * over,
+		16 * baud - 8 * baud * over
+	);
+}
 
 #define SAM3_USART(a) (*(volatile struct sam3_usart *)(a))
 #define SAM3_USARTN(n) SAM3_USART(SAM3_USART##n##_BASE)

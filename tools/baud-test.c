@@ -2,6 +2,8 @@
  * SAM3s USART baud rate calculation test
  */
 
+#include "../int-math.h"
+#include "../sam3/usart.h"
 
 /*
  * baud = selected_clock / (8 * (2 - over) * CD)
@@ -49,35 +51,10 @@ to_baud(uint32_t clock_hz, bool over, uint8_t fp, uint16_t cd)
  */
 
 
-/*
- * Divide positive or negative dividend by positive divisor and round
- * to closest integer. Result is undefined for negative divisors and
- * for negative dividends if the divisor variable type is unsigned.
- */
-#define DIV_ROUND_CLOSEST(x, divisor)(			\
-{							\
-	typeof(x) __x = x;				\
-	typeof(divisor) __d = divisor;			\
-	(((typeof(x))-1) > 0 ||				\
-	 ((typeof(divisor))-1) > 0 || (__x) > 0) ?	\
-		(((__x) + ((__d) / 2)) / (__d)) :	\
-		(((__x) - ((__d) / 2)) / (__d));	\
-}							\
-)
-
 #define SAM3S_USART_TO_CD_(clock_hz, over, fp, baud) \
 	((
 #define SAM3S_USART_TO_CD(clock_hz, baud)
 
-
-static uint32_t
-to_cd(uint32_t clock_hz, bool over, uint8_t fp, uint32_t baud)
-{
-	return DIV_ROUND_CLOSEST(
-		2 * baud * fp + clock_hz - baud * fp * over,
-		16 * baud - 8 * baud * over
-	);
-}
 
 static void
 usage(char *pn, int e)
@@ -136,7 +113,7 @@ main(int argc, char **argv)
 		fp = xkstrtoull(argv[4], 0);
 		baud = xkstrtoull(argv[5], 0);
 
-		cd = to_cd(clock_hz, over, fp, baud);
+		cd = sam3s_usart_to_cd(clock_hz, over, fp, baud);
 		real_baud = to_baud(clock_hz, over, fp, cd);
 		printf("cd=%#llx\n", cd);
 		printf("real_baud=%lld\n", real_baud);
