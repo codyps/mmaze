@@ -1,3 +1,7 @@
+/*
+ * SAM3s USART baud rate calculation test
+ */
+
 
 /*
  * baud = selected_clock / (8 * (2 - over) * CD)
