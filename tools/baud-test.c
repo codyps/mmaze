@@ -36,10 +36,17 @@ to_baud(uint32_t clock_hz, bool over, uint8_t fp, uint16_t cd)
 	return clock_hz / (8 * (2 - over) * (cd + (double)fp / 8));
 }
 
+/*
+ *
+(%i1) solve(baud = clock_hz / (8 * (2 - over) * (cd + fp / 8)), cd);
+                         baud fp over - 2 baud fp + clock_hz
+(%o1)            [cd = - -----------------------------------]
+                                8 baud over - 16 baud
+ */
 static uint32_t
 to_cd(uint32_t clock_hz, bool over, uint8_t fp, uint32_t baud)
 {
-
+	return (2 * baud * fp + clock_hz - baud * fp * over) / (16 * baud - 8 * baud * over);
 }
 
 static void
