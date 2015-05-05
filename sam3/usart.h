@@ -19,8 +19,8 @@ static inline uint32_t
 sam3s_usart_to_cd(uint32_t clock_hz, bool over, uint8_t fp, uint32_t baud)
 {
 	return DIV_ROUND_CLOSEST(
-		2 * baud * fp + clock_hz - baud * fp * over,
-		16 * baud - 8 * baud * over
+		baud * fp * (2 - over) + clock_hz,
+		8 * (2 - over) * baud
 	);
 }
 
