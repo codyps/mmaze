@@ -1,7 +1,8 @@
 #include <stdint.h>
 
 /* TODO: track BK1 vs BK0 for ping-pong endpoints */
-static uint8_t bk0_next[BITS_TO_BYTES(SAM3_UDP_EP_PP_CT)];
+/* Each bit is used for 1 endpoint (sam3s has 8 endpoints) */
+static uint8_t bk0_next;
 
 static void
 udp_fill_ep0_for_setup(void)
