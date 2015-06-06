@@ -209,5 +209,6 @@ void main(void)
 		delay_ms(100);
 		SAM3_PIOA.clear_output_data = (1 << 20) | (1 << 16) | (1 << 0);
 		delay_ms(100);
+		usart0_putc('X');
 	}
 }
