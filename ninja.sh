@@ -4,10 +4,11 @@
 : ${CC:=${CROSS_COMPILER}gcc}
 : ${OBJCOPY:=${CROSS_COMPILER}objcopy}
 
+: ${WARN_FLAGS:=-Wall -Wextra}
 : ${CFLAGS:=-Os -flto -ggdb3 -fvar-tracking-assignments -fmerge-all-constants -ffast-math}
 : ${LDFLAGS:=${CFLAGS} -fuse-linker-plugin -fwhole-program -Wl,--relax}
 CPPFLAGS="-I. ${CPPFLAGS}"
-CFLAGS="-std=gnu11 -Wno-main ${CFLAGS}"
+CFLAGS="-std=gnu11 -Wno-main ${CFLAGS} ${WARN_FLAGS}"
 LDFLAGS="-nostartfiles ${LDFLAGS}"
 
 exec >build.ninja
@@ -78,10 +79,9 @@ build $out : ccld $(to_obj "$@") | $(to_lds ld/*.lds.S)
   ldflags = -L.build-$out/ld \$ldflags $(_ev ldflags_${out_var}) $(_ev cflags_${out_var})
 build $out.hex : hex $out
 build $out.bin : bin $out
+default $out $out.hex $out.bin
 EOF
-	BINS="$BINS $out $out.hex $out.bin"
 }
-BINS=""
 
 
 cppflags_lm3s_elf="-DLM3S3748=1 -include config/lm3s.h"
@@ -106,5 +106,3 @@ rule ninja_gen
   generator = yes
 build build.ninja : ninja_gen $0
 EOF
-
-echo default ${BINS}
