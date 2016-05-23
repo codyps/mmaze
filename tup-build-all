@@ -1,0 +1,11 @@
+#! /bin/bash
+set -eu -o pipefail
+D="$(dirname "$0")"
+
+for i in "$D"/*.config; do
+	b="$(basename "$i")"
+	v="$(basename "$b" .config)"
+	mkdir "build-$v"
+	ln -rs "$i" "build-$v/tup.config"
+	(cd "build-$v"; tup)
+done
