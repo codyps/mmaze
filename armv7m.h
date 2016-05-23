@@ -1,5 +1,4 @@
-#ifndef ARMV7M_H_
-#define ARMV7M_H_
+#pragma once
 
 #include "units.h"
 #include "mmio-def.h"
@@ -103,5 +102,3 @@ static inline void nop()
 {
 	asm volatile ("nop");
 }
-
-#endif

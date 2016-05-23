@@ -1,4 +1,4 @@
-## base.mk: deab8e5, see https://github.com/jmesmon/base.mk.git
+## base.mk: deab8e5+, see https://github.com/jmesmon/base.mk.git
 # Usage:
 #
 # == Targets ==

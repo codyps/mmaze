@@ -2,10 +2,14 @@
 set -eu -o pipefail
 D="$(dirname "$0")"
 
-for i in "$D"/*.config; do
+for i in "$D"/variants/*.config; do
+	if ! [ -f "$i" ]; then
+		>&2 echo "Error: $i is not a file"
+		continue;
+	fi
 	b="$(basename "$i")"
 	v="$(basename "$b" .config)"
-	mkdir "build-$v"
-	ln -rs "$i" "build-$v/tup.config"
+	mkdir -p "build-$v"
+	ln -rsf "$i" "build-$v/tup.config"
 	(cd "build-$v"; tup)
 done

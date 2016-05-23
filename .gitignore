@@ -11,3 +11,4 @@ build.ninja
 build/
 ld/*.lds
 *.hex
+build*/
