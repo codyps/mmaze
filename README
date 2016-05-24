@@ -1,0 +1,11 @@
+# mmaze
+
+Originally destined to be code for a maze-solving robot, this has evolved into
+a collection of code for working with embedded arm processors.
+
+## Organization
+
+ - arch
+ - chip -> arch
+ - prog
+ - generic
