@@ -3,6 +3,8 @@
 #include "k20/sim.h"
 #include "k20/wdog.h"
 #include "armv7m.h"
+#include "isr.h"
+#include <e1/watchdog.h>
 
 static uint32_t count;
 __attribute__((__interrupt__))
@@ -49,25 +51,6 @@ struct k20_usb_bdt {
  *   are 0x0 (divide by 1)
  * • Flash clock divider (OUTDIV4)is 0x1 (divide by 2)
  */
-
-/*
- * This is called before BSS is zeroed and before constructors are called.
- */
-void init_early(void);
-void init_early(void)
-{
-	/*
-	 * The teensy bootloader enables the watchdog at somepoint before it
-	 * passes control to us. We need to either disable it or feed it.
-	 *
-	 * For now we disable it.
-	 */
-	K20_WDOG.unlock = K20_WDOG_UNLOCK_SEQ1;
-	K20_WDOG.unlock = K20_WDOG_UNLOCK_SEQ2;
-	nop();
-	nop();
-	K20_WDOG.stctrlh = K20_WDOG_STCTRLH_ALLOWUPDATE;
-}
 
 __attribute__((noreturn))
 void main(void)

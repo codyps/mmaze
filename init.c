@@ -3,6 +3,8 @@
 __attribute__((noreturn))
 extern void main (void);
 //extern void __libc_init_array(void) __attribute__((weak));
+extern void arch_init_early(void) __attribute__((weak));
+extern void board_init_early(void) __attribute__((weak));
 extern void init_early(void) __attribute__((weak));
 extern void isr_reset(void);
 
@@ -42,6 +44,8 @@ void isr_reset(void)
 	       __data_end[], __data_load_start[];
 	uint32_t *s, *d;
 
+	arch_init_early();
+	board_init_early();
 	init_early();
 
 	s = __data_load_start;

@@ -1,6 +1,6 @@
 
 CFLAGS += -Wno-main -Os -fmerge-all-constants
-CPPFLAGS += -I. -mcpu=$(CONFIG_CPU) -mthumb -include config/$(CONFIG_CHIP).h
+CPPFLAGS += -I. -Iinclude -mcpu=$(CONFIG_CPU) -mthumb -include config/$(CONFIG_CHIP).h
 
 CROSS_COMPILE = arm-none-eabi-
 CC = $(CROSS_COMPILE)gcc
@@ -10,6 +10,7 @@ LDFLAGS += -T ld/armv7m.lds -nostartfiles -ggdb3 -Wl,--print-gc-sections
 
 src-y += init_vector.c init.c
 src-y += $(CONFIG_APP)
+src-$(CONFIG_MACH_IS_K20) += k20/wdog.c k20/init.c
 
 include_rules
 
