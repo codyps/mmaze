@@ -12,3 +12,7 @@ build/
 ld/*.lds
 *.hex
 build*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
