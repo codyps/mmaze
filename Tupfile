@@ -11,9 +11,7 @@ LDFLAGS += -T ld/armv7m.lds -nostartfiles -ggdb3 -Wl,--print-gc-sections
 src-y += init_vector.c
 src-y += init.c
 src-y += $(CONFIG_APP)
-ifeq ($(CONFIG_MACH),k20)
-include k20/dir.tup
-endif
+include $(CONFIG_MACH)/dir.tup
 
 include_rules
 

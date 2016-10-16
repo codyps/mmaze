@@ -1,0 +1,1 @@
+src-y += $(TUP_CWD)/flash_cfg.c

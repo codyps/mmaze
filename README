@@ -7,5 +7,14 @@ a collection of code for working with embedded arm processors.
 
  - arch
  - chip -> arch
- - prog
  - generic
+ - application
+
+## Config notes
+
+ - board provides chip
+ - chip provides arch
+ - app might provide board, but shouldn't need to (ideally, we'd allow all
+   boards that meet certain requriments to be used).
+
+ - generic code uses config from all sources (board, chip, arch, app)
