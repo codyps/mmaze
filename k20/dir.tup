@@ -1,2 +1,3 @@
 src-y += $(TUP_CWD)/wdog.c
 src-y += $(TUP_CWD)/init.c
+src-y += $(TUP_CWD)/flash_cfg.c
