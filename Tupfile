@@ -8,9 +8,12 @@ OBJCOPY = $(CROSS_COMPILE)objcopy
 
 LDFLAGS += -T ld/armv7m.lds -nostartfiles -ggdb3 -Wl,--print-gc-sections
 
-src-y += init_vector.c init.c
+src-y += init_vector.c
+src-y += init.c
 src-y += $(CONFIG_APP)
-src-$(CONFIG_MACH_IS_K20) += k20/wdog.c k20/init.c
+ifeq ($(CONFIG_MACH),k20)
+include k20/dir.tup
+endif
 
 include_rules
 

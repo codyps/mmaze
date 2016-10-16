@@ -1,0 +1,2 @@
+src-y += $(TUP_CWD)/wdog.c
+src-y += $(TUP_CWD)/init.c
