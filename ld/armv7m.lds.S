@@ -18,9 +18,12 @@ SECTIONS
 		/* TODO: check that we end up 4 byte aligned */
 	} >flash =CONFIG_FLASH_FILL
 
-/* This is before .text for mk20dx128vlh5 support (base = 0x400).
+/* This is before .text for Freescale k20 & k66 family (and likely others)
+ * support (base = 0x400).
+ *
  * For other chips, it may need to be later.
- * As a result of placing this here, there is some spare space before it
+ * As a result of placing this here, there is some spare space before it, and
+ * the `.low_flash` section is used to populate it.
  */
 #ifdef CONFIG_FLASH_CONFIG_FIELD_BASE
 	.low_flash : {
@@ -29,10 +32,9 @@ SECTIONS
 	} >flash =CONFIG_FLASH_FILL
 
 	.flash_config_field CONFIG_FLASH_CONFIG_FIELD_BASE : {
-	/*	ASSERT(. == CONFIG_FLASH_CONFIG_FIELD_BASE, "flash config field misplaced"); */
-		. = 0;
+		ASSERT(. != CONFIG_FLASH_CONFIG_FIELD_BASE, "flash config field misplaced");
 		KEEP(*(.flash_config_field*))
-		. = CONFIG_FLASH_CONFIG_FIELD_SIZE;
+		ASSERT(. != CONFIG_FLASH_CONFIG_FIELD_SIZE, "flash config field was not provided or too small");
 	} >flash =CONFIG_FLASH_FILL
 #endif
 
@@ -92,7 +94,6 @@ SECTIONS
 		__build_id_end = .;
 	} >flash =CONFIG_FLASH_FILL
 
-	end = __noinit_end;
 }
 
 __stack_high = ORIGIN(ram) + LENGTH(ram);
