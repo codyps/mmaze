@@ -21,14 +21,6 @@ void isr_systick(void)
 //#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
 //NVIC_SYS_PRI3 |=  0x00FF0000
 
-/* Dealing with the FCF:
- *  - define another memory region
- *  - always define this mess
- */
-struct k20_flash_config_field {
-} fcf __attribute__((section(".flash_config_field"),externally_visible)) = {
-};
-
 struct k20_usb_bdt {
 } btdt __attribute__((aligned(512))) = {
 };

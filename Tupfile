@@ -6,7 +6,7 @@ CROSS_COMPILE = arm-none-eabi-
 CC = $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
 
-LDFLAGS += -T ld/armv7m.lds -nostartfiles -ggdb3 -Wl,--print-gc-sections
+LDFLAGS += -T ld/armv7m.lds -nostartfiles -nodefaultlibs -ggdb3 -Wl,--print-gc-sections
 
 src-y += init_vector.c
 src-y += init.c
@@ -15,6 +15,10 @@ include $(CONFIG_MACH)/dir.tup
 
 include_rules
 
+ifeq ($(CONFIG_UBSAN),y)
+CFLAGS += -fsanitize=undefined
+: ubsan_simple.c |> !cc -fno-sanitize=all |> %f.o {obj}
+endif
 : foreach $(src-y)   |> !cc      |> %f.o  {obj}
 : foreach ld/*.lds.S |> !cpp_lds |> ld/%B {lds}
 : {obj} | {lds}      |> !ccld    |> main.elf
