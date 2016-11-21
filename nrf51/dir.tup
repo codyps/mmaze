@@ -1,0 +1,1 @@
+include board-$(CONFIG_BOARD)/dir.tup
