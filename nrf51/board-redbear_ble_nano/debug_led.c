@@ -1,10 +1,11 @@
 #include <stdbool.h>
 #include <nrf51/gpio.h>
 #include <e1/debug-led.h>
+#include <e1/init.h>
 
 /* P0_19 has our debug led */
 
-void board_debug_led_init(void)
+void board_init_early(void)
 {
 	NRF51_GPIO.dir_set = (1 << 19);
 	NRF51_GPIO.out_set = (1 << 19);

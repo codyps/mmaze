@@ -68,6 +68,7 @@ __attribute__((__always_inline__)) static inline void wfi(void)
 static inline void delay_cycles_x4p1(uint32_t ct)
 {
 	__asm__ __volatile__ (
+		".syntax unified\n\t"
 		"1:	subs %0, %0, #1 \n\t" /* 1 cycle */
 		"	bcs 1b"	/* 3 for all but last (1) */
 	: "=r" (ct)	/* outputs */

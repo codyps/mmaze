@@ -12,4 +12,9 @@
 #define CONFIG_RAM_OFFS 0x20000000
 /* FIXME: varies with SoC variant, but can be detected at runtime */
 /* FIXME: also consider supporting RAM blocks */
-#define CONFIG_RAM_SIZE KIBI(16)
+/* NOTE: for redbear lab ble nano 1.5, 32KiB */
+/* NOTE: for redbear lab ble nano 1.0, 16KiB */
+#define CONFIG_RAM_SIZE KIBI(32)
+
+/* FIXME: app specific */
+#define CONFIG_SYSCLOCK 200000
