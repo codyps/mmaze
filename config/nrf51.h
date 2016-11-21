@@ -17,4 +17,4 @@
 #define CONFIG_RAM_SIZE KIBI(32)
 
 /* FIXME: app specific */
-#define CONFIG_SYSCLOCK 200000
+#define CONFIG_SYSCLOCK MEGA(16)

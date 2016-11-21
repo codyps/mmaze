@@ -1,5 +1,4 @@
 #include "armv7m.h"
-#include "isr.h"
 #include <e1/watchdog.h>
 #include <e1/debug-led.h>
 #include <stdbool.h>
