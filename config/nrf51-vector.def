@@ -10,7 +10,7 @@
  * IRQ_START_ADDR(addr)
  * VECTOR_END(addr, vect_ct, irq_ct)
  */
-#include <config/armv7m-vector.def>
+#include <config/armv6m-vector.def>
 
 IRQ_START_ADDR(0x40)
 IRQN(0, CLOCK_POWER_PMU, clock_power_mpu)

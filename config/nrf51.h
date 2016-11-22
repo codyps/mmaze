@@ -1,7 +1,7 @@
 #pragma once
 
 #include <units.h>
-#define ARCH armv7m
+#define ARCH armv6m
 #define CORE cortex-m0
 #define INCLUDE_VECTOR() <config/nrf51-vector.def>
 
