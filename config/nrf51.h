@@ -16,5 +16,6 @@
 /* NOTE: for redbear lab ble nano 1.0, 16KiB */
 #define CONFIG_RAM_SIZE KIBI(32)
 
-/* FIXME: app specific */
+/* FIXME: technically app specific. In nrf51 case, this might be guarunteed,
+ * investigate. */
 #define CONFIG_SYSCLOCK MEGA(16)

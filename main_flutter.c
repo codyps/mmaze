@@ -4,10 +4,10 @@
 #include "sam3/usart.h"
 #include "sam3/pmc.h"
 #include "sam3/periph.h"
+#include <e1/init.h>
 
 #define TRUST_RESET 1
 
-void init_early(void);
 void init_early(void)
 {
 	/*

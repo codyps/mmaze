@@ -3,7 +3,6 @@
 #include "k20/sim.h"
 #include "armv7m.h"
 #include "isr.h"
-#include <e1/watchdog.h>
 
 static uint32_t count;
 __attribute__((__interrupt__))
