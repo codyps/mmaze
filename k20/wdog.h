@@ -2,6 +2,7 @@
 #define K20_WDOG_H_
 
 #include <assert.h>
+#include <stdint.h>
 
 #define WDOG_STCTRLH (*(volatile uint16_t *)0x40052000)
 

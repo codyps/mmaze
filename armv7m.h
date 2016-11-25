@@ -2,7 +2,7 @@
 
 #include "units.h"
 #include "mmio-def.h"
-#include "armvXm.h"
+#include "cortex-m.h"
 
 /* XXX: should names have armv7m prefixes? */
 #define SYST_CSR	MMIO_32(0xE000E010)

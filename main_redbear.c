@@ -7,9 +7,9 @@ __attribute__((noreturn))
 void main(void)
 {
 	for (;;) {
-		delay_us(1000);
+		delay_ms(100);
 		debug_led_set(false);
-		delay_us(1000);
+		delay_ms(100);
 		debug_led_set(true);
 	}
 }

@@ -1,8 +1,9 @@
 #include "k20/gpio.h"
 #include "k20/port.h"
 #include "k20/sim.h"
-#include "armv7m.h"
 #include "isr.h"
+#include "cortex-m.h"
+#include "armv7m.h"
 
 static uint32_t count;
 __attribute__((__interrupt__))

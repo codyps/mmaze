@@ -3,6 +3,9 @@ LD_FEATURE ("SANE_EXPR")
 MEMORY
 {
 	flash (rx)  : ORIGIN = CONFIG_FLASH_OFFS, LENGTH = CONFIG_FLASH_SIZE
+#ifdef CONFIG_FLASH_SPECIAL_OFFS
+	flash_special (r): ORIGIN = CONFIG_FLASH_SPECIAL_OFFS, LENGTH = CONFIG_FLASH_SPECIAL_SIZE
+#endif
 	ram   (!rx) : ORIGIN = CONFIG_RAM_OFFS,   LENGTH = CONFIG_RAM_SIZE
 }
 
@@ -93,6 +96,12 @@ SECTIONS
 		KEEP(*(.note.gnu.build-id))
 		__build_id_end = .;
 	} >flash =CONFIG_FLASH_FILL
+
+#ifdef CONFIG_FLASH_SPECIAL_OFFS
+	.flash_special : {
+		KEEP(*(.flash_special*))
+	} >flash_special =CONFIG_FLASH_FILL
+#endif
 
 }
 

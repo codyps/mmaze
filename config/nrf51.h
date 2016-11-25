@@ -19,3 +19,10 @@
 /* FIXME: technically app specific. In nrf51 case, this might be guarunteed,
  * investigate. */
 #define CONFIG_SYSCLOCK MEGA(16)
+
+/* UICR */
+/* FIXME: should be up to app to include this section if it choses to do so */
+/*
+#define CONFIG_FLASH_SPECIAL_OFFS 0x10001000
+#define CONFIG_FLASH_SPECIAL_SIZE 0xff
+*/
