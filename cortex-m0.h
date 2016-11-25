@@ -28,4 +28,13 @@ static inline void delay_cycles_x4p1(uint32_t ct)
 	);
 }
 
-#include "delay_x4p1.h"
+/*
+ *  (x + 1) * 4 = cycles
+ *  cycles / 4 = x + 1
+ *  cycles / 4 - 1 = x
+ */
+__attribute__((__always_inline__))
+static inline void delay_cycles(uint32_t cycles)
+{
+	delay_cycles_x4p1(cycles / 4 - 1);
+}
