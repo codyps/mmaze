@@ -12,7 +12,7 @@
  *
  * Max delay: 0x400000001 cycles (17179869185)
  */
-static inline void delay_cycles_x4p1(uint32_t ct)
+static inline void delay_cycles_p1x4(uint32_t ct)
 {
 	__asm__ __volatile__ (
 		".thumb \n\t"
@@ -29,6 +29,12 @@ static inline void delay_cycles_x4p1(uint32_t ct)
 }
 
 /*
+ * minimum delay: 4 cycles
+ * granularity: 4 cycles
+ * accuracy: +1,-3
+ *
+ * maximum delay: with arg=0, 0xffffffff cycles
+ *
  *  (x + 1) * 4 = cycles
  *  cycles / 4 = x + 1
  *  cycles / 4 - 1 = x
@@ -36,5 +42,5 @@ static inline void delay_cycles_x4p1(uint32_t ct)
 __attribute__((__always_inline__))
 static inline void delay_cycles(uint32_t cycles)
 {
-	delay_cycles_x4p1(cycles / 4 - 1);
+	delay_cycles_p1x4(cycles / 4 - 1);
 }
