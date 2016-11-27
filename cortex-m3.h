@@ -20,7 +20,9 @@ static inline void delay_cycles_x4p1(uint32_t ct)
 {
 	__asm__ __volatile__ (
 		"1:	subs %0, %0, #1 \n\t" /* 1 cycle */
-		"	bcc 1b"	/* 3 for all but last (1) */
+		/* 1 + P [some cost of prediction failure, not sure we can be
+		 * certain of timing cost ] */
+		"	bcc 1b \n\t"
 	: "=r" (ct)	/* outputs */
 	: "0" (ct)	/* inputs */
 	: "cc"		/* clobbers */
@@ -35,5 +37,17 @@ static inline void delay_cycles_x4p1(uint32_t ct)
 __attribute__((__always_inline__))
 static inline void delay_cycles(uint32_t cycles)
 {
-	delay_cycles_x4p1(cycles / 4 - 1);
+#if 0
+	/* Use the DWT_CYCCNT register */
+	__asm__ __volatile__ (
+	/* load 32bit address into register */
+	"ldr %0, %1 \n\t"
+	"1: \n\t"
+	/* load contents of *%0 */
+	"   \n\t"
+	/* check if loaded value is far enough along */
+	: "=r" (cycles)
+	);
+#endif
+	(void)cycles;
 }

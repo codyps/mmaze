@@ -1,12 +1,11 @@
 #pragma once
 #include <stdint.h>
 
+/* delay_cycles() */
+#include <e1/arch-cpu.h>
+
 __attribute__((__always_inline__))
 static inline void delay_cycles(uint32_t cycles);
-
-#define E1_INCLUDE_VAR(VAR) <VAR.h>
-#include E1_INCLUDE_VAR(CONFIG_CPU)
-#undef E1_INCLUDE_VAR
 
 /*
  * freq_hz = (cycles / second)
