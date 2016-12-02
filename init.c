@@ -6,6 +6,8 @@ extern void main (void);
 extern void arch_init_early(void) __attribute__((weak));
 extern void board_init_early(void) __attribute__((weak));
 extern void init_early(void) __attribute__((weak));
+extern void arch_init(void) __attribute__((weak));
+extern void board_init(void) __attribute__((weak));
 extern void isr_reset(void);
 
 /*
@@ -58,5 +60,7 @@ void isr_reset(void)
 		*d++ = 0;
 
 	__libc_init_array();
+	arch_init();
+	board_init();
 	main();
 }

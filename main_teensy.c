@@ -1,9 +1,6 @@
-#include "k20/gpio.h"
-#include "k20/port.h"
-#include "k20/sim.h"
 #include "armv7m.h"
 #include "isr.h"
-#include <e1/watchdog.h>
+#include <e1/debug-led.h>
 
 static uint32_t count;
 __attribute__((__interrupt__))
@@ -11,7 +8,7 @@ void isr_systick(void)
 {
 	count ++;
 	if ((count % 1000) == 0)
-		K20_GPIO.c.ptor = 1 << 5;
+		debug_led_toggle();
 }
 
 #define SCB_VTOR MMIO_32(0xE000ED08)
@@ -21,43 +18,12 @@ void isr_systick(void)
 //#define NVIC_SYS_PRI3   (*((volatile U32 *)0xE000ED20))
 //NVIC_SYS_PRI3 |=  0x00FF0000
 
-struct k20_usb_bdt {
-} btdt __attribute__((aligned(512))) = {
-};
-
-/*
- * Flash config field "LPBOOT"
- *
- * 0 Low-power boot: OUTDIVx values in SIM_CLKDIV1 register are auto-configured
- *   at reset exit for higher divide values that produce lower power consumption at
- *   reset exit.
- * • Core and system clock divider (OUTDIV1) and bus clock divider (OUTDIV2)
- *   are 0x7 (divide by 8)
- * • Flash clock divider (OUTDIV4)is 0xF (divide by 16)
- *
- * 1 Normal boot: OUTDIVx values in SIM_CLKDIV1 register are auto-configured at
- *   reset exit for higher frequency values that produce faster operating frequencies at
- *   reset exit.
- * • Core and system clock divider (OUTDIV1) and bus clock divider (OUTDIV2)
- *   are 0x0 (divide by 1)
- * • Flash clock divider (OUTDIV4)is 0x1 (divide by 2)
- */
-
 __attribute__((noreturn))
 void main(void)
 {
 	/* On boot, PRIMASK and FAULTMASK are 0, faults and interrupts are
 	 * enabled */
 	/* PIN13 = LED = PTC5 */
-
-	/* enable clocks */
-	SIM_SCGC5 = SIM_SCGC5_PORTC;
-
-	/* Ensure PORT PCR is configured as GPIO */
-	K20_PORT.c.pcr[5] = K20_PORT_MUX_GPIO | K20_PORT_DSE;
-
-	/* Configure GPIO */
-	K20_GPIO.c.pddr = 1 << 5;
 
 	/* INIT systick for a 1ms tick */
 	/* 50000000 / 1000 = 50000 ticks per second */

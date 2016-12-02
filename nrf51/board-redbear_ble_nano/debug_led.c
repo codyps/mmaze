@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <nrf51/gpio.h>
 #include <e1/debug-led.h>
 #include <e1/init.h>
