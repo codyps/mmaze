@@ -34,7 +34,7 @@ LDFLAGS += $(CFLAGS)
 endif
 
 # For sanitizer code, we need to avoid addining sanitizer hooks
-: foreach $(san-y)   |> !cc -fno-sanitize=all |> %f.o {obj}
+: foreach $(san-y)   |> !cc -fno-sanitize=all -fno-lto |> %f.o {obj}
 : foreach $(src-y)   |> !cc      |> %f.o  {obj}
 : foreach ld/*.lds.S |> !cpp_lds |> ld/%B {lds}
 : {obj} | {lds}      |> !ccld    |> main.elf
