@@ -32,6 +32,7 @@ sched:
  - delete?
  - sched_tick(), or avoid this.
  - sched_run();
+ - a way to wait/block on things and later unblock
 
 # Consider:
 
