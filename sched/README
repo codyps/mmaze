@@ -22,6 +22,8 @@ arch or chip:
  - in interrupt, call sched_timer_expired()
  - TODO: timer_expired likely needs some additional parameters to enable task saving
  - TODO: context switching, in the yielding case might be efficiently handled by a software interrupt
+ - need to set up timer & interrupt when required by sched
+ - delay init or always pre-init
 
 sched:
 
@@ -30,3 +32,7 @@ sched:
  - delete?
  - sched_tick(), or avoid this.
  - sched_run();
+
+# Consider:
+
+ - Do we ever want to have multiple sched instances?
