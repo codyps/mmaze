@@ -1,0 +1,3 @@
+include board-$(CONFIG_BOARD)/dir.tup
+
+src-y += $(TUP_CWD)/uicr.c

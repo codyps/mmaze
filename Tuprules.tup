@@ -1,4 +1,4 @@
-CFLAGS  += -Wall -Wextra -std=gnu11 -ggdb3 -Wundef -Werror -Wold-style-definition -Wmissing-prototypes -Wstrict-prototypes
+CFLAGS  += -Wall -Wextra -std=gnu11 -ggdb3 -Wundef -Werror -Wold-style-definition -Wmissing-prototypes -Wstrict-prototypes -pipe
 LDFLAGS += -Wl,--as-needed,-O1,--gc-sections
 
 CPP = $(CC) -E

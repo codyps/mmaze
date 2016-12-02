@@ -1,13 +1,13 @@
-#include "armv7m.h"
 #include "sam3/pio.h"
 #include "sam3/wdt.h"
 #include "sam3/usart.h"
 #include "sam3/pmc.h"
 #include "sam3/periph.h"
+#include <e1/init.h>
+#include <e1/delay.h>
 
 #define TRUST_RESET 1
 
-void init_early(void);
 void init_early(void)
 {
 	/*

@@ -54,4 +54,4 @@
  * LPCOMP
  */
 
-
+#define HAVE_SYSTICK 0

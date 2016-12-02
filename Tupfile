@@ -1,12 +1,13 @@
 
-CFLAGS += -Wno-main -Os -fmerge-all-constants
-CPPFLAGS += -I. -Iinclude -mcpu=$(CONFIG_CPU) -mthumb -include config/$(CONFIG_CHIP).h
+DBG_FLAGS += -gdwarf-4 -g3 -fvar-tracking-assignments
+CFLAGS += -Wno-main -Os -fmerge-all-constants $(DBG_FLAGS)
+CPPFLAGS += -I. -Iinclude -mcpu=$(CONFIG_CPU) -mthumb -include config/$(CONFIG_CHIP).h -DCONFIG_CPU=$(CONFIG_CPU)
 
 CROSS_COMPILE = arm-none-eabi-
 CC = $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
 
-LDFLAGS += -T ld/armv7m.lds -nostartfiles -nodefaultlibs -ggdb3 -Wl,--print-gc-sections
+LDFLAGS += -T ld/armv7m.lds -nostartfiles -nodefaultlibs -Wl,--print-gc-sections $(DBG_FLAGS)
 
 src-y += init_vector.c
 src-y += init.c

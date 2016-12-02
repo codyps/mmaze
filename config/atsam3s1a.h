@@ -19,6 +19,7 @@
 #define CONFIG_RAM_OFFS   0x20000000
 #define CONFIG_RAM_SIZE KIBI(16)
 
+
 #if 0
 /* Basic address space */
 #define CONFIG_BOOT_MEMORY	0

@@ -1,0 +1,47 @@
+/* vim: set filetype=c:
+ *
+ * From the nRF51 Series Reference Manual 3.0,
+ * Based on 5.2, table 2, with ID column controlling interrupt
+ */
+/*
+ * VECTOR(addr, name)
+ * VECTOR_NULL(addr)
+ * IRQ(address, nvic non-ipr reg, nvic ipr-reg, name)
+ * IRQ_START_ADDR(addr)
+ * VECTOR_END(addr, vect_ct, irq_ct)
+ */
+#include <config/armv6m-vector.def>
+
+IRQ_START_ADDR(0x40)
+IRQN(0, CLOCK_POWER_PMU, clock_power_mpu)
+IRQN(1, RADIO, radio)
+IRQN(2, UART0, uart0)
+IRQN(3, SPI0_TWI0, spi0_twi0)
+IRQN(4, SPI1_SPIS1_TWI1, spi1_spis1_twi1)
+IRQN_RESERVED(5)
+IRQN(6, GPIOTE, gpiote)
+IRQN(7, ADC, adc)
+IRQN(8, TIMER0, timer0)
+IRQN(9, TIMER1, timer1)
+IRQN(10, TIMER2, timer2)
+IRQN(11, RTC0, rtc0)
+IRQN(12, TEMP, temp)
+IRQN(13, RNG, rng)
+IRQN(14, ECB, ecb)
+IRQN(15, ARR_CCM, aar_ccm)
+IRQN(16, WDT, wdt)
+IRQN(17, RTC1, rtc1)
+IRQN(18, QDEC, qdec)
+IRQN(19, LPCOMP, lpcomp)
+IRQN(20, SWI0, swi0)
+IRQN(21, SWI1, swi1)
+IRQN(22, SWI2, swi2)
+IRQN(23, SWI3, swi3)
+IRQN(24, SWI4, swi4)
+IRQN(25, SWI5, swi5)
+IRQN_RESERVED(26)
+IRQN_RESERVED(27)
+IRQN_RESERVED(28)
+IRQN_RESERVED(29)
+IRQN(30, NVMC, nvmc)
+IRQN(31, PPI, ppi)

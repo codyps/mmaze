@@ -1,6 +1,6 @@
-#include <armv7m.h>
 #include "wdog.h"
 #include <e1/watchdog.h>
+#include <cortex-m.h>
 
 void watchdog_disable(void)
 {

@@ -1,0 +1,6 @@
+R32(0x400, ready)
+R32(0x504, config)
+R32(0x508, erase_page)
+R32(0x50C, erase_all)
+R32(0x510, erase_pcr0)
+R32(0x514, erase_uicr)
