@@ -1,0 +1,32 @@
+
+
+# What does a pluggable scheduler require from the hardware/arch?
+
+ - some way to interrupt things in the future (timer of some sort)
+ - context saving & switching
+
+# What do users require from a scheduler?
+
+ - threads api? (c11, pthreads, pth, l4)
+
+# Isolation Qs
+
+ - What level of control over interrupts (handlers and enable/disabling) should
+   be owned by the scheduler
+
+# API
+
+arch or chip:
+
+ - sched_timer_set(uint32_t us);
+ - in interrupt, call sched_timer_expired()
+ - TODO: timer_expired likely needs some additional parameters to enable task saving
+ - TODO: context switching, in the yielding case might be efficiently handled by a software interrupt
+
+sched:
+
+ - sched_thread_init(struct thread *t);
+ - stop, start
+ - delete?
+ - sched_tick(), or avoid this.
+ - sched_run();
