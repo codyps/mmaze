@@ -1,5 +1,6 @@
 #include <e1/init.h>
 #include "uart.h"
+#include "gpio.h"
 #include "isr.h"
 /*
  * UART aka serial port handling
@@ -22,19 +23,51 @@ void isr_uart0(void)
 	 */
 }
 
+#define TXD_PIN 0
+#define RXD_PIN 1
+
 void arch_init(void)
 {
 	/* configure gpio? ("to ensure correct signal levels on the pins when
 	 * the system is in OFF mode, the pins must be configured in the GPIO")
 	 */
 
+	/* rxd: input */
+	/* FIXME: input buffer? pullups? */
+	NRF51_GPIO.pin_config[RXD_PIN] = 0;
+	/* txd: output, value = 1 */
+	NRF51_GPIO.pin_config[TXD_PIN] = 1;
+	NRF51_GPIO.out_set = (1 << TXD_PIN);
 
-	/* configure PSELRXD, PSELRTS,
-	 * PSELTRTS and PSELTXD */
+
+	/* configure PSELRXD, PSELRTS, PSELTRTS and PSELTXD before enabling
+	 * uart */
+	NRF51_UART.psel_rxd = RXD_PIN;
+	NRF51_UART.psel_txd = TXD_PIN;
 
 	NRF51_UART.inten = 0
 		| NRF51_UART_INT_RXDRDY
 		| NRF51_UART_INT_TXDRDY
 		| NRF51_UART_INT_ERROR
 		;
+
+	/* FIXME: what does "ENABLE" imply? */
+	NRF51_UART.enable = 4;
+}
+
+struct print_buf {
+	/* size these to an appropriate atomic size */
+	uint32_t head;
+	uint32_t tail;
+	uint8_t data[256];
+} print_buf;
+
+void print_str(const char *s)
+{
+
+}
+
+void print_char(char c)
+{
+
 }
