@@ -1,0 +1,42 @@
+/* Tasks */
+R32(0x000, STARTRX, task, start_rx)
+R32(0x004, STOPRX, task, stop_rx)
+R32(0x008, STARTTX, task, start_tx)
+R32(0x00C, STOPTX, task, stop_tx)
+RES(0x010, 0x18)
+R32(0x01C, SUSPEND, task, suspend)
+
+RES(0x020, 0x0fc)
+
+/* Events */
+R32(0x100, CTS, event, cts_activated)
+R32(0x104, NCTS, event, cts_deactivated)
+R32(0x108, RXDRDY, event, data_recieved_in_rxd)
+RES(0x10c, 0x118)
+R32(0x11C, TXDRDY, event, data_sent_from_txd)
+RES(0x120, 0x120)
+R32(0x124, ERROR, event, error)
+RES(0x128, 0x140)
+R32(0x144, RXTO, event, rx_timeout)
+
+RES(0x148, 0x2fc)
+
+/* Registers */
+R32(0x300, INTEN, rw, inten)
+R32(0x304, INTENSET, rw, inten_set)
+R32(0x308, INTENCLR, rw, inten_clear)
+RES(0x30c, 0x47c)
+R32(0x480, ERRORSRC, rw, error_src)
+RES(0x484, 0x4fc)
+R32(0x500, ENABLE, rw, enable)
+RES(0x504, 0x504)
+R32(0x508, PSELRTS, rw, psel_rts)
+R32(0x50C, PSELTXD, rw, psel_txd)
+R32(0x510, PSELCTS, rw, psel_cts)
+R32(0x514, PSELRXD, rw, psel_rxd)
+R32(0x518, RXD, ro, rxd)
+R32(0x51C, TXD, rw, txd)
+RES(0x520, 0x520)
+R32(0x524, BUADRATE, (1<<26), baudrate)
+RES(0x528, 0x568)
+R32(0x56C, CONFIG, 0, config)

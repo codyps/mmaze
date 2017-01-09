@@ -15,3 +15,7 @@
 void arch_init_early(void);
 void board_init_early(void);
 void init_early(void);
+
+void arch_init(void);
+void board_init(void);
+void init(void);
