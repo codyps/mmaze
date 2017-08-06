@@ -18,3 +18,13 @@ a collection of code for working with embedded arm processors.
    boards that meet certain requriments to be used).
 
  - generic code uses config from all sources (board, chip, arch, app)
+
+
+## Debugging
+
+### Redbear BLE nano CMSIS-DAP
+
+ - serial device (/dev/ttyACM0)
+ - openocd cmsis-dap
+	- `sudo openocd -f interface/cmsis-dap.cfg -f target/nrf51.cfg`
+	- `gdb -ex 'target extended-remote localhost:3333'`
