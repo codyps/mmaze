@@ -1,5 +1,4 @@
-#ifndef PENNY_CIRC_BUF_H_
-#define PENNY_CIRC_BUF_H_ 1
+#pragma once
 
 /* number of items in circ_buf */
 #define CIRC_CNT(head,tail,size) (((head) - (tail)) & ((size)- 1))

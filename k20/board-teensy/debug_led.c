@@ -15,7 +15,6 @@ void board_init_early(void)
 
 	/* Configure GPIO */
 	K20_GPIO.c.pddr = 1 << 5;
-
 }
 
 void debug_led_toggle(void)

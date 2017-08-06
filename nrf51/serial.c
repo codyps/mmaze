@@ -2,6 +2,7 @@
 #include "uart.h"
 #include "gpio.h"
 #include "isr.h"
+#include "circ_buf.h"
 /*
  * UART aka serial port handling
  *
@@ -28,7 +29,7 @@ void isr_uart0(void)
 
 void arch_init(void)
 {
-	/* configure gpio? ("to ensure correct signal levels on the pins when
+	/* configure gpio ("to ensure correct signal levels on the pins when
 	 * the system is in OFF mode, the pins must be configured in the GPIO")
 	 */
 
@@ -38,7 +39,6 @@ void arch_init(void)
 	/* txd: output, value = 1 */
 	NRF51_GPIO.pin_config[TXD_PIN] = 1;
 	NRF51_GPIO.out_set = (1 << TXD_PIN);
-
 
 	/* configure PSELRXD, PSELRTS, PSELTRTS and PSELTXD before enabling
 	 * uart */
@@ -51,8 +51,11 @@ void arch_init(void)
 		| NRF51_UART_INT_ERROR
 		;
 
+	NRF51_UART.baud = NRF51_UART_BAUD_115200;
+
 	/* FIXME: what does "ENABLE" imply? */
 	NRF51_UART.enable = 4;
+
 }
 
 struct print_buf {
@@ -69,5 +72,6 @@ void print_str(const char *s)
 
 void print_char(char c)
 {
-
+	/* add to buffer or block */
+	/* trigger TX task?? (consider if it always needs triggering) */
 }
