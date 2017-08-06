@@ -43,5 +43,3 @@ struct q {
 #define circ_next(q, ix_var) ( q.ix_var = CIRC_NEXT(q.ix_var, sizeof(q.buf)) )
 #define circ_next_head(q) ( circ_next(q, head) )
 #define circ_next_tail(q) ( circ_next(q, tail) )
-
-#endif

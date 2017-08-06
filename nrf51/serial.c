@@ -51,7 +51,7 @@ void arch_init(void)
 		| NRF51_UART_INT_ERROR
 		;
 
-	NRF51_UART.baud = NRF51_UART_BAUD_115200;
+	NRF51_UART.baudrate = NRF51_UART_BAUD_115200;
 
 	/* FIXME: what does "ENABLE" imply? */
 	NRF51_UART.enable = 4;
