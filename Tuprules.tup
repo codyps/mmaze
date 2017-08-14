@@ -1,9 +1,9 @@
-CFLAGS  += -Wall -Wextra -std=gnu11 -ggdb3 -Wundef -Werror -Wold-style-definition -Wmissing-prototypes -Wstrict-prototypes -pipe
-LDFLAGS += -Wl,--as-needed,-O1,--gc-sections
+CFLAGS  += -Wall -Wextra -std=gnu11 -Wundef -Werror -Wold-style-definition -Wmissing-prototypes -Wstrict-prototypes -pipe -fdiagnostics-color=always
+LDFLAGS += -Wl,--as-needed,-O1
 
 CPP = $(CC) -E
 
 !cc      = |> $(CC) $(CFLAGS) $(CPPFLAGS) -c -o %o %f |>
-!ccld    = |> $(CC) $(LDFLAGS) -o %o %f |>
+!ccld    = |> $(CC) $(LDFLAGS) -o %o %f $(LIBS) |>
 !cpp_lds = |> $(CPP) -C -P $(CPPFLAGS) -o %o %f |>
 !hex     = |> $(OBJCOPY) -O ihex %f %o |>

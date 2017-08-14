@@ -91,3 +91,6 @@ void __ubsan_handle_load_invalid_value(void* data_raw,
 EXTERN_C
 void __ubsan_handle_function_type_mismatch(void* data_raw,
                                            void* value_raw);
+
+EXTERN_C
+void __ubsan_handle_nonnull_arg(void *data_raw);

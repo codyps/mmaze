@@ -11,6 +11,7 @@ void bad_interrupt(void)
 	for (;;)
 		;
 }
+
 /*
  * VECTOR(addres, name)
  * VECTOR_NULL

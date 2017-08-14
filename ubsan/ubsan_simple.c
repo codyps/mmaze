@@ -294,6 +294,19 @@ void __ubsan_handle_function_type_mismatch(void* data_raw,
 	ubsan_abort_1v(&data->location, value, data->type, "function type mismatch: {}");
 }
 
+struct ubsan_nonnull_arg_data {
+	struct ubsan_source_location location;
+	struct ubsan_source_location attr_location;
+	int arg_index;
+};
+
+EXTERN_C
+void __ubsan_handle_nonnull_arg(void *data_raw)
+{
+	struct ubsan_nonnull_arg_data *data = data_raw;
+	ubsan_abort(&data->location, "nonnull arg was null");
+}
+
 #if 0
 struct ubsan_nonnull_return_data {
 	struct ubsan_source_location loc;

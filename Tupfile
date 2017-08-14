@@ -1,13 +1,14 @@
 
-DBG_FLAGS += -gdwarf-4 -g3 -fvar-tracking-assignments
-CFLAGS += -Wno-main -Os -fmerge-all-constants $(DBG_FLAGS)
+# -gsplit-dwarf
+DBG_FLAGS += -gdwarf-4 -g3 -gno-strict-dwarf -fvar-tracking-assignments -fdebug-types-section -grecord-gcc-switches -ggnu-pubnames -gcolumn-info
+CFLAGS += -Wno-main -Og -fmerge-all-constants $(DBG_FLAGS)
 CPPFLAGS += -I. -Iinclude -mcpu=$(CONFIG_CPU) -mthumb -include config/$(CONFIG_CHIP).h -DCONFIG_CPU=$(CONFIG_CPU)
 
 CROSS_COMPILE = arm-none-eabi-
 CC = $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
 
-LDFLAGS += -T ld/armv7m.lds -nostartfiles -nodefaultlibs -Wl,--print-gc-sections $(DBG_FLAGS)
+LDFLAGS += -T ld/armv7m.lds -nostartfiles -nostdlib -Wl,--print-gc-sections $(DBG_FLAGS)
 
 src-y += init_vector.c
 src-y += init.c
@@ -21,21 +22,25 @@ san-$(CONFIG_UBSAN) += ubsan/ubsan_abort_only.c
 
 include_rules
 
-ifeq ($(CONFIG_LTO),y)
-CFLAGS += -flto
-endif
-
 ifeq ($(CONFIG_UBSAN),y)
 CFLAGS += -fsanitize=undefined
 endif
 
 ifeq ($(CONFIG_LTO),y)
-LDFLAGS += $(CFLAGS)
+CFLAGS += -flto
 endif
 
+ifeq ($(CONFIG_LTO),y)
+LDFLAGS += $(CFLAGS) -fwhole-program
+endif
+
+CFLAGS_CRT = -fno-builtin
+CFLAGS_SANITIZER = -fno-sanitize=all -fno-lto -fno-builtin -fvisibility=hidden
+
 # For sanitizer code, we need to avoid addining sanitizer hooks
-: foreach $(san-y)   |> !cc -fno-sanitize=all -fno-lto |> %f.o {obj}
 : foreach $(src-y)   |> !cc      |> %f.o  {obj}
+: foreach $(san-y)   |> !cc $(CFLAGS_SANITIZER) |> %f.o {obj}
+: foreach $(compiler-rt-y) |> !cc $(CFLAGS_CRT) |> %f.o  {obj}
 : foreach ld/*.lds.S |> !cpp_lds |> ld/%B {lds}
 : {obj} | {lds}      |> !ccld    |> main.elf
 : main.elf           |> !hex     |> main.hex
