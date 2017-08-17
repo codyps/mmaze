@@ -4,9 +4,12 @@
 #include <e1/assert.h>
 
 #include <cortex-m.h>
+#include <armv6m.h>
+
 #include "uart.h"
 #include "gpio.h"
 #include "isr.h"
+#include "nvic.h"
 
 #include <stdbool.h>
 
@@ -82,6 +85,7 @@ void isr_uart0(void)
 		} else {
 			uart0_push();
 		}
+		nvic_clear_pending(IRQN_uart0);
 	} else {
 		__builtin_abort();
 	}
@@ -116,8 +120,13 @@ void arch_init(void)
 
 	NRF51_UART.baudrate = NRF51_UART_BAUD_115200;
 
+	// ENABLE the interrupt in the NVIC
+	// Low priority
+	
+
 	/* FIXME: what does "ENABLE" imply? */
 	NRF51_UART.enable = 4;
+	nvic_enable(IRQN_uart0);
 }
 
 void serial_write(const void *data, size_t len)
