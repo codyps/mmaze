@@ -7,7 +7,7 @@
 : ${WARN_FLAGS:=-Wall -Wextra}
 : ${CFLAGS:=-Os -flto -ggdb3 -fvar-tracking-assignments -fmerge-all-constants -ffast-math}
 : ${LDFLAGS:=${CFLAGS} -fuse-linker-plugin -fwhole-program -Wl,--relax}
-CPPFLAGS="-I. ${CPPFLAGS}"
+CPPFLAGS="-I. -Iinclude ${CPPFLAGS}"
 CFLAGS="-std=gnu11 -Wno-main ${CFLAGS} ${WARN_FLAGS}"
 LDFLAGS="-nostartfiles ${LDFLAGS}"
 
