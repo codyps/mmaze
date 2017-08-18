@@ -91,8 +91,8 @@ void isr_uart0(void)
 	}
 }
 
-#define TXD_PIN 0
-#define RXD_PIN 1
+#define TXD_PIN 9
+#define RXD_PIN 11
 
 void arch_init(void)
 {
