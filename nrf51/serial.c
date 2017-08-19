@@ -85,7 +85,7 @@ void isr_uart0(void)
 		} else {
 			uart0_push();
 		}
-		nvic_clear_pending(IRQN_uart0);
+		NRF51_UART.data_sent_from_txd = 0;
 	} else {
 		__builtin_abort();
 	}
