@@ -10,6 +10,7 @@
 #include "gpio.h"
 #include "isr.h"
 #include "nvic.h"
+#include "circ.h"
 
 #include <stdbool.h>
 
@@ -17,40 +18,8 @@ static struct print_buf {
 	/* size these to an appropriate atomic size */
 	uint32_t head;
 	uint32_t tail;
-	uint8_t data[256];
+	uint8_t data[8];
 } print_buf;
-
-// insert at head, remove at tail. In otherwords, head moves and tail follows behind.
-#define CIRC_IS_FULL(n) CIRC_IS_FULL_((n).head, (n).tail, sizeof((n).data))
-#define CIRC_IS_FULL_(head, tail, sz) \
-	((((head) + 1) % (sz)) == (tail))
-
-#define CIRC_SPACE_SZ(n) CIRC_SPACE_SZ_((n).head, (n).tail, sizeof((n).data))
-#define CIRC_SPACE_SZ_(head, tail, sz) \
-	(((head) - (tail)) % (sz))
-
-#define CIRC_IS_EMPTY(n) CIRC_IS_EMPTY_((n).head, (n).tail)
-#define CIRC_IS_EMPTY_(head, tail) \
-	((head) == (tail))
-
-#define CIRC_SPACE_FROM_HEAD(n) CIRC_SPACE_FROM_HEAD_((n).head, &((n).data[0]))
-#define CIRC_SPACE_FROM_HEAD_(head, data) \
-	((data) + head)
-
-#define CIRC_SPACE_SZ_FROM_HEAD(n) CIRC_SPACE_SZ_FROM_HEAD_((n).head, (n).tail, sizeof((n).data))
-#define CIRC_SPACE_SZ_FROM_HEAD_(head, tail, size) \
-	(((head) >= (tail)) \
-		? ((size) - (head)) \
-		: ((tail) - (head)))
-
-#define CIRC_CONTENTS(n) CIRC_CONTENTS_((n).tail, ((n).data))
-#define CIRC_CONTENTS_(tail, data) (&((data)[(tail)]))
-
-#define CIRC_NEXT(buf, field, ct) CIRC_NEXT_((buf).field, (ct), sizeof((buf).data))
-#define CIRC_NEXT_(orig, add, sz) (((orig) + (add)) % (sz))
-
-#define CIRC_ADVANCE(buf, field, ct) CIRC_ADVANCE_((buf).field, (ct), sizeof((buf).data))
-#define CIRC_ADVANCE_(orig, add, sz) ((orig) = CIRC_NEXT_((orig), (add), (sz)))
 
 /*
  * UART aka serial port handling

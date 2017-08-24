@@ -13,7 +13,7 @@ void main(void)
 		debug_led_set(false);
 		delay_ms(100);
 		debug_led_set(true);
-		print_char('+');
+		print_str("012345678\r\n");
 	}
 }
 
