@@ -4,6 +4,6 @@ LDFLAGS += -Wl,--as-needed,-O1
 CPP = $(CC) -E
 
 !cc      = |> $(CC) $(CFLAGS) $(CPPFLAGS) -c -o %o %f |>
-!ccld    = |> $(CC) $(LDFLAGS) -o %o %f $(LIBS) |>
+!ccld    = |> $(CC) $(LDFLAGS) -o %o %f $(LIBS) -Wl,-Map=%o.map |>  | %o.map
 !cpp_lds = |> $(CPP) -C -P $(CPPFLAGS) -o %o %f |>
 !hex     = |> $(OBJCOPY) -O ihex %f %o |>
