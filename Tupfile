@@ -31,7 +31,7 @@ CFLAGS += -flto
 endif
 
 ifeq ($(CONFIG_LTO),y)
-LDFLAGS += $(CFLAGS) -fwhole-program
+LDFLAGS += $(CFLAGS) -fwhole-program -fuse-linker-plugin
 endif
 
 CFLAGS_CRT = -fno-builtin
