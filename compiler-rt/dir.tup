@@ -1,2 +1,3 @@
 compiler-rt-y += $(TUP_CWD)/abort.c
 compiler-rt-y += $(TUP_CWD)/memcpy.c
+compiler-rt-y += $(TUP_CWD)/assert.c

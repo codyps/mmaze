@@ -34,8 +34,9 @@ static struct print_buf {
 static void uart0_push(void)
 {
 	uint8_t b = *CIRC_CONTENTS(print_buf);
+	ACCESS_ONCE(print_buf.tail) = CIRC_NEXT(print_buf, tail, 1);
+	// order important
 	NRF51_UART.txd = b;
-	CIRC_ADVANCE(print_buf, tail, 1);
 }
 
 __attribute__((__interrupt__))
@@ -112,22 +113,17 @@ void serial_write(const void *data, size_t len)
 
 		bool was_empty = CIRC_IS_EMPTY(print_buf);
 
-		size_t run_len = CIRC_SPACE_SZ_FROM_HEAD(print_buf);
-		e1_assert(run_len);
-		if (run_len > len)
-			run_len = len;
-		void *run = CIRC_SPACE_FROM_HEAD(print_buf);
-		memcpy(run, data, run_len);
-		/* MEMCPY MUST OCCUR BEFORE */
-		barrier();
-		CIRC_ADVANCE(print_buf, head, run_len);
-
-		if (was_empty) {
-			NRF51_UART.start_tx = 1;
-			uart0_push();
+		// TODO: copy array at once.
+		while (!CIRC_IS_FULL(print_buf)) {
+			print_buf.data[print_buf.head] = *(const uint8_t *)data;
+			print_buf.head = (print_buf.head + 1) % sizeof(print_buf.data);
+			data ++;
+			len --;
 		}
 
-		data += run_len;
-		len -= run_len;
+		if (was_empty) {
+			uart0_push();
+			NRF51_UART.start_tx = 1;
+		}
 	}
 }

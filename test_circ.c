@@ -73,7 +73,10 @@ int main(void)
 	ok_eq_fmt(CIRC_SPACE_SZ_FROM_HEAD_(s-1, h, s), 0, "%u");
 
 
-
+	ok1(!CIRC_IS_FULL_(7u, 1u, 8u));
+	ok1(CIRC_IS_FULL_(7u, 0u, 8u));
+	ok1(CIRC_IS_FULL_(0u, 1u, 8u));
+	ok_eq_fmt(CIRC_SPACE_SZ_FROM_HEAD_(7u, 1u, 8u), 1u, "%u");
 
 	return exit_status();
 }
